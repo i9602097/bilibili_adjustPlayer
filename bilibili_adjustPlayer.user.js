@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        ßÙÁ¨ßÙÁ¨£¨bilibili.com£©²¥·ÅÆ÷µ÷Õû
+// @name        å“”å“©å“”å“©ï¼ˆbilibili.comï¼‰æ’­æ”¾å™¨è°ƒæ•´
 // @namespace   micky7q7
 // @author      mickey7q7
 // @license     MIT License
@@ -11,7 +11,7 @@
 // @include     http*://bangumi.bilibili.com/anime/*/play*
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
-// @description µ÷ÕûBÕ¾²¥·ÅÆ÷ÉèÖÃ£¬Ôö¼ÓÒ»Ğ©ÊµÓÃµÄ¹¦ÄÜ¡£
+// @description è°ƒæ•´Bç«™æ’­æ”¾å™¨è®¾ç½®ï¼Œå¢åŠ ä¸€äº›å®ç”¨çš„åŠŸèƒ½ã€‚
 // @version     1.0
 // @grant       GM.setValue
 // @grant       GM_setValue
@@ -77,13 +77,13 @@
 							if (typeof unsafeWindow.bilibiliPlayerVideoEvents.click === 'undefined') {
 								videoParentNodeEvent();
 							} else {
-								console.log('doubleClickFullScreen£º unbind click event failed');
+								console.log('doubleClickFullScreenï¼š unbind click event failed');
 								return;
 							}
-							console.log('doubleClickFullScreen£º unbind click event failed');
+							console.log('doubleClickFullScreenï¼š unbind click event failed');
 						}
 					}
-				} catch (e) {console.log('doubleClickFullScreen£º'+e);}
+				} catch (e) {console.log('doubleClickFullScreenï¼š'+e);}
 			}
 		},
 		autoWide: function (set,fullscreen) {
@@ -105,7 +105,7 @@
 					var autoWidescreen = function () {
 						var widescreenBtn = isBangumi('i[name="widescreen"]');
 						if (widescreenBtn !== null) {
-							if (widescreenBtn.getAttribute('data-text') !== 'ÍË³ö¿íÆÁ') {
+							if (widescreenBtn.getAttribute('data-text') !== 'é€€å‡ºå®½å±') {
 								doClick(widescreenBtn);
 							}
 						}
@@ -186,7 +186,7 @@
 
 					}, 200);
 
-				} catch (e) {console.log('autoFocus£º'+e);}
+				} catch (e) {console.log('autoFocusï¼š'+e);}
 			}
 		},
 		autoPlay: function (set,video) {
@@ -244,7 +244,7 @@
 							}
 						}, 200);
 					}
-				} catch (e) {console.log('danmukuPreventShade£º'+e);}
+				} catch (e) {console.log('danmukuPreventShadeï¼š'+e);}
 			}
 		},
 		autoNextPlist: function (set,video) {
@@ -253,7 +253,7 @@
 					if (isBangumi('.bilibili-player-video-btn-next > i') === null) { return; }
 
 					var nextPlist = function(){
-						if (isBangumi('.bilibili-player-video-btn-repeat > i').getAttribute("data-text") === "¹Ø±ÕÏ´ÄÔÑ­»·") { return; }
+						if (isBangumi('.bilibili-player-video-btn-repeat > i').getAttribute("data-text") === "å…³é—­æ´—è„‘å¾ªç¯") { return; }
 						var controlBtn = isBangumi('.bilibili-player-video-btn-next > i');
 						if (controlBtn !== null) {
 							doClick(controlBtn);
@@ -297,7 +297,7 @@
 							childList: true
 						});
 					}
-				} catch (e) {console.log('autoNextPlist£º'+e);}
+				} catch (e) {console.log('autoNextPlistï¼š'+e);}
 			}
 		},
 		autoLoopVideo: function (set) {
@@ -312,7 +312,7 @@
 			if (typeof set !== 'undefined') {
 				var controlBtn = isBangumi('.bilibili-player-video-web-fullscreen > i');
 				if (controlBtn !== null) {
-					if (controlBtn.getAttribute("data-text") === "ÍøÒ³È«ÆÁ") {
+					if (controlBtn.getAttribute("data-text") === "ç½‘é¡µå…¨å±") {
 						doClick(controlBtn);
 					}
 				}
@@ -322,7 +322,7 @@
 			if (typeof set !== 'undefined') {
 				try{
 					var fullScreen = function() {
-						var controlBtn = isBangumi('div[name="browser_fullscreen"] > i[data-text="½øÈëÈ«ÆÁ"]');
+						var controlBtn = isBangumi('div[name="browser_fullscreen"] > i[data-text="è¿›å…¥å…¨å±"]');
 						if (controlBtn !== null) {
 							doClick(controlBtn);
 						}
@@ -335,7 +335,7 @@
 						}
 					}, false);
 				}
-				catch(e) {console.log('autoFullScreen£º'+e);}
+				catch(e) {console.log('autoFullScreenï¼š'+e);}
 			}
 		},
 		autoVideoSpeed: function (set,video) {
@@ -394,7 +394,7 @@
 						if (controlBtn !== null) {
 							var contextMenuItem = controlBtn.querySelectorAll('li > a'), i;
 							for (i = 0; i < contextMenuItem.length; ++i) {
-								if (contextMenuItem[i].innerHTML === "¹ØµÆ") {
+								if (contextMenuItem[i].innerHTML === "å…³ç¯") {
 									doClick(contextMenuItem[i]);
 									break;
 								}
@@ -404,7 +404,7 @@
 						}
 					}, 200);
 				}
-				catch(e) {console.log('autoLightOn£º'+e);}
+				catch(e) {console.log('autoLightOnï¼š'+e);}
 			}
 		},
 		resizePlayer: function (set,width,height) {
@@ -423,7 +423,7 @@
 
 					var player = isPlayer();
 					if (player === "flashPlayer") {
-						//ĞŞ¸´ flash ²¥·ÅÆ÷ ÍøÒ³È«ÆÁ¼·ÔÚ×óÉÏ½Ç
+						//ä¿®å¤ flash æ’­æ”¾å™¨ ç½‘é¡µå…¨å±æŒ¤åœ¨å·¦ä¸Šè§’
 						css.push(
 							'body[style$="position: fixed; width: 100%; height: 100%; padding: 0px; margin: 0px;"] #bofqi .player{ width: 100% !important; height: 100% !important; } ',
 							'body[style$="position: fixed; width: 100%; height: 100%; padding: 0px; margin: 0px;"] .player-wrapper .player-content ,body[style$="position: fixed; width: 100%; height: 100%; padding: 0px; margin: 0px;"] #bofqi { width: 100% !important; } '
@@ -437,13 +437,13 @@
 						}
 					} else if (player === "html5Player") {
 						var fixResize= function(){
-							//ĞŞ¸´ÄÚ¼ä¾àµ¼ÖÂµÄ ¡°ºÚ±ß¡±
+							//ä¿®å¤å†…é—´è·å¯¼è‡´çš„ â€œé»‘è¾¹â€
 							isBangumi('.bilibili-player-video video').parentNode.setAttribute("style","padding: 0px !important;");
 
-							//ĞŞ¸´ Firefox ÏÂbangumi Ò³µ¯Ä»¿òÏûÊ§
+							//ä¿®å¤ Firefox ä¸‹bangumi é¡µå¼¹å¹•æ¡†æ¶ˆå¤±
 							isBangumi('.bilibili-player-video-inputbar').setAttribute("style","float:none !important;");
 
-							//ĞŞ¸´¡°×Ô¶¯¿íÆÁÄ£Ê½¡± Ã»ÓĞ¹´Ñ¡£¬»áÎŞ·¨µ÷Õû´óĞ¡
+							//ä¿®å¤â€œè‡ªåŠ¨å®½å±æ¨¡å¼â€ æ²¡æœ‰å‹¾é€‰ï¼Œä¼šæ— æ³•è°ƒæ•´å¤§å°
 							var evt = document.createEvent('Event');
 							evt.initEvent('resize', true, true);
 							isBangumi('.bilibili-player-video video').dispatchEvent(evt);
@@ -458,7 +458,7 @@
 						}
 					}
 
-					//ĞŞ¸´²¥·ÅÆ÷³ß´çÉèÖÃ¹ı´óÊ±£¬±»ÆäËû¸¡¶¯ÔªËØÕÚµ²
+					//ä¿®å¤æ’­æ”¾å™¨å°ºå¯¸è®¾ç½®è¿‡å¤§æ—¶ï¼Œè¢«å…¶ä»–æµ®åŠ¨å…ƒç´ é®æŒ¡
 					var gotop;
 					if (matchURL.isVideoAV()) {
 						var oldNav= document.querySelector('#index_nav');
@@ -508,7 +508,7 @@
 							});
 						}
 					}
-				} catch (e) {console.log('resizePlayer£º'+e);}
+				} catch (e) {console.log('resizePlayerï¼š'+e);}
 			}
 		},
 		resizeMiniPlayer: function (set,width) {
@@ -533,7 +533,7 @@
 				try{
 					if (isBangumi('#adjustPlayerAutoHideControlBar')) {return;}
 
-					//Î±ĞŞ¸´ macOS ÏÂ Chrome Í¸Ã÷¶ÈÊ§Ğ§ https://greasyfork.org/zh-CN/forum/discussion/30243/x
+					//ä¼ªä¿®å¤ macOS ä¸‹ Chrome é€æ˜åº¦å¤±æ•ˆ https://greasyfork.org/zh-CN/forum/discussion/30243/x
 					var fixSendbarOpacity = function(){
 						var opacity = "1";
 						if (navigator.userAgent.indexOf('Mac OS X') !== -1 && /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) {
@@ -544,7 +544,7 @@
 						return opacity;
 					};
 
-					//¿ªÆôÁË¡°×Ô¶¯Òş²Ø²¥·ÅÆ÷¿ØÖÆÀ¸¡±²¢ÉèÖÃÁË¡°¶¨Î»µ½µ¯Ä»¿òµÄ¿ì½İ¼ü¡±Ö®ºó£¬Êó±êÒÆ¶¯µ½µ¯Ä»¿òÊ±²»ÏÔÊ¾¡°µ¯Ä»¿ò¡± https://greasyfork.org/zh-CN/forum/post/quote/30243/Comment_42612
+					//å¼€å¯äº†â€œè‡ªåŠ¨éšè—æ’­æ”¾å™¨æ§åˆ¶æ â€å¹¶è®¾ç½®äº†â€œå®šä½åˆ°å¼¹å¹•æ¡†çš„å¿«æ·é”®â€ä¹‹åï¼Œé¼ æ ‡ç§»åŠ¨åˆ°å¼¹å¹•æ¡†æ—¶ä¸æ˜¾ç¤ºâ€œå¼¹å¹•æ¡†â€ https://greasyfork.org/zh-CN/forum/post/quote/30243/Comment_42612
 					var isFocusDanmakuInput = function(){
 						var css = '';
 						if (focusDanmakuInput) {
@@ -572,12 +572,12 @@
 					isBangumi('.player').appendChild(node);
 					document.querySelector('#bofqi > .player').classList.add("autohide-controlbar");
 
-					//ĞŞ¸´¡°·¬¾çµçÓ°¡±Ò³Ãæ½á¹¹²»Ò»ÖÂµ¼ÖÂµÄ¡°°×±ß¡±
+					//ä¿®å¤â€œç•ªå‰§ç”µå½±â€é¡µé¢ç»“æ„ä¸ä¸€è‡´å¯¼è‡´çš„â€œç™½è¾¹â€
 					if (matchURL.isBangumiMovie()) {
 						document.querySelector('.moviescontent').classList.add("autohide-controlbar-movies");
 					}
 
-					//½øĞĞ¿ì½ø(ÍË)²Ù×÷Ê±µ¯³ö½ø¶ÈÌõ
+					//è¿›è¡Œå¿«è¿›(é€€)æ“ä½œæ—¶å¼¹å‡ºè¿›åº¦æ¡
 					video.addEventListener("seeking", function() {
 						var controlBar = isBangumi('#bilibiliPlayer[class*="mode-"] .bilibili-player-video-control');
 						if (controlBar !== null ) {
@@ -589,7 +589,7 @@
 							}, 3000);
 						}
 					}, true);
-				} catch (e) {console.log('adjustPlayerAutoHideControlBar£º'+e);}
+				} catch (e) {console.log('adjustPlayerAutoHideControlBarï¼š'+e);}
 			}
 		},
 		skipSetTime : function (set,skipTime,video) {
@@ -608,7 +608,7 @@
 							video.currentTime += skipTime;
 						}
 					} catch (e) {
-						console.log('skipSetTime£º' + e);
+						console.log('skipSetTimeï¼š' + e);
 					}
 				};
 				setTime();
@@ -625,13 +625,13 @@
 
 						var tipsValue = function() {
 							if (controlBtn.getAttribute("name") === "ctlbar_danmuku_close") {
-								return "¹Ø±Õµ¯Ä»";
+								return "å…³é—­å¼¹å¹•";
 							} else {
-								return "´ò¿ªµ¯Ä»";
+								return "æ‰“å¼€å¼¹å¹•";
 							}
 						};
 
-						shortcut.shortcutsTips("µ¯Ä»",tipsValue());
+						shortcut.shortcutsTips("å¼¹å¹•",tipsValue());
 					}
 				},
 				videoSpeed : function (type) {
@@ -648,14 +648,14 @@
 								index++;
 								video.playbackRate = speed[index];
 							}
-							shortcut.shortcutsTips("²¥·ÅËÙ¶È", speed[index] + "±¶ËÙ");
+							shortcut.shortcutsTips("æ’­æ”¾é€Ÿåº¦", speed[index] + "å€é€Ÿ");
 						} else if (type === "sub") {
 							var index = speed.indexOf(videoSpeed);
 							if (index > 0) {
 								index--;
 								video.playbackRate = speed[index];
 							}
-							shortcut.shortcutsTips("²¥·ÅËÙ¶È", speed[index] + "±¶ËÙ");
+							shortcut.shortcutsTips("æ’­æ”¾é€Ÿåº¦", speed[index] + "å€é€Ÿ");
 						}
 					}
 				},
@@ -666,16 +666,16 @@
 						doClick(controlBtn);
 
 						var tipsValue = function() {
-							if (controlBtn.getAttribute("data-text") === "¿íÆÁÄ£Ê½" && fullscreenBtn.getAttribute("data-text") === "½øÈëÈ«ÆÁ") {
-								return "ÍË³ö¿íÆÁ";
-							} else if (controlBtn.getAttribute("data-text") === "¿íÆÁÄ£Ê½" && fullscreenBtn.getAttribute("data-text") === "ÍË³öÈ«ÆÁ") {
-								return "È«ÆÁ×´Ì¬ÏÂÎŞ·¨Ê¹ÓÃ";
+							if (controlBtn.getAttribute("data-text") === "å®½å±æ¨¡å¼" && fullscreenBtn.getAttribute("data-text") === "è¿›å…¥å…¨å±") {
+								return "é€€å‡ºå®½å±";
+							} else if (controlBtn.getAttribute("data-text") === "å®½å±æ¨¡å¼" && fullscreenBtn.getAttribute("data-text") === "é€€å‡ºå…¨å±") {
+								return "å…¨å±çŠ¶æ€ä¸‹æ— æ³•ä½¿ç”¨";
 							} else {
-								return "¿íÆÁÄ£Ê½";
+								return "å®½å±æ¨¡å¼";
 							}
 						};
 
-						shortcut.shortcutsTips("¿íÆÁÄ£Ê½",tipsValue());
+						shortcut.shortcutsTips("å®½å±æ¨¡å¼",tipsValue());
 					}
 				},
 				fullscreen : function () {
@@ -684,14 +684,14 @@
 						doClick(controlBtn);
 
 						var tipsValue = function() {
-							if (controlBtn.getAttribute("data-text") === "½øÈëÈ«ÆÁ") {
-								return "ÍË³öÈ«ÆÁ";
+							if (controlBtn.getAttribute("data-text") === "è¿›å…¥å…¨å±") {
+								return "é€€å‡ºå…¨å±";
 							} else {
-								return "½øÈëÈ«ÆÁ";
+								return "è¿›å…¥å…¨å±";
 							}
 						};
 
-						shortcut.shortcutsTips("È«ÆÁ",tipsValue());
+						shortcut.shortcutsTips("å…¨å±",tipsValue());
 					}
 				},
 				webfullscreen : function () {
@@ -700,14 +700,14 @@
 						doClick(controlBtn);
 
 						var tipsValue = function() {
-							if (controlBtn.getAttribute("data-text") === "ÍøÒ³È«ÆÁ") {
-								return "ÍË³öÈ«ÆÁ";
+							if (controlBtn.getAttribute("data-text") === "ç½‘é¡µå…¨å±") {
+								return "é€€å‡ºå…¨å±";
 							} else {
-								return "È«ÆÁ";
+								return "å…¨å±";
 							}
 						};
 
-						shortcut.shortcutsTips("ÍøÒ³È«ÆÁ",tipsValue());
+						shortcut.shortcutsTips("ç½‘é¡µå…¨å±",tipsValue());
 					}
 				},
 				gotoPlist : function (type) {
@@ -758,23 +758,23 @@
 							if (typeof plist !== 'undefined' && typeof prevPlist !== 'undefined' && prevPlist !== null) {
 								var heimu = document.querySelector('#heimu').getAttribute("style");
 								if (heimu !== null && heimu.search("display: block;") !== -1) {
-									shortcut.shortcutsTips("·Ö¼¯ÇĞ»»","¹ØµÆ×´Ì¬ÏÂÎŞ·¨Ê¹ÓÃ");
+									shortcut.shortcutsTips("åˆ†é›†åˆ‡æ¢","å…³ç¯çŠ¶æ€ä¸‹æ— æ³•ä½¿ç”¨");
 								} else {
 									doClick(prevPlist);
 								}
 							} else {
-								shortcut.shortcutsTips("·Ö¼¯ÇĞ»»","Ã»ÓĞÉÏÒ»¼¯ÁË");
+								shortcut.shortcutsTips("åˆ†é›†åˆ‡æ¢","æ²¡æœ‰ä¸Šä¸€é›†äº†");
 							}
 						} else if (type === "next") {
 							if (typeof plist !== 'undefined' && typeof nextPlist !== 'undefined' && nextPlist !== null) {
 								var heimu = document.querySelector('#heimu').getAttribute("style");
 								if (heimu !== null && heimu.search("display: block;") !== -1) {
-									shortcut.shortcutsTips("·Ö¼¯ÇĞ»»","¹ØµÆ×´Ì¬ÏÂÎŞ·¨Ê¹ÓÃ");
+									shortcut.shortcutsTips("åˆ†é›†åˆ‡æ¢","å…³ç¯çŠ¶æ€ä¸‹æ— æ³•ä½¿ç”¨");
 								} else {
 									doClick(nextPlist);
 								}
 							} else {
-								shortcut.shortcutsTips("·Ö¼¯ÇĞ»»","Ã»ÓĞÏÂÒ»¼¯ÁË");
+								shortcut.shortcutsTips("åˆ†é›†åˆ‡æ¢","æ²¡æœ‰ä¸‹ä¸€é›†äº†");
 							}
 						}
 					}
@@ -786,13 +786,13 @@
 
 						var tipsValue = function() {
 							if (controlBtn.className.search("video-state-volume-min") !== -1) {
-								return "¾²Òô";
+								return "é™éŸ³";
 							} else {
-								return "»Ö¸´¾²Òô";
+								return "æ¢å¤é™éŸ³";
 							}
 						};
 
-						shortcut.shortcutsTips("¾²Òô",tipsValue());
+						shortcut.shortcutsTips("é™éŸ³",tipsValue());
 					}
 				},
 				lightOnOff : function () {
@@ -820,7 +820,7 @@
 							var contextMenuItem = controlBtn.querySelectorAll('li > a'), i;
 							var lightOnOffItem = null;
 							for (i = 0; i < contextMenuItem.length; ++i) {
-								if (contextMenuItem[i].innerHTML === "¹ØµÆ" || contextMenuItem[i].innerHTML === "¿ªµÆ") {
+								if (contextMenuItem[i].innerHTML === "å…³ç¯" || contextMenuItem[i].innerHTML === "å¼€ç¯") {
 									lightOnOffItem = contextMenuItem[i];
 									doClick(contextMenuItem[i]);
 									break;
@@ -830,13 +830,13 @@
 							adjustPlayerlightOnOff.parentNode.removeChild(adjustPlayerlightOnOff);
 
 							var tipsValue = function() {
-								if (lightOnOffItem.innerHTML !== "¿ªµÆ") {
-									return "¹ØµÆ";
+								if (lightOnOffItem.innerHTML !== "å¼€ç¯") {
+									return "å…³ç¯";
 								} else {
-									return "¿ªµÆ";
+									return "å¼€ç¯";
 								}
 							};
-							shortcut.shortcutsTips("¿ª/¹ØµÆ",tipsValue());
+							shortcut.shortcutsTips("å¼€/å…³ç¯",tipsValue());
 						}
 					}, 200);
 				},
@@ -853,13 +853,13 @@
 						}, 200);
 
 						var tipsValue = function() {
-							if (controlBtn.getAttribute("data-text") !== "´ò¿ªÏ´ÄÔÑ­»·") {
-								return "¿ªÆô";
+							if (controlBtn.getAttribute("data-text") !== "æ‰“å¼€æ´—è„‘å¾ªç¯") {
+								return "å¼€å¯";
 							} else {
-								return "¹Ø±Õ";
+								return "å…³é—­";
 							}
 						};
-						shortcut.shortcutsTips("Ñ­»·²¥·Å",tipsValue());
+						shortcut.shortcutsTips("å¾ªç¯æ’­æ”¾",tipsValue());
 					}
 				},
 				focusPlayer : function () {
@@ -873,7 +873,7 @@
 							var autoFocusOffsetValue= setting.autoFocusOffsetValue;
 							var autoFocusPosition = setting.autoFocusPosition;
 							adjustPlayer.autoFocus(true,autoFocusOffsetType,autoFocusOffsetValue,autoFocusPosition,true);
-							shortcut.shortcutsTips("¶¨Î»","µ½²¥·ÅÆ÷¶¥¶Ë");
+							shortcut.shortcutsTips("å®šä½","åˆ°æ’­æ”¾å™¨é¡¶ç«¯");
 						} else {
 							var setting = config.read();
 							setting.then(function(value){
@@ -881,14 +881,14 @@
 								var autoFocusOffsetValue= value.autoFocusOffsetValue;
 								var autoFocusPosition = value.autoFocusPosition;
 								adjustPlayer.autoFocus(true,autoFocusOffsetType,autoFocusOffsetValue,autoFocusPosition,true);
-								shortcut.shortcutsTips("¶¨Î»","µ½²¥·ÅÆ÷¶¥¶Ë");
+								shortcut.shortcutsTips("å®šä½","åˆ°æ’­æ”¾å™¨é¡¶ç«¯");
 							});
 						}
 					} else {
 						var scrollToY = document.body.getAttribute("adjustPlayerScrollToY");
 						unsafeWindow.scrollTo(0, scrollToY);
 
-						shortcut.shortcutsTips("¶¨Î»","»Øµ½Ö®Ç°Î»ÖÃ");
+						shortcut.shortcutsTips("å®šä½","å›åˆ°ä¹‹å‰ä½ç½®");
 						document.body.removeAttribute("adjustPlayerScrollToY");
 					}
 				},
@@ -922,7 +922,7 @@
 							controlBtn.focus();
 						},200);
 
-						shortcut.shortcutsTips("¶¨Î»","µ½µ¯Ä»¿ò½¹µã");
+						shortcut.shortcutsTips("å®šä½","åˆ°å¼¹å¹•æ¡†ç„¦ç‚¹");
 					}
 				},
 				shortcutsTips : function (type,value) {
@@ -947,7 +947,7 @@
 						this.timeoutID = window.setTimeout(function() {
 							isBangumi('#bilibiliPlayer > .bilibili-player-area > .bilibili-player-video-wrap > #adjust-player-shortcuts-tips').style = "display: block;width:auto;opacity: 0;";
 						}, 1000);
-					} catch (e) {console.log('shortcutsTips£º'+e);}
+					} catch (e) {console.log('shortcutsTipsï¼š'+e);}
 				},
 				shortcutsEvent : function(type,kCode,event) {
 					if (typeof kCode === 'undefined' || kCode === "" || kCode === null ) {
@@ -1108,27 +1108,27 @@
 									}
 								} , false);
 							}
-						} catch (e) {console.log('shortcuts£º'+e);}
+						} catch (e) {console.log('shortcutsï¼š'+e);}
 					}
 				}
 			};
 			shortcut.init(set);
 		},
 		init: function(firstrun,setting) {
-			//ĞŞ¸´ºóÌ¨´ò¿ªÊÓÆµÒ³Ãæ½Å±¾¼ÓÔØÊ§Ğ§
+			//ä¿®å¤åå°æ‰“å¼€è§†é¢‘é¡µé¢è„šæœ¬åŠ è½½å¤±æ•ˆ
 			var documentState = document.visibilityState;
 			if(documentState === "visible") {
-				//³õÊ¼»¯
+				//åˆå§‹åŒ–
 				console.log('adjustPlayer:\n' + 'loadPage:' + location.href);
 				//console.log('settingInfo:\n' + JSON.stringify(setting));
-				//ÏÔÊ¾°ïÖúÌáÊ¾
+				//æ˜¾ç¤ºå¸®åŠ©æç¤º
 				var isFirstrun = function() {
 					if (firstrun) {
 						config.setValue('player_firstrun', false);
 						configWindow.help();
 					}
 				};
-				//×Ü¼ÆÊ±Æ÷
+				//æ€»è®¡æ—¶å™¨
 				var timerCount = 0;
 				var timer = window.setInterval(function callback() {
 					var player = isPlayer();
@@ -1163,14 +1163,14 @@
 									createConfigBtn();
 									isFirstrun();
 
-									//¸øÀÏ°æ±¾³õÊ¼»¯¡°Ë«»÷È«ÆÁÑÓÊ±¡±µÄÄ¬ÈÏÖµ
+									//ç»™è€ç‰ˆæœ¬åˆå§‹åŒ–â€œåŒå‡»å…¨å±å»¶æ—¶â€çš„é»˜è®¤å€¼
 									if (setting.doubleClickFullScreen === true && typeof setting.doubleClickFullScreenDelayed === 'undefined') {
 										adjustPlayer.doubleClickFullScreen(setting.doubleClickFullScreen,200);
 									} else {
 										adjustPlayer.doubleClickFullScreen(setting.doubleClickFullScreen,setting.doubleClickFullScreenDelayed);
 									}
 
-									//¡°°ë×Ô¶¯È«ÆÁ¡±ÌáÊ¾£¬¡°°ë×Ô¶¯È«ÆÁ¡±×îÓÅÏÈ¿ªÆô
+									//â€œåŠè‡ªåŠ¨å…¨å±â€æç¤ºï¼Œâ€œåŠè‡ªåŠ¨å…¨å±â€æœ€ä¼˜å…ˆå¼€å¯
 									var autoFullScreen = function(){
 										var tipsAutoFullScreen = config.getValue('player_tips_autoFullScreen', true);
 										if (tipsAutoFullScreen) {
@@ -1185,20 +1185,20 @@
 									} else if (setting.autoFullScreen === true) {
 										autoFullScreen();
 									} else {
-										//¿ªÆô¡°ÍøÒ³È«ÆÁ¡±£¬¡°°ë×Ô¶¯È«ÆÁ¡±ºó£¬²»¼ÓÔØµÄ¹¦ÄÜ
+										//å¼€å¯â€œç½‘é¡µå…¨å±â€ï¼Œâ€œåŠè‡ªåŠ¨å…¨å±â€åï¼Œä¸åŠ è½½çš„åŠŸèƒ½
 										adjustPlayer.autoFocus(setting.autoFocus,setting.autoFocusOffsetType,setting.autoFocusOffsetValue,setting.autoFocusPosition);
 										adjustPlayer.autoWide(setting.autoWide,setting.autoWideFullscreen);
 										adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerHeight);
 									}
 
-									//³õÊ¼»¯¡°ÃÔÄã²¥·ÅÆ÷³ß´ç¡±µÄÄ¬ÈÏÖµ
+									//åˆå§‹åŒ–â€œè¿·ä½ æ’­æ”¾å™¨å°ºå¯¸â€çš„é»˜è®¤å€¼
 									if (setting.resizePlayer === true && typeof setting.resizeMiniPlayer === 'undefined') {
 										adjustPlayer.resizeMiniPlayer(true,320);
 									} else {
 										adjustPlayer.resizeMiniPlayer(setting.resizeMiniPlayer,setting.resizeMiniPlayerSize);
 									}
 
-									//¿ªÆô¡°Ñ­»·²¥·Å¡±ºó£¬²»¼ÓÔØ¡°×Ô¶¯²¥·ÅÏÂÒ»¸öÊÓÆµ¡±
+									//å¼€å¯â€œå¾ªç¯æ’­æ”¾â€åï¼Œä¸åŠ è½½â€œè‡ªåŠ¨æ’­æ”¾ä¸‹ä¸€ä¸ªè§†é¢‘â€
 									if (setting.autoNextPlist === true && setting.autoLoopVideo === true) {
 										adjustPlayer.autoLoopVideo(setting.autoLoopVideo);
 									} else if (setting.autoNextPlist === true) {
@@ -1209,7 +1209,7 @@
 
 									adjustPlayer.danmukuPreventShade(setting.danmukuPreventShade,setting.danmukuPreventShadeType);
 
-									//ĞŞ¸´Ã»¿ªÆô¡°×Ô¶¯¿íÆÁÄ£Ê½¡±×Ô¶¯¹ØµÆÊ§Ğ§
+									//ä¿®å¤æ²¡å¼€å¯â€œè‡ªåŠ¨å®½å±æ¨¡å¼â€è‡ªåŠ¨å…³ç¯å¤±æ•ˆ
 									window.setTimeout(function() {adjustPlayer.autoLightOn(setting.autoLightOn);}, 200);
 
 									adjustPlayer.hideDanmuku(setting.danmuku,setting.danmukuType);
@@ -1250,7 +1250,7 @@
 					}
 				}, 800);
 			} else if(documentState === "hidden"){
-				//ĞŞ¸´ºóÌ¨´ò¿ªÊÓÆµÒ³Ãæ½Å±¾¼ÓÔØÊ§Ğ§
+				//ä¿®å¤åå°æ‰“å¼€è§†é¢‘é¡µé¢è„šæœ¬åŠ è½½å¤±æ•ˆ
 				var hidden, visibilityChange;
 				if (typeof document.hidden !== "undefined") {
 					hidden = "hidden";
@@ -1278,9 +1278,9 @@
 			}
 		},
 		reload: function(setting) {
-			//¶àPÒ³ÃæÖØ¼ÓÔØ
+			//å¤šPé¡µé¢é‡åŠ è½½
 			console.log('adjustPlayer:\n' + 'reloadPage:' + location.href);
-			//×Ü¼ÆÊ±Æ÷
+			//æ€»è®¡æ—¶å™¨
 			var timerCount = 0;
 			var timer = window.setInterval(function callback() {
 				var player = isPlayer();
@@ -1305,13 +1305,13 @@
 					if (video !== null && readyState !== null ) {
 						if (readyState.search("display: none;") !== -1) {
 							try {
-								//¸øÀÏ°æ±¾³õÊ¼»¯¡°Ë«»÷È«ÆÁÑÓÊ±¡±µÄÄ¬ÈÏÖµ
+								//ç»™è€ç‰ˆæœ¬åˆå§‹åŒ–â€œåŒå‡»å…¨å±å»¶æ—¶â€çš„é»˜è®¤å€¼
 								if (setting.doubleClickFullScreen === true && typeof setting.doubleClickFullScreenDelayed === 'undefined') {
 									adjustPlayer.doubleClickFullScreen(setting.doubleClickFullScreen,200);
 								} else {
 									adjustPlayer.doubleClickFullScreen(setting.doubleClickFullScreen,setting.doubleClickFullScreenDelayed);
 								}
-								//¡°°ë×Ô¶¯È«ÆÁ¡±ÌáÊ¾£¬¡°°ë×Ô¶¯È«ÆÁ¡±×îÓÅÏÈ¿ªÆô
+								//â€œåŠè‡ªåŠ¨å…¨å±â€æç¤ºï¼Œâ€œåŠè‡ªåŠ¨å…¨å±â€æœ€ä¼˜å…ˆå¼€å¯
 								var autoFullScreen = function(){
 									var tipsAutoFullScreen = config.getValue('player_tips_autoFullScreen', true);
 									if (tipsAutoFullScreen) {
@@ -1326,12 +1326,12 @@
 								} else if (setting.autoFullScreen === true) {
 									autoFullScreen();
 								} else {
-									//¿ªÆô¡°ÍøÒ³È«ÆÁ¡±£¬¡°°ë×Ô¶¯È«ÆÁ¡±ºó£¬²»¼ÓÔØµÄ¹¦ÄÜ
+									//å¼€å¯â€œç½‘é¡µå…¨å±â€ï¼Œâ€œåŠè‡ªåŠ¨å…¨å±â€åï¼Œä¸åŠ è½½çš„åŠŸèƒ½
 									adjustPlayer.autoFocus(setting.autoFocus,setting.autoFocusOffsetType,setting.autoFocusOffsetValue,setting.autoFocusPosition);
 									adjustPlayer.autoWide(setting.autoWide,setting.autoWideFullscreen);
 									adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerHeight);
 								}
-								//¿ªÆô¡°Ñ­»·²¥·Å¡±ºó£¬²»¼ÓÔØ¡°×Ô¶¯²¥·ÅÏÂÒ»¸öÊÓÆµ¡±
+								//å¼€å¯â€œå¾ªç¯æ’­æ”¾â€åï¼Œä¸åŠ è½½â€œè‡ªåŠ¨æ’­æ”¾ä¸‹ä¸€ä¸ªè§†é¢‘â€
 								if (setting.autoNextPlist === true && setting.autoLoopVideo === true) {
 									adjustPlayer.autoLoopVideo(setting.autoLoopVideo);
 								} else if (setting.autoNextPlist === true) {
@@ -1340,7 +1340,7 @@
 									adjustPlayer.autoLoopVideo(setting.autoLoopVideo);
 								}
 								adjustPlayer.danmukuPreventShade(setting.danmukuPreventShade,setting.danmukuPreventShadeType);
-								//ĞŞ¸´Ã»¿ªÆô¡°×Ô¶¯¿íÆÁÄ£Ê½¡±×Ô¶¯¹ØµÆÊ§Ğ§
+								//ä¿®å¤æ²¡å¼€å¯â€œè‡ªåŠ¨å®½å±æ¨¡å¼â€è‡ªåŠ¨å…³ç¯å¤±æ•ˆ
 								window.setTimeout(function() {adjustPlayer.autoLightOn(setting.autoLightOn);}, 200);
 								adjustPlayer.hideDanmuku(setting.danmuku,setting.danmukuType);
 								adjustPlayer.autoHideControlBar(setting.autoHideControlBar,setting.shortcuts.focusDanmakuInput,video);
@@ -1464,7 +1464,7 @@
 					return "unknown";
 				}
 			} else {
-				console.log("adjustPlayer:»ñÈ¡ÉèÖÃÊ§°Ü£¬²»Ö§³ÖlocalStorage");
+				console.log("adjustPlayer:è·å–è®¾ç½®å¤±è´¥ï¼Œä¸æ”¯æŒlocalStorage");
 			}
 		},
 		getValue: function (value,defalutValue) {
@@ -1496,7 +1496,7 @@
 					}
 				}
 			} else {
-				console.log("adjustPlayer:¶ÁÈ¡"+ value +"Ê§°Ü£¬Î´Öª´æ´¢ÀàĞÍ");
+				console.log("adjustPlayer:è¯»å–"+ value +"å¤±è´¥ï¼ŒæœªçŸ¥å­˜å‚¨ç±»å‹");
 				item = null;
 				return item;
 			}
@@ -1513,7 +1513,7 @@
 					GM.setValue(name,value);
 				}
 			} else {
-				console.log("adjustPlayer:ÉèÖÃ"+ value +"Ê§°Ü£¬Î´Öª´æ´¢ÀàĞÍ");
+				console.log("adjustPlayer:è®¾ç½®"+ value +"å¤±è´¥ï¼ŒæœªçŸ¥å­˜å‚¨ç±»å‹");
 			}
 		},
 		read: function () {
@@ -1526,7 +1526,7 @@
 					if (defaultConfig !== null) {
 						return defaultConfig;
 					} else {
-						console.log("adjustPlayer:¶ÁÈ¡ÉèÖÃÊ§°Ü");
+						console.log("adjustPlayer:è¯»å–è®¾ç½®å¤±è´¥");
 					}
 				}
 			} else {
@@ -1541,7 +1541,7 @@
 								if (value !== null) {
 									resolve(value);
 								} else {
-									console.log("adjustPlayer:¶ÁÈ¡ÉèÖÃÊ§°Ü");
+									console.log("adjustPlayer:è¯»å–è®¾ç½®å¤±è´¥");
 								}
 							});
 						}
@@ -1681,83 +1681,83 @@
 	var configWindow = {
 		create: function () {
 			var name = 'main';
-			var title = 'ßÙÁ¨ßÙÁ¨£¨bilibili.com£©²¥·ÅÆ÷µ÷Õû';
+			var title = 'å“”å“©å“”å“©ï¼ˆbilibili.comï¼‰æ’­æ”¾å™¨è°ƒæ•´';
 			var bar = '<span class="btn" action="help">?</span><span class="btn" action="close">X</span>';
 			var content = commentToString(function () { /*
          <form>
             <div class="wrapper">
             	<div class="left">
             		<fieldset class="shortcutsGroup">
-            			<legend><label>¿ì½İ¼ü</label></legend>
+            			<legend><label>å¿«æ·é”®</label></legend>
             			<div class="block">
             				<label class="h5">
-            					<input name="shortcutsSwitch" type="checkbox" list="shortcuts" action="childElementDisabledEvent" disabledChildElement="div,shortcutsItem" >ÆôÓÃ¿ì½İ¼ü¹¦ÄÜ<span title="Ê¹ÓÃ°ïÖú£º&#10;1£º¿ì½İ¼üµÄ×Ü¿ª¹Ø£¬¿ªÆôºó¡°¿ì½İ¼ü¹¦ÄÜ¡±²Å»áÉúĞ§" class="tipsButton">[?]</span>
+            					<input name="shortcutsSwitch" type="checkbox" list="shortcuts" action="childElementDisabledEvent" disabledChildElement="div,shortcutsItem" >å¯ç”¨å¿«æ·é”®åŠŸèƒ½<span title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šå¿«æ·é”®çš„æ€»å¼€å…³ï¼Œå¼€å¯åâ€œå¿«æ·é”®åŠŸèƒ½â€æ‰ä¼šç”Ÿæ•ˆ" class="tipsButton">[?]</span>
             				</label>
             				<div class="shortcutsItem">
             					<label class="h5">
-            						<input name="showHideDanmuku" type="checkbox" list="shortcuts">ÏÔÊ¾/Òş²Øµ¯Ä» <span class="tipsButton" action="shortcuts" typeName="showHideDanmuku">[ÉèÖÃ]</span>
+            						<input name="showHideDanmuku" type="checkbox" list="shortcuts">æ˜¾ç¤º/éšè—å¼¹å¹• <span class="tipsButton" action="shortcuts" typeName="showHideDanmuku">[è®¾ç½®]</span>
             						<input type="text" name="showHideDanmukuKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="showHideDanmukuKeyCode" list="shortcuts" KeyCode="true">
             					</label>
             					<label class="h5">
-            						<input name="playerWide" type="checkbox" list="shortcuts">¿íÆÁÄ£Ê½ <span class="tipsButton" action="shortcuts" typeName="playerWide">[ÉèÖÃ]</span>
+            						<input name="playerWide" type="checkbox" list="shortcuts">å®½å±æ¨¡å¼ <span class="tipsButton" action="shortcuts" typeName="playerWide">[è®¾ç½®]</span>
             						<input type="text" name="playerWideKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="playerWideKeyCode" list="shortcuts" KeyCode="true">
             					</label>
             					<label class="h5">
-            						<input name="fullscreen" type="checkbox" list="shortcuts">È«ÆÁÄ£Ê½ <span class="tipsButton" action="shortcuts" typeName="fullscreen">[ÉèÖÃ]</span>
+            						<input name="fullscreen" type="checkbox" list="shortcuts">å…¨å±æ¨¡å¼ <span class="tipsButton" action="shortcuts" typeName="fullscreen">[è®¾ç½®]</span>
             						<input type="text" name="fullscreenKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="fullscreenKeyCode" list="shortcuts" KeyCode="true">
             					</label>
             					<label class="h5">
-            						<input name="webfullscreen" type="checkbox" list="shortcuts">ÍøÒ³È«ÆÁÄ£Ê½ <span class="tipsButton" action="shortcuts" typeName="webfullscreen">[ÉèÖÃ]</span>
+            						<input name="webfullscreen" type="checkbox" list="shortcuts">ç½‘é¡µå…¨å±æ¨¡å¼ <span class="tipsButton" action="shortcuts" typeName="webfullscreen">[è®¾ç½®]</span>
             						<input type="text" name="webfullscreenKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="webfullscreenKeyCode" list="shortcuts" KeyCode="true">
             					</label>
 								<label class="h5">
-            						<input name="videoMute" type="checkbox" list="shortcuts">¾²Òô/»Ö¸´¾²Òô  <span class="tipsButton" action="shortcuts" typeName="videoMute">[ÉèÖÃ]</span>
+            						<input name="videoMute" type="checkbox" list="shortcuts">é™éŸ³/æ¢å¤é™éŸ³  <span class="tipsButton" action="shortcuts" typeName="videoMute">[è®¾ç½®]</span>
             						<input type="text" name="videoMuteKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="videoMuteKeyCode" list="shortcuts" KeyCode="true">
             					</label>
 								<label class="h5">
-            						<input name="lightOnOff" type="checkbox" list="shortcuts">²¥·ÅÆ÷¹ØµÆ/¿ªµÆ  <span class="tipsButton" action="shortcuts" typeName="lightOnOff">[ÉèÖÃ]</span>
+            						<input name="lightOnOff" type="checkbox" list="shortcuts">æ’­æ”¾å™¨å…³ç¯/å¼€ç¯  <span class="tipsButton" action="shortcuts" typeName="lightOnOff">[è®¾ç½®]</span>
             						<input type="text" name="lightOnOffKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="lightOnOffKeyCode" list="shortcuts" KeyCode="true">
             					</label>
 								<label class="h5">
-            						<input name="loopVideoOnOff" type="checkbox" list="shortcuts">Ñ­»·²¥·Å  <span class="tipsButton" action="shortcuts" typeName="loopVideoOnOff">[ÉèÖÃ]</span>
+            						<input name="loopVideoOnOff" type="checkbox" list="shortcuts">å¾ªç¯æ’­æ”¾  <span class="tipsButton" action="shortcuts" typeName="loopVideoOnOff">[è®¾ç½®]</span>
             						<input type="text" name="loopVideoOnOffKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="loopVideoOnOffKeyCode" list="shortcuts" KeyCode="true">
             					</label>
 								<label class="h5">
-            						<input name="focusPlayer" type="checkbox" list="shortcuts">¶¨Î»µ½²¥·ÅÆ÷<span title="Ê¹ÓÃ°ïÖú£º&#10;1£º¾ßÌåÎ»ÖÃ¸ù¾İ¡°¹¦ÄÜµ÷Õû¡± - ¡°×Ô¶¯¶¨Î»µ½XXX¶¥¶Ë¡± ÉèÖÃµÄÖµÀ´¶¨Î»&#10£¨Ã»ÉèÖÃ¡°¹¦ÄÜµ÷Õû¡± - ¡°×Ô¶¯¶¨Î»µ½XXX¶¥¶Ë¡±¹¦ÄÜµÄ»°£¬Ä¬ÈÏ¶¨Î»µ½²¥·ÅÆ÷¶¥¶Ë£©&#10;2£º°´ÏÂºó»áÔÚ¡°²¥·ÅÆ÷Î»ÖÃ¡±£¬ºÍ¡°Ö®Ç°ä¯ÀÀµÄÎ»ÖÃ¡±½øĞĞÇĞ»»" class="tipsButton">[?]</span>
-									<span class="tipsButton" action="shortcuts" typeName="focusPlayer">[ÉèÖÃ]</span>
+            						<input name="focusPlayer" type="checkbox" list="shortcuts">å®šä½åˆ°æ’­æ”¾å™¨<span title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šå…·ä½“ä½ç½®æ ¹æ®â€œåŠŸèƒ½è°ƒæ•´â€ - â€œè‡ªåŠ¨å®šä½åˆ°XXXé¡¶ç«¯â€ è®¾ç½®çš„å€¼æ¥å®šä½&#10ï¼ˆæ²¡è®¾ç½®â€œåŠŸèƒ½è°ƒæ•´â€ - â€œè‡ªåŠ¨å®šä½åˆ°XXXé¡¶ç«¯â€åŠŸèƒ½çš„è¯ï¼Œé»˜è®¤å®šä½åˆ°æ’­æ”¾å™¨é¡¶ç«¯ï¼‰&#10;2ï¼šæŒ‰ä¸‹åä¼šåœ¨â€œæ’­æ”¾å™¨ä½ç½®â€ï¼Œå’Œâ€œä¹‹å‰æµè§ˆçš„ä½ç½®â€è¿›è¡Œåˆ‡æ¢" class="tipsButton">[?]</span>
+									<span class="tipsButton" action="shortcuts" typeName="focusPlayer">[è®¾ç½®]</span>
             						<input type="text" name="focusPlayerKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="focusPlayerKeyCode" list="shortcuts" KeyCode="true">
             					</label>
 								<label class="h5">
-            						<input name="focusDanmakuInput" type="checkbox" list="shortcuts">¶¨Î»µ½µ¯Ä»¿ò<span title="Ê¹ÓÃ°ïÖú£º&#10;1£º½¹µãÔÚµ¯Ä»¿òÊ±¼üÅÌ°´ Tab ¼üÒş²Øµ¯Ä»¿ò&#10;2£º¿ªÆôÁË¡°×Ô¶¯Òş²Ø²¥·ÅÆ÷¿ØÖÆÀ¸¡±²¢ÉèÖÃÁË¡°¶¨Î»µ½µ¯Ä»¿òµÄ¿ì½İ¼ü¡±Ö®ºó£¬ÇëÓÃ¿ì½İ¼üÀ´ÏÔÊ¾µ¯Ä»¿ò" class="tipsButton">[?]</span>
-									<span class="tipsButton" action="shortcuts" typeName="focusDanmakuInput">[ÉèÖÃ]</span>
+            						<input name="focusDanmakuInput" type="checkbox" list="shortcuts">å®šä½åˆ°å¼¹å¹•æ¡†<span title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šç„¦ç‚¹åœ¨å¼¹å¹•æ¡†æ—¶é”®ç›˜æŒ‰ Tab é”®éšè—å¼¹å¹•æ¡†&#10;2ï¼šå¼€å¯äº†â€œè‡ªåŠ¨éšè—æ’­æ”¾å™¨æ§åˆ¶æ â€å¹¶è®¾ç½®äº†â€œå®šä½åˆ°å¼¹å¹•æ¡†çš„å¿«æ·é”®â€ä¹‹åï¼Œè¯·ç”¨å¿«æ·é”®æ¥æ˜¾ç¤ºå¼¹å¹•æ¡†" class="tipsButton">[?]</span>
+									<span class="tipsButton" action="shortcuts" typeName="focusDanmakuInput">[è®¾ç½®]</span>
             						<input type="text" name="focusDanmakuInputKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="focusDanmakuInputKeyCode" list="shortcuts" KeyCode="true">
             					</label>
 								<label class="h5">
-            						<input name="addVideoSpeed" type="checkbox" list="shortcuts">Ôö¼Ó²¥·ÅËÙ¶È <span class="tipsButton" action="shortcuts" typeName="addVideoSpeed">[ÉèÖÃ]</span>
+            						<input name="addVideoSpeed" type="checkbox" list="shortcuts">å¢åŠ æ’­æ”¾é€Ÿåº¦ <span class="tipsButton" action="shortcuts" typeName="addVideoSpeed">[è®¾ç½®]</span>
             						<input type="text" name="addVideoSpeedKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="addVideoSpeedKeyCode" list="shortcuts" KeyCode="true">
             					</label>
             					<label class="h5">
-            						<input name="subVideoSpeed" type="checkbox" list="shortcuts">¼õÉÙ²¥·ÅËÙ¶È <span class="tipsButton" action="shortcuts" typeName="subVideoSpeed">[ÉèÖÃ]</span>
+            						<input name="subVideoSpeed" type="checkbox" list="shortcuts">å‡å°‘æ’­æ”¾é€Ÿåº¦ <span class="tipsButton" action="shortcuts" typeName="subVideoSpeed">[è®¾ç½®]</span>
             						<input type="text" name="subVideoSpeedKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="subVideoSpeedKeyCode" list="shortcuts" KeyCode="true">
             					</label>
 								<label class="h5">
-            						<input name="prevPlist" type="checkbox" list="shortcuts">ÉÏÒ»¸öÊÓÆµ  <span class="tipsButton" action="shortcuts" typeName="prevPlist">[ÉèÖÃ]</span>
+            						<input name="prevPlist" type="checkbox" list="shortcuts">ä¸Šä¸€ä¸ªè§†é¢‘  <span class="tipsButton" action="shortcuts" typeName="prevPlist">[è®¾ç½®]</span>
             						<input type="text" name="prevPlistKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="prevPlistKeyCode" list="shortcuts" KeyCode="true">
             					</label>
             					<label class="h5">
-            						<input name="nextPlist" type="checkbox" list="shortcuts">ÏÂÒ»¸öÊÓÆµ <span class="tipsButton" action="shortcuts" typeName="nextPlist">[ÉèÖÃ]</span>
+            						<input name="nextPlist" type="checkbox" list="shortcuts">ä¸‹ä¸€ä¸ªè§†é¢‘ <span class="tipsButton" action="shortcuts" typeName="nextPlist">[è®¾ç½®]</span>
             						<input type="text" name="nextPlistKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="nextPlistKeyCode" list="shortcuts" KeyCode="true">
             					</label>
@@ -1765,98 +1765,98 @@
             			</div>
             		</fieldset>
             		<fieldset class="otherGroup">
-            			<legend><label>ÆäËû</label></legend>
+            			<legend><label>å…¶ä»–</label></legend>
             			<div class="block">
             				<label class="h5">
-            					<input name="danmuku" type="checkbox">Ä¬ÈÏÒş²Ø
+            					<input name="danmuku" type="checkbox">é»˜è®¤éšè—
             					<select name="danmukuType">
-            						<option value="all" selected="selected">ËùÓĞ</option>
-            						<option value="bangumi">·¬¾ç</option>
-            					</select>µ¯Ä»<span title="Ê¹ÓÃ°ïÖú£º&#10;1£ºÑ¡ÔñÄ¬ÈÏÒş²Ø¡°·¬¾ç¡±µ¯Ä»Ê±£¬Ö»Òş²Ø bangumi.bilibili.com ÓòÃû£¬www.bilibili.com/bangumi/play/ep ÏÂÊÓÆµµÄµ¯Ä»" class="tipsButton">[?]</span>
+            						<option value="all" selected="selected">æ‰€æœ‰</option>
+            						<option value="bangumi">ç•ªå‰§</option>
+            					</select>å¼¹å¹•<span title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šé€‰æ‹©é»˜è®¤éšè—â€œç•ªå‰§â€å¼¹å¹•æ—¶ï¼Œåªéšè— bangumi.bilibili.com åŸŸåï¼Œwww.bilibili.com/bangumi/play/ep ä¸‹è§†é¢‘çš„å¼¹å¹•" class="tipsButton">[?]</span>
             				</label>
 							<label class="h5">
-								<input name="danmukuPreventShade" type="checkbox">Ä¬ÈÏ
+								<input name="danmukuPreventShade" type="checkbox">é»˜è®¤
 								<select name="danmukuPreventShadeType">
-            						<option value="on" selected="selected">¿ªÆô</option>
-            						<option value="off">¹Ø±Õ</option>
-            					</select>·Àµ²µ¯Ä»<span title="Ê¹ÓÃ°ïÖú£º&#10;1£º¡°·¬¾ç¡±Ò³ÃæºÍÆÕÍ¨Ò³ÃæµÄ¡°·Àµ²µ¯Ä»¡±Ä¬ÈÏÉèÖÃ¾¹È»²»Ò»Ñù£¿¿ªÆôºóÉèÖÃÈÃËüÒ»ÖÂ " class="tipsButton">[?]</span>
+            						<option value="on" selected="selected">å¼€å¯</option>
+            						<option value="off">å…³é—­</option>
+            					</select>é˜²æŒ¡å¼¹å¹•<span title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šâ€œç•ªå‰§â€é¡µé¢å’Œæ™®é€šé¡µé¢çš„â€œé˜²æŒ¡å¼¹å¹•â€é»˜è®¤è®¾ç½®ç«Ÿç„¶ä¸ä¸€æ ·ï¼Ÿå¼€å¯åè®¾ç½®è®©å®ƒä¸€è‡´ " class="tipsButton">[?]</span>
 							</label>
-            				<label class="h5"><input name="autoLightOn" type="checkbox">×Ô¶¯²¥·ÅÆ÷¹ØµÆ<span title="Ê¹ÓÃ°ïÖú£º&#10;1£ºÔÚÊÓÆµÇøÓòÄÚµã»÷ÓÒ¼ü½øĞĞ¿ª£¬¹ØµÆ²Ù×÷" class="tipsButton">[?]</span></label>
+            				<label class="h5"><input name="autoLightOn" type="checkbox">è‡ªåŠ¨æ’­æ”¾å™¨å…³ç¯<span title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šåœ¨è§†é¢‘åŒºåŸŸå†…ç‚¹å‡»å³é”®è¿›è¡Œå¼€ï¼Œå…³ç¯æ“ä½œ" class="tipsButton">[?]</span></label>
             		</div>
             	</fieldset>
             </div>
             <div class="right">
             	<fieldset class="modeGroup">
-            		<legend><label>²¥·ÅÄ£Ê½</label></legend>
+            		<legend><label>æ’­æ”¾æ¨¡å¼</label></legend>
             		<div class="block">
-						<label><input name="autoWide" type="checkbox">×Ô¶¯¿íÆÁ</label>
-						<label class="h5" style="margin-left: 24px;">ÍË³öÈ«ÆÁºó
+						<label><input name="autoWide" type="checkbox">è‡ªåŠ¨å®½å±</label>
+						<label class="h5" style="margin-left: 24px;">é€€å‡ºå…¨å±å
 							<select name="autoWideFullscreen">
-            					<option value="off" selected="selected">¹Ø±Õ</option>
-            					<option value="on">¿ªÆô</option>
-            				</select>×Ô¶¯¿íÆÁ
-							<span title="Ê¹ÓÃ°ïÖú£º&#10;1£º¿ªÆô¡°×Ô¶¯¿íÆÁ¡±¹¦ÄÜºó£¬ÍË³öÈ«ÆÁºóÊÇ·ñ¿ªÆô¿íÆÁ" class="tipsButton">[?]</span>
+            					<option value="off" selected="selected">å…³é—­</option>
+            					<option value="on">å¼€å¯</option>
+            				</select>è‡ªåŠ¨å®½å±
+							<span title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šå¼€å¯â€œè‡ªåŠ¨å®½å±â€åŠŸèƒ½åï¼Œé€€å‡ºå…¨å±åæ˜¯å¦å¼€å¯å®½å±" class="tipsButton">[?]</span>
 						</label>
-            			<label class="h5"><input name="autoWebFullScreen" type="checkbox">×Ô¶¯ÍøÒ³È«ÆÁ<span title="Ê¹ÓÃ°ïÖú£º&#10;1£º°´Esc¼üÍË³öÍøÒ³È«ÆÁ&#10;3£º¿ªÆô´Ë¹¦ÄÜºó£¬µ÷Õû´óĞ¡£¬×Ô¶¯¿íÆÁ£¬¶¨Î»¹¦ÄÜ²»»áÆôÓÃ" class="tipsButton">[?]</span></label>
-            			<label class="h5"><input name="doubleClickFullScreen" type="checkbox" action="childElementDisabledEvent" disabledChildElement="input,doubleClickFullScreenDelayed" >Ë«»÷È«ÆÁ<span title="Ê¹ÓÃ°ïÖú£º&#10;1£ºË«»÷ÊÓÆµÇøÓòÈ«ÆÁ" class="tipsButton">[?]</span></label>
-						<label class="h5" style="margin-left: 24px;">²¥·Å/ÔİÍ£ÑÓÊ±<input name="doubleClickFullScreenDelayed" type="number" min="0" max="500" placeholder="200" value="200" style="width: 45px;">ºÁÃë<span title="Ê¹ÓÃ°ïÖú£º&#10;1£º¿ªÆô¡°Ë«»÷È«ÆÁ¡±¹¦ÄÜºóµã»÷ÊÓÆµÇøÓò¡°²¥·Å/ÔİÍ£¡±»áÔö¼ÓÑÓÊ±£¬Ê¹È«ÆÁ¹¦ÄÜ¸üÁ÷³©&#10;2£ºÓÉÓÚÔö¼ÓÁËÑÓÊ±£¬µ¼ÖÂµã»÷ÊÓÆµÇøÓò¡°²¥·Å/ÔİÍ£¡±¹¦ÄÜ²»ÊÇ¼°Ê±µÄ£¬ÕâÊ±¿ÉÒÔÓÃ¼üÅÌ¿Õ¸ñ¼üÔİÍ£&#10;3£ººÁÃëÊıÉèÖÃÎª0£¬¹Ø±ÕÑÓÊ±" class="tipsButton">[?]</span></label>
-            			<label class="h5"><input name="autoFullScreen" type="checkbox">°ë×Ô¶¯È«ÆÁ<span title="Ê¹ÓÃ°ïÖú£º&#10;1£ºÒòÎªä¯ÀÀÆ÷ÓĞÏŞÖÆÎŞ·¨Ê¹ÓÃ½Å±¾Ä£Äâ×Ô¶¯È«ÆÁ£¬ĞèÒªÊÖ¶¯°´ÏÂ F11 ¼üÈ«ÆÁ¡£&#10;3£ºÍË³öÈ«ÆÁĞèÒªÊÖ¶¯°´ F11 ¼ü£¬ÔÙ´Î°´ Esc ¼üÍË³öÍøÒ³È«ÆÁ¡£&#10;4£º½¨Òé´îÅä¡°×Ô¶¯²¥·ÅÏÂÒ»¸öÊÓÆµ¡±¹¦ÄÜÊ¹ÓÃ¡£&#10;" class="tipsButton">[?]</span></label>
+            			<label class="h5"><input name="autoWebFullScreen" type="checkbox">è‡ªåŠ¨ç½‘é¡µå…¨å±<span title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šæŒ‰Escé”®é€€å‡ºç½‘é¡µå…¨å±&#10;3ï¼šå¼€å¯æ­¤åŠŸèƒ½åï¼Œè°ƒæ•´å¤§å°ï¼Œè‡ªåŠ¨å®½å±ï¼Œå®šä½åŠŸèƒ½ä¸ä¼šå¯ç”¨" class="tipsButton">[?]</span></label>
+            			<label class="h5"><input name="doubleClickFullScreen" type="checkbox" action="childElementDisabledEvent" disabledChildElement="input,doubleClickFullScreenDelayed" >åŒå‡»å…¨å±<span title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šåŒå‡»è§†é¢‘åŒºåŸŸå…¨å±" class="tipsButton">[?]</span></label>
+						<label class="h5" style="margin-left: 24px;">æ’­æ”¾/æš‚åœå»¶æ—¶<input name="doubleClickFullScreenDelayed" type="number" min="0" max="500" placeholder="200" value="200" style="width: 45px;">æ¯«ç§’<span title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šå¼€å¯â€œåŒå‡»å…¨å±â€åŠŸèƒ½åç‚¹å‡»è§†é¢‘åŒºåŸŸâ€œæ’­æ”¾/æš‚åœâ€ä¼šå¢åŠ å»¶æ—¶ï¼Œä½¿å…¨å±åŠŸèƒ½æ›´æµç•…&#10;2ï¼šç”±äºå¢åŠ äº†å»¶æ—¶ï¼Œå¯¼è‡´ç‚¹å‡»è§†é¢‘åŒºåŸŸâ€œæ’­æ”¾/æš‚åœâ€åŠŸèƒ½ä¸æ˜¯åŠæ—¶çš„ï¼Œè¿™æ—¶å¯ä»¥ç”¨é”®ç›˜ç©ºæ ¼é”®æš‚åœ&#10;3ï¼šæ¯«ç§’æ•°è®¾ç½®ä¸º0ï¼Œå…³é—­å»¶æ—¶" class="tipsButton">[?]</span></label>
+            			<label class="h5"><input name="autoFullScreen" type="checkbox">åŠè‡ªåŠ¨å…¨å±<span title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šå› ä¸ºæµè§ˆå™¨æœ‰é™åˆ¶æ— æ³•ä½¿ç”¨è„šæœ¬æ¨¡æ‹Ÿè‡ªåŠ¨å…¨å±ï¼Œéœ€è¦æ‰‹åŠ¨æŒ‰ä¸‹ F11 é”®å…¨å±ã€‚&#10;3ï¼šé€€å‡ºå…¨å±éœ€è¦æ‰‹åŠ¨æŒ‰ F11 é”®ï¼Œå†æ¬¡æŒ‰ Esc é”®é€€å‡ºç½‘é¡µå…¨å±ã€‚&#10;4ï¼šå»ºè®®æ­é…â€œè‡ªåŠ¨æ’­æ”¾ä¸‹ä¸€ä¸ªè§†é¢‘â€åŠŸèƒ½ä½¿ç”¨ã€‚&#10;" class="tipsButton">[?]</span></label>
 					</div>
             	</fieldset>
             	<fieldset class="playbackGroup">
-            		<legend><label>²¥·ÅÊÓÆµ</label></legend>
+            		<legend><label>æ’­æ”¾è§†é¢‘</label></legend>
             		<div class="block">
-            			<label class="h5"><input name="autoPlay" type="checkbox">×Ô¶¯²¥·ÅÊÓÆµ</label>
-            			<label class="h5"><input name="autoNextPlist" type="checkbox">×Ô¶¯²¥·ÅÏÂÒ»¸öÊÓÆµ<span title="Ê¹ÓÃ°ïÖú£º&#10;1£º´ËÑ¡ÏîÆôÓÃºó½«ÎŞÊÓ¡°BÕ¾¡±HTML5²¥·ÅÆ÷×Ô´øµÄ¡°×Ô¶¯»»P¹¦ÄÜ¡±&#10;2£º×Ô¶¯Ìø¹ı¡°³Ğ°ü°ñ¡±¡¢¡°³äµçÃûµ¥¡±" class="tipsButton">[?]</span></label>
-            			<label class="h5"><input name="autoLoopVideo" type="checkbox">×Ô¶¯Ñ­»·²¥·Åµ±Ç°ÊÓÆµ<span title="Ê¹ÓÃ°ïÖú£º&#10;1£º¿ªÆô´Ë¹¦ÄÜºó¡°×Ô¶¯²¥·ÅÏÂÒ»¸öÊÓÆµ¡±²»»áÆôÓÃ &#10;" class="tipsButton">[?]</span></label>
-						<label class="h5"><input name="skipSetTime" type="checkbox" action="childElementDisabledEvent" disabledChildElement="inputs,skipSetTimeValueMinutes;skipSetTimeValueSeconds" >×Ô¶¯´ÓÖ¸¶¨Ê±¼ä¿ªÊ¼²¥·Å</label>
+            			<label class="h5"><input name="autoPlay" type="checkbox">è‡ªåŠ¨æ’­æ”¾è§†é¢‘</label>
+            			<label class="h5"><input name="autoNextPlist" type="checkbox">è‡ªåŠ¨æ’­æ”¾ä¸‹ä¸€ä¸ªè§†é¢‘<span title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šæ­¤é€‰é¡¹å¯ç”¨åå°†æ— è§†â€œBç«™â€HTML5æ’­æ”¾å™¨è‡ªå¸¦çš„â€œè‡ªåŠ¨æ¢PåŠŸèƒ½â€&#10;2ï¼šè‡ªåŠ¨è·³è¿‡â€œæ‰¿åŒ…æ¦œâ€ã€â€œå……ç”µåå•â€" class="tipsButton">[?]</span></label>
+            			<label class="h5"><input name="autoLoopVideo" type="checkbox">è‡ªåŠ¨å¾ªç¯æ’­æ”¾å½“å‰è§†é¢‘<span title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šå¼€å¯æ­¤åŠŸèƒ½åâ€œè‡ªåŠ¨æ’­æ”¾ä¸‹ä¸€ä¸ªè§†é¢‘â€ä¸ä¼šå¯ç”¨ &#10;" class="tipsButton">[?]</span></label>
+						<label class="h5"><input name="skipSetTime" type="checkbox" action="childElementDisabledEvent" disabledChildElement="inputs,skipSetTimeValueMinutes;skipSetTimeValueSeconds" >è‡ªåŠ¨ä»æŒ‡å®šæ—¶é—´å¼€å§‹æ’­æ”¾</label>
             			<label style="margin-left: 24px;">
-            				<input name="skipSetTimeValueMinutes" type="number" min="0" max="60" placeholder="0" value="0" style="width: 45px;" disabled="">·ÖÖÓ
-            				<input name="skipSetTimeValueSeconds" type="number" min="0" max="60" placeholder="0" value="0" style="width: 45px;" disabled="">Ãë
+            				<input name="skipSetTimeValueMinutes" type="number" min="0" max="60" placeholder="0" value="0" style="width: 45px;" disabled="">åˆ†é’Ÿ
+            				<input name="skipSetTimeValueSeconds" type="number" min="0" max="60" placeholder="0" value="0" style="width: 45px;" disabled="">ç§’
             				<input type="hidden" name="skipSetTimeValue">
             			</label>
-            			<label class="h5">Ñ¡ÔñÄ¬ÈÏ²¥·ÅËÙ¶È
+            			<label class="h5">é€‰æ‹©é»˜è®¤æ’­æ”¾é€Ÿåº¦
             				<select name="autoVideoSpeed">
-            					<option value="0.5">0.5±¶ËÙ</option>
-            					<option value="0.75">0.75±¶ËÙ</option>
-            					<option value="1" selected="selected">Õı³£</option>
-            					<option value="1.25">1.25±¶ËÙ</option>
-            					<option value="1.5">1.5±¶ËÙ</option>
-            					<option value="2">2±¶ËÙ</option>
+            					<option value="0.5">0.5å€é€Ÿ</option>
+            					<option value="0.75">0.75å€é€Ÿ</option>
+            					<option value="1" selected="selected">æ­£å¸¸</option>
+            					<option value="1.25">1.25å€é€Ÿ</option>
+            					<option value="1.5">1.5å€é€Ÿ</option>
+            					<option value="2">2å€é€Ÿ</option>
             				</select>
             			</label>
             		</div>
             	</fieldset>
             	<fieldset class="functionGroup">
-            			<legend><label>¹¦ÄÜµ÷Õû</label></legend>
+            			<legend><label>åŠŸèƒ½è°ƒæ•´</label></legend>
             			<div class="block">
-            				<label><input name="autoFocus" type="checkbox">×Ô¶¯¶¨Î»µ½
+            				<label><input name="autoFocus" type="checkbox">è‡ªåŠ¨å®šä½åˆ°
             					<select name="autoFocusPosition">
-            						<option value="player" selected="selected">²¥·ÅÆ÷</option>
-            						<option value="video">ÊÓÆµ</option>
+            						<option value="player" selected="selected">æ’­æ”¾å™¨</option>
+            						<option value="video">è§†é¢‘</option>
             					</select>
-            					¶¥¶Ë<span title="Ê¹ÓÃ°ïÖú£º&#10;1£ºÈç¹û²»ÂúÒâÎ»ÖÃ£¬¿ÉÒÔÉèÖÃÆ«ÒÆÎ»ÖÃ£¬ÍùÉÏ»òÍùÏÂÒÆ£¨²¥·ÅÆ÷¶¥¶ËÎ»ÖÃ£¨»òÊÓÆµ¶¥¶ËÎ»ÖÃ£©ÊÇ²ÎÕÕ£©¡£" class="tipsButton">[?]</span>
+            					é¡¶ç«¯<span title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šå¦‚æœä¸æ»¡æ„ä½ç½®ï¼Œå¯ä»¥è®¾ç½®åç§»ä½ç½®ï¼Œå¾€ä¸Šæˆ–å¾€ä¸‹ç§»ï¼ˆæ’­æ”¾å™¨é¡¶ç«¯ä½ç½®ï¼ˆæˆ–è§†é¢‘é¡¶ç«¯ä½ç½®ï¼‰æ˜¯å‚ç…§ï¼‰ã€‚" class="tipsButton">[?]</span>
             				</label>
-            				<label style="margin-left: 24px;">¶¨Î»Æ«ÒÆ
+            				<label style="margin-left: 24px;">å®šä½åç§»
             					<select name="autoFocusOffsetType">
-            						<option value="defalut" selected="selected">Ä¬ÈÏ</option>
-            						<option value="sub">ÉÏÒÆ</option>
-            						<option value="add">ÏÂÒÆ</option>
+            						<option value="defalut" selected="selected">é»˜è®¤</option>
+            						<option value="sub">ä¸Šç§»</option>
+            						<option value="add">ä¸‹ç§»</option>
             					</select>
-            					<input name="autoFocusOffsetValue" type="number" min="0" value="0" placeholder="0" style="width: 45px;" disabled="">ÏñËØ
+            					<input name="autoFocusOffsetValue" type="number" min="0" value="0" placeholder="0" style="width: 45px;" disabled="">åƒç´ 
             				</span>
             			</label>
-            			<label class="h5"><input name="autoHideControlBar" type="checkbox">×Ô¶¯Òş²Ø²¥·ÅÆ÷¿ØÖÆÀ¸<span title="Ê¹ÓÃ°ïÖú£º&#10;1£ºĞèÒª¿ªÆô¡°¿íÆÁÄ£Ê½¡±»ò¡°ÍøÒ³È«ÆÁÄ£Ê½¡±²Å»áÉúĞ§&#10;3£ºÊó±êÒÆ¶¯µ½²¥·ÅÆ÷¶¥²¿ÏÔÊ¾µ¯Ä»À¸£¬ÒÆ¶¯µ½µ×²¿ÏÔÊ¾¿ØÖÆÀ¸&#10;4£ºÈç¹û·¢ÏÖ»­Ãæ³öÏÖ¡°ºÚ±ß¡±Çë¿ªÆô¡°ÊÖ¶¯Ö¸¶¨²¥·ÅÆ÷´óĞ¡¡±¹¦ÄÜ&#10; ²¢Ê¹ÓÃ [µ÷Õû´óĞ¡] ¹¦ÄÜµ÷Õû´óĞ¡&#10;5£º´Ë¹¦ÄÜĞŞ¸Ä×Ô£ºhttps://userstyles.org/styles/131642/bilibili-html5" class="tipsButton">[?]</span></label>
+            			<label class="h5"><input name="autoHideControlBar" type="checkbox">è‡ªåŠ¨éšè—æ’­æ”¾å™¨æ§åˆ¶æ <span title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šéœ€è¦å¼€å¯â€œå®½å±æ¨¡å¼â€æˆ–â€œç½‘é¡µå…¨å±æ¨¡å¼â€æ‰ä¼šç”Ÿæ•ˆ&#10;3ï¼šé¼ æ ‡ç§»åŠ¨åˆ°æ’­æ”¾å™¨é¡¶éƒ¨æ˜¾ç¤ºå¼¹å¹•æ ï¼Œç§»åŠ¨åˆ°åº•éƒ¨æ˜¾ç¤ºæ§åˆ¶æ &#10;4ï¼šå¦‚æœå‘ç°ç”»é¢å‡ºç°â€œé»‘è¾¹â€è¯·å¼€å¯â€œæ‰‹åŠ¨æŒ‡å®šæ’­æ”¾å™¨å¤§å°â€åŠŸèƒ½&#10; å¹¶ä½¿ç”¨ [è°ƒæ•´å¤§å°] åŠŸèƒ½è°ƒæ•´å¤§å°&#10;5ï¼šæ­¤åŠŸèƒ½ä¿®æ”¹è‡ªï¼šhttps://userstyles.org/styles/131642/bilibili-html5" class="tipsButton">[?]</span></label>
             			<label>
-            				<input name="resizePlayer" type="checkbox">ÊÖ¶¯Ö¸¶¨²¥·ÅÆ÷´óĞ¡
-            				<span class="tipsButton" action="adjustPlayerSize" title="Ê¹ÓÃ°ïÖú£º&#10;1£ºµã»÷[µ÷Õû´óĞ¡]½øĞĞµ÷Õû">[µ÷Õû´óĞ¡]</span>
+            				<input name="resizePlayer" type="checkbox">æ‰‹åŠ¨æŒ‡å®šæ’­æ”¾å™¨å¤§å°
+            				<span class="tipsButton" action="adjustPlayerSize" title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šç‚¹å‡»[è°ƒæ•´å¤§å°]è¿›è¡Œè°ƒæ•´">[è°ƒæ•´å¤§å°]</span>
             				<input type="hidden" name="adjustPlayerWidth">
             				<input type="hidden" name="adjustPlayerHeight">
             			</label>
             			<label>
-            				<input name="resizeMiniPlayer" type="checkbox" action="childElementDisabledEvent" disabledChildElement="input,resizeMiniPlayerSize" >ÃÔÄã²¥·ÅÆ÷¿í¶È
-            				<input name="resizeMiniPlayerSize" type="number" min="0" value="320" placeholder="320" style="width: 45px;" disabled="">ÏñËØ
-            				<span title="Ê¹ÓÃ°ïÖú£º&#10;1£ºµ÷ÕûÆÀÂÛ´¦ÃÔÄã²¥·ÅÆ÷´óĞ¡£¬ÊäÈëºÏÊÊµÄ¿í¶Èºó×Ô¶¯¼ÆËãĞÂ´óĞ¡&#10;   £¨ ĞÂ´óĞ¡±ÈÀıÎª 16£º9£©" class="tipsButton">[?]</span>
+            				<input name="resizeMiniPlayer" type="checkbox" action="childElementDisabledEvent" disabledChildElement="input,resizeMiniPlayerSize" >è¿·ä½ æ’­æ”¾å™¨å®½åº¦
+            				<input name="resizeMiniPlayerSize" type="number" min="0" value="320" placeholder="320" style="width: 45px;" disabled="">åƒç´ 
+            				<span title="ä½¿ç”¨å¸®åŠ©ï¼š&#10;1ï¼šè°ƒæ•´è¯„è®ºå¤„è¿·ä½ æ’­æ”¾å™¨å¤§å°ï¼Œè¾“å…¥åˆé€‚çš„å®½åº¦åè‡ªåŠ¨è®¡ç®—æ–°å¤§å°&#10;   ï¼ˆ æ–°å¤§å°æ¯”ä¾‹ä¸º 16ï¼š9ï¼‰" class="tipsButton">[?]</span>
             			</label>
             		</div>
             	</fieldset>
@@ -1865,16 +1865,16 @@
         <div class="info">
           	<span class="ver"></span>
 			<span class="storageType">
-          		<a href="javascript:void(0);" action="storageType" title="½Å±¾ÉèÖÃÎŞ·¨±£´æµÄ£¬ÇëµãÕâÀï£¡">´æ´¢ÀàĞÍ</a>
+          		<a href="javascript:void(0);" action="storageType" title="è„šæœ¬è®¾ç½®æ— æ³•ä¿å­˜çš„ï¼Œè¯·ç‚¹è¿™é‡Œï¼">å­˜å‚¨ç±»å‹</a>
            	</span>
 			<span class="feedback">
-          		<a href="https://greasyfork.org/zh-CN/scripts/21284-%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9-bilibili-com-%E6%92%AD%E6%94%BE%E5%99%A8%E8%B0%83%E6%95%B4/feedback">·´À¡</a>
+          		<a href="https://greasyfork.org/zh-CN/scripts/21284-%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9-bilibili-com-%E6%92%AD%E6%94%BE%E5%99%A8%E8%B0%83%E6%95%B4/feedback">åé¦ˆ</a>
            	</span>
         </div>
         <div class="btns">
-           	<div class="btn" action="restoreDef">»Ö¸´Ä¬ÈÏÉèÖÃ</div>
-           	<div class="btn" action="save">±£´æ</div>
-           	<div class="btn btn-cancel" action="close">¹Ø±Õ</div>
+           	<div class="btn" action="restoreDef">æ¢å¤é»˜è®¤è®¾ç½®</div>
+           	<div class="btn" action="save">ä¿å­˜</div>
+           	<div class="btn btn-cancel" action="close">å…³é—­</div>
         </div>
         </form>
             */ });
@@ -1893,9 +1893,9 @@
 			configWindow.childElementDisabledEvent("shortcutsSwitch","div,shortcutsItem");
 			//version
 			try{
-				var version = document.querySelector('#adjust-player form span.ver').innerHTML = "°æ±¾:" + GM_info.script.version;
+				var version = document.querySelector('#adjust-player form span.ver').innerHTML = "ç‰ˆæœ¬:" + GM_info.script.version;
 			} catch (e) {
-				var version = document.querySelector('#adjust-player form span.ver').innerHTML = "°æ±¾:ÎŞ·¨»ñÈ¡";
+				var version = document.querySelector('#adjust-player form span.ver').innerHTML = "ç‰ˆæœ¬:æ— æ³•è·å–";
 			}
 			//html5Player tips
 			var player = isPlayer();
@@ -1981,10 +1981,10 @@
 				//console.log(formData);
 				config.write(formData);
 				//alert
-				unsafeWindow.alert('±£´æÉèÖÃ³É¹¦');
+				unsafeWindow.alert('ä¿å­˜è®¾ç½®æˆåŠŸ');
 				location.reload();
 			} catch (e) {
-				unsafeWindow.alert('±£´æÉèÖÃÊ§°Ü');
+				unsafeWindow.alert('ä¿å­˜è®¾ç½®å¤±è´¥');
 				location.reload();
 				console.log("adjustPlayer:\nsave error\n " + e);
 			}
@@ -1992,9 +1992,9 @@
 		restore: function () {
 			var defaultConfig = config.restore();
 			if (typeof defaultConfig !== 'undefined') {
-				unsafeWindow.alert('»Ö¸´ÉèÖÃ³É¹¦');
+				unsafeWindow.alert('æ¢å¤è®¾ç½®æˆåŠŸ');
 			} else {
-				unsafeWindow.alert('»Ö¸´ÉèÖÃÊ§°Ü');
+				unsafeWindow.alert('æ¢å¤è®¾ç½®å¤±è´¥');
 			}
 			location.reload();
 		},
@@ -2049,7 +2049,7 @@
 		adjustPlayerSize: function () {
 			//init
 			if (matchURL.isWatchlater() || matchURL.isOldBangumi() || matchURL.isNewBangumi()) {
-				if (window.confirm('µ÷Õû´óĞ¡¹¦ÄÜ²»Ö§³ÖÔÚ\n¡¾ÉÔºó¹Û¿´Ò³Ãæ¡¿£¬¡¾·¬¾çÒ³Ãæ¡¿ ÖĞÊ¹ÓÃ¡£\nµãÈ·¶¨»áÌø×ªµ½²âÊÔÒ³Ãæ£¬ÇëÔÚ²âÊÔÒ³ÃæÖĞÖØĞÂµ÷Õû\nÈ¡Ïû·ÅÆúµ÷Õû' )) {
+				if (window.confirm('è°ƒæ•´å¤§å°åŠŸèƒ½ä¸æ”¯æŒåœ¨\nã€ç¨åè§‚çœ‹é¡µé¢ã€‘ï¼Œã€ç•ªå‰§é¡µé¢ã€‘ ä¸­ä½¿ç”¨ã€‚\nç‚¹ç¡®å®šä¼šè·³è½¬åˆ°æµ‹è¯•é¡µé¢ï¼Œè¯·åœ¨æµ‹è¯•é¡µé¢ä¸­é‡æ–°è°ƒæ•´\nå–æ¶ˆæ”¾å¼ƒè°ƒæ•´' )) {
 					window.top.location = "http://www.bilibili.com/video/av120040/";
 					return;
 				} else {
@@ -2067,24 +2067,24 @@
 			var tips = document.createElement('div');
 			tips.innerHTML =  commentToString(function () { /*
             <div class="info">
-               <p>µ±Ç°¿í¶È£º<span class="width">853</span> px</p>
-               <p>µ±Ç°¸ß¶È£º<span class="height">480</span> px</p>
+               <p>å½“å‰å®½åº¦ï¼š<span class="width">853</span> px</p>
+               <p>å½“å‰é«˜åº¦ï¼š<span class="height">480</span> px</p>
             </div>
             <div class="tips">
-              <p>¿Éµ÷ÕûÇøÓòÓĞ±ÈÀıÏŞÖÆ£¬Îª16:9¡££¨ÎªÁË²¥·ÅÆ÷ÇøÓò²»±äĞÎ£©</p>
-              <p>¿Éµ÷ÕûÇøÓò¸ß¶ÈÄ¬ÈÏÔö¼Ó 68px ¡££¨²¥·ÅÆ÷¿Ø¼ş¸ß¶È£©</p>
+              <p>å¯è°ƒæ•´åŒºåŸŸæœ‰æ¯”ä¾‹é™åˆ¶ï¼Œä¸º16:9ã€‚ï¼ˆä¸ºäº†æ’­æ”¾å™¨åŒºåŸŸä¸å˜å½¢ï¼‰</p>
+              <p>å¯è°ƒæ•´åŒºåŸŸé«˜åº¦é»˜è®¤å¢åŠ  68px ã€‚ï¼ˆæ’­æ”¾å™¨æ§ä»¶é«˜åº¦ï¼‰</p>
             </div>
             <div class="tips" style="right: 16px;bottom: 60px;">
-              <p style="color: red; font-size: 80px;">¨K?</p>
+              <p style="color: red; font-size: 80px;">â†˜?</p>
             </div>
             <div class="content">
-               <p class="bold">Ê¹ÓÃ°ïÖú</p>
-               <p>1.ÍÏ¶¯ÓÒÏÂ½Ç¡°Íâ¿ò¡±µ÷Õû²¥·ÅÆ÷´óĞ¡£¨<span style="color: red;">¨K?</span> ´¦£©¡£</p>
-               <p>2.µ÷Õûµ½ºÏÊÊµÄ´óĞ¡£¬µã»÷±£´æ£¨µ±Ç°»ÒÉ«ÇøÓòµÄ´óĞ¡£¬±£´æºó¾ÍÊÇ²¥·ÅÆ÷µÄĞÂ´óĞ¡£©¡£</p>
+               <p class="bold">ä½¿ç”¨å¸®åŠ©</p>
+               <p>1.æ‹–åŠ¨å³ä¸‹è§’â€œå¤–æ¡†â€è°ƒæ•´æ’­æ”¾å™¨å¤§å°ï¼ˆ<span style="color: red;">â†˜?</span> å¤„ï¼‰ã€‚</p>
+               <p>2.è°ƒæ•´åˆ°åˆé€‚çš„å¤§å°ï¼Œç‚¹å‡»ä¿å­˜ï¼ˆå½“å‰ç°è‰²åŒºåŸŸçš„å¤§å°ï¼Œä¿å­˜åå°±æ˜¯æ’­æ”¾å™¨çš„æ–°å¤§å°ï¼‰ã€‚</p>
                <div class="btns">
-                  <div class="btn b-btn" action="720P" style="width: 248px;">¿ìËÙ±£´æÎª720P</div>
-                  <div class="btn b-btn" action="save">±£´æ</div>
-                  <div class="btn b-btn-cancel" action="cancel">È¡Ïû</div>
+                  <div class="btn b-btn" action="720P" style="width: 248px;">å¿«é€Ÿä¿å­˜ä¸º720P</div>
+                  <div class="btn b-btn" action="save">ä¿å­˜</div>
+                  <div class="btn b-btn-cancel" action="cancel">å–æ¶ˆ</div>
                </div>
             </div>
             */});
@@ -2104,7 +2104,7 @@
 							resizePlayer.checked = true;
 							configWindow.save();
 						} catch (ex) {
-							unsafeWindow.alert('±£´æÉèÖÃÊ§°Ü');
+							unsafeWindow.alert('ä¿å­˜è®¾ç½®å¤±è´¥');
 							location.reload();
 							console.log("adjustPlayer:\n adjustPlayerSize save error\n " + ex);
 						}
@@ -2159,24 +2159,24 @@
 		shortcutsWindow: function (e) {
 			//create
 			var name = 'shortcutsSetting';
-			var title = '¿ì½İ¼üÉèÖÃ';
+			var title = 'å¿«æ·é”®è®¾ç½®';
 			var bar = '<span class="btn" action="cancel">X</span>';
 			var content = commentToString(function () { /*
-			<p style="margin-bottom: 4px;font-size: 16px;">ÇëÔÚÊäÈë¿òÄÚ°´ÏÂĞèÒªµÄ°´¼üÉèÖÃ¿ì½İ¼ü£º<span id="tips" style="text-align: left; color: #ff81aa; margin-top: 33px; right: 22px; position: absolute;"></span></p>
+			<p style="margin-bottom: 4px;font-size: 16px;">è¯·åœ¨è¾“å…¥æ¡†å†…æŒ‰ä¸‹éœ€è¦çš„æŒ‰é”®è®¾ç½®å¿«æ·é”®ï¼š<span id="tips" style="text-align: left; color: #ff81aa; margin-top: 33px; right: 22px; position: absolute;"></span></p>
 			<p>
-			  <input type="text" name="keyName" placeholder="Ö§³Öµ¥¸ö×éºÏ¼üctrl£¬alt£¬shift" style="width: 556px;font-size: 16px;text-align: center;padding:4px 0;border: 1px solid #ccd0d7;border-radius: 4px;" >
+			  <input type="text" name="keyName" placeholder="æ”¯æŒå•ä¸ªç»„åˆé”®ctrlï¼Œaltï¼Œshift" style="width: 556px;font-size: 16px;text-align: center;padding:4px 0;border: 1px solid #ccd0d7;border-radius: 4px;" >
 			  <input type="hidden" name="keyCode" >
 			  <input type="hidden" name="typeName" >
 			</p>
 			<p style="color: #99a2aa; border: 1px solid #e5e9ef;background-color: #f4f5f7; border-radius: 10px; margin: 10px 0; padding: 20px;">
-			  <span style="padding: 0 10px;font-weight: bold;">* Çë²»ÒªÔÚÒâÓ¢ÎÄµÄ°´¼üÃû³Æ¡£<br/></span>
-			  <span style="padding: 0 10px;font-weight: bold;">* Çë¹Ø±ÕÊäÈë·¨ºóÉèÖÃ¡£<br/></span>
-			  <span style="padding: 0 10px;font-weight: bold;">* Ä¬ÈÏµÄ¿ì½İ¼ü£¨ÒÑÖªµÄ£©ÓĞ£º</span><br/><span style="margin-left: 27px; display: inline-block;">¿Õ¸ñ £¨²¥·Å/ÔİÍ££©<br/>·½Ïò¼üÉÏ¡¢ÏÂ £¨ÒôÁ¿+/ÒôÁ¿-£©<br/>·½Ïò¼ü×ó¡¢ÓÒ £¨ºóÍË/¿ì½ø£© <br/>×îºÃ±Ü¿ªÕâĞ©°´¼ü£¬ºÍä¯ÀÀÆ÷Ä¬ÈÏµÄ¿ì½İ¼ü£¬½Å±¾Ã»ÓĞ×èÖ¹Ä¬ÈÏĞĞÎª¡£</span>
+			  <span style="padding: 0 10px;font-weight: bold;">* è¯·ä¸è¦åœ¨æ„è‹±æ–‡çš„æŒ‰é”®åç§°ã€‚<br/></span>
+			  <span style="padding: 0 10px;font-weight: bold;">* è¯·å…³é—­è¾“å…¥æ³•åè®¾ç½®ã€‚<br/></span>
+			  <span style="padding: 0 10px;font-weight: bold;">* é»˜è®¤çš„å¿«æ·é”®ï¼ˆå·²çŸ¥çš„ï¼‰æœ‰ï¼š</span><br/><span style="margin-left: 27px; display: inline-block;">ç©ºæ ¼ ï¼ˆæ’­æ”¾/æš‚åœï¼‰<br/>æ–¹å‘é”®ä¸Šã€ä¸‹ ï¼ˆéŸ³é‡+/éŸ³é‡-ï¼‰<br/>æ–¹å‘é”®å·¦ã€å³ ï¼ˆåé€€/å¿«è¿›ï¼‰ <br/>æœ€å¥½é¿å¼€è¿™äº›æŒ‰é”®ï¼Œå’Œæµè§ˆå™¨é»˜è®¤çš„å¿«æ·é”®ï¼Œè„šæœ¬æ²¡æœ‰é˜»æ­¢é»˜è®¤è¡Œä¸ºã€‚</span>
 			</p>
 			<div class="btns" style="text-align: center;">
-               <div class="btn" action="clear">Çå³ı´Ë¿ì½İ¼ü</div>
-               <div class="btn" action="save">ÉèÖÃ</div>
-               <div class="btn btn-cancel" action="cancel">È¡Ïû</div>
+               <div class="btn" action="clear">æ¸…é™¤æ­¤å¿«æ·é”®</div>
+               <div class="btn" action="save">è®¾ç½®</div>
+               <div class="btn btn-cancel" action="cancel">å–æ¶ˆ</div>
 			</div>
 			*/ });
 			var isModal = e.target.offsetParent;
@@ -2213,7 +2213,7 @@
 						kCode.value = event.keyCode;
 					}
 				} else {
-					tips.innerHTML = "°´¼üÎŞ·¨±»Ê¶±ğ";
+					tips.innerHTML = "æŒ‰é”®æ— æ³•è¢«è¯†åˆ«";
 				}
 			}
 			kName.addEventListener("keydown",keydownEvent, false);
@@ -2256,10 +2256,10 @@
 					}
 
 					if (isUsedkeyCode) {
-						tips.innerHTML = "°´¼ü³åÍ»£¬ÒÑÊ¹ÓÃ¹ıµÄ¿ì½İ¼ü";
+						tips.innerHTML = "æŒ‰é”®å†²çªï¼Œå·²ä½¿ç”¨è¿‡çš„å¿«æ·é”®";
 						kName.focus();
 					} else if (kCode.value === "16" || kCode.value === "17" || kCode.value === "18") {
-						tips.innerHTML = "°´¼ü²»ÄÜÎªµ¥¸öµÄ ctrl£¬alt£¬shift";
+						tips.innerHTML = "æŒ‰é”®ä¸èƒ½ä¸ºå•ä¸ªçš„ ctrlï¼Œaltï¼Œshift";
 						kName.focus();
 					} else {
 						var shortcutsKeyName = document.querySelector('#adjust-player .shortcutsGroup input[name="'+typeName.value+'KeyName"]');
@@ -2274,11 +2274,11 @@
 					}
 
 				} else {
-					tips.innerHTML = "°´¼ü²»ÄÜÎª¿Õ";
+					tips.innerHTML = "æŒ‰é”®ä¸èƒ½ä¸ºç©º";
 					kName.focus();
 				}
 			} catch (ex) {
-				unsafeWindow.alert('ÉèÖÃÊ§°Ü');
+				unsafeWindow.alert('è®¾ç½®å¤±è´¥');
 				console.log("shortcutsSettingSave\n " + ex);
 			}
 		},
@@ -2296,27 +2296,27 @@
 		},
 		storageTypeWindow: function (e) {
 			var name = 'storageType';
-			var title = '¸ü¸Ä½Å±¾Êı¾İ´æ´¢ÀàĞÍ';
+			var title = 'æ›´æ”¹è„šæœ¬æ•°æ®å­˜å‚¨ç±»å‹';
 			var bar = '<span class="btn" action="close">X</span>';
 			var content = commentToString(function () { /*
-			<p style="margin-bottom: 4px;font-size: 16px;">ÇëÑ¡Ôñ½Å±¾Êı¾İ´æ´¢ÀàĞÍ£º<span id="tips" style="text-align: left; color: #ff81aa; margin-top: 33px; right: 22px; position: absolute;"></span></p>
+			<p style="margin-bottom: 4px;font-size: 16px;">è¯·é€‰æ‹©è„šæœ¬æ•°æ®å­˜å‚¨ç±»å‹ï¼š<span id="tips" style="text-align: left; color: #ff81aa; margin-top: 33px; right: 22px; position: absolute;"></span></p>
 			<p style="margin: 10px;font-size: 16px; text-align:center;">
 			   <input type="radio" id="extension" name="storageType" value="extension" checked>
-			      <label for="extension">extension£¨ÓÍºïÀ©Õ¹´æ´¢£©</label>
+			      <label for="extension">extensionï¼ˆæ²¹çŒ´æ‰©å±•å­˜å‚¨ï¼‰</label>
 			   <input type="radio" id="localStorage" name="storageType" value="localStorage">
-			      <label for="localStorage">localStorage£¨ä¯ÀÀÆ÷´æ´¢£©</label>
+			      <label for="localStorage">localStorageï¼ˆæµè§ˆå™¨å­˜å‚¨ï¼‰</label>
 			</p>
 			<ol style="color: #99a2aa; border: 1px solid #e5e9ef;background-color: #f4f5f7; border-radius: 10px; margin: 10px 0; padding: 20px 20px 20px 40px;">
-			   <li style="list-style: decimal;"><span style="font-weight: bold;color:red;">Èç¹ûÃ»ÓĞ³öÏÖ¡°ÎŞ·¨±£´æ½Å±¾Êı¾İ¡±µÄÇé¿ö£¬ÇëÎŞÊÓÕâ¸öÉèÖÃ£¡</span></li>
-			   <li style="list-style: decimal;"><span style="font-weight: bold;">³öÏÖ¡°ÎŞ·¨±£´æ½Å±¾Êı¾İ¡±µÄÇé¿ö£¬Çë°Ñ¡°´æ´¢ÀàĞÍ¡± ¸ü¸ÄÎª ¡°localStorage£¨ä¯ÀÀÆ÷´æ´¢£©¡±</span></li>
-			   <li style="list-style: decimal;"><span style="font-weight: bold;">Èç¹û¸ü¸ÄÎª ¡°localStorage£¨ä¯ÀÀÆ÷´æ´¢£©¡± www.bilibili.com ºÍ bangumi.bilibili.com µÄÉèÖÃ²»»áÍ¬²½£¬ĞèÒªÊÖ¶¯ÖØĞÂÉèÖÃ¡£</span></li>
-			   <li style="list-style: decimal;">Ê¹ÓÃ Greasemonkey¡¢Tampermonkey À©Õ¹À´°²×°½Å±¾µÄÓÃ»§£¬Ò»°ãÇë²»ÒªĞŞ¸Ä£¬Çë±£³ÖÄ¬ÈÏµÄ¡°extension£¨ÓÍºïÀ©Õ¹´æ´¢£©¡± ¡£</li>
-			   <li style="list-style: decimal;">Èç¹û¸ü¸ÄÎª ¡°localStorage£¨ä¯ÀÀÆ÷´æ´¢£©¡± ÄÇÃ´É¾³ı½Å±¾µÄÊ±ºò£¬½Å±¾ÉèÖÃ²»»á±»Çå³ı£¬ÏëÇå³ıµÄ»°ÇëÊ¹ÓÃä¯ÀÀÆ÷µÄ¡°Çå³ıä¯ÀÀÊı¾İ¡±¹¦ÄÜÀ´Çå³ı¡£</li>
-			   <li style="list-style: decimal;">Á½ÖÖ´æ´¢ÀàĞÍ²»»á×Ô¶¯Í¬²½ÉèÖÃ£¬¸ü»»´æ´¢ÀàĞÍºóÇëÖØĞÂÉèÖÃ¡£</li>
+			   <li style="list-style: decimal;"><span style="font-weight: bold;color:red;">å¦‚æœæ²¡æœ‰å‡ºç°â€œæ— æ³•ä¿å­˜è„šæœ¬æ•°æ®â€çš„æƒ…å†µï¼Œè¯·æ— è§†è¿™ä¸ªè®¾ç½®ï¼</span></li>
+			   <li style="list-style: decimal;"><span style="font-weight: bold;">å‡ºç°â€œæ— æ³•ä¿å­˜è„šæœ¬æ•°æ®â€çš„æƒ…å†µï¼Œè¯·æŠŠâ€œå­˜å‚¨ç±»å‹â€ æ›´æ”¹ä¸º â€œlocalStorageï¼ˆæµè§ˆå™¨å­˜å‚¨ï¼‰â€</span></li>
+			   <li style="list-style: decimal;"><span style="font-weight: bold;">å¦‚æœæ›´æ”¹ä¸º â€œlocalStorageï¼ˆæµè§ˆå™¨å­˜å‚¨ï¼‰â€ www.bilibili.com å’Œ bangumi.bilibili.com çš„è®¾ç½®ä¸ä¼šåŒæ­¥ï¼Œéœ€è¦æ‰‹åŠ¨é‡æ–°è®¾ç½®ã€‚</span></li>
+			   <li style="list-style: decimal;">ä½¿ç”¨ Greasemonkeyã€Tampermonkey æ‰©å±•æ¥å®‰è£…è„šæœ¬çš„ç”¨æˆ·ï¼Œä¸€èˆ¬è¯·ä¸è¦ä¿®æ”¹ï¼Œè¯·ä¿æŒé»˜è®¤çš„â€œextensionï¼ˆæ²¹çŒ´æ‰©å±•å­˜å‚¨ï¼‰â€ ã€‚</li>
+			   <li style="list-style: decimal;">å¦‚æœæ›´æ”¹ä¸º â€œlocalStorageï¼ˆæµè§ˆå™¨å­˜å‚¨ï¼‰â€ é‚£ä¹ˆåˆ é™¤è„šæœ¬çš„æ—¶å€™ï¼Œè„šæœ¬è®¾ç½®ä¸ä¼šè¢«æ¸…é™¤ï¼Œæƒ³æ¸…é™¤çš„è¯è¯·ä½¿ç”¨æµè§ˆå™¨çš„â€œæ¸…é™¤æµè§ˆæ•°æ®â€åŠŸèƒ½æ¥æ¸…é™¤ã€‚</li>
+			   <li style="list-style: decimal;">ä¸¤ç§å­˜å‚¨ç±»å‹ä¸ä¼šè‡ªåŠ¨åŒæ­¥è®¾ç½®ï¼Œæ›´æ¢å­˜å‚¨ç±»å‹åè¯·é‡æ–°è®¾ç½®ã€‚</li>
 			</ol>
 			<div class="btns" style="text-align: center;">
-               <div class="btn" action="save">ÉèÖÃ</div>
-               <div class="btn btn-cancel" action="cancel">È¡Ïû</div>
+               <div class="btn" action="save">è®¾ç½®</div>
+               <div class="btn btn-cancel" action="cancel">å–æ¶ˆ</div>
 			</div>
 			*/ });
 			var isModal = e.target.parentNode.parentNode.offsetParent;
@@ -2346,45 +2346,45 @@
 				localStorage.setItem('adjustPlayer_storageType',setStorageTypeValue);
 				var getStorageType = localStorage.getItem('adjustPlayer_storageType');
 				if(getStorageType === setStorageTypeValue){
-					alert("¸ü¸ÄÉèÖÃ³É¹¦");
+					alert("æ›´æ”¹è®¾ç½®æˆåŠŸ");
 					location.reload();
 				} else {
-					alert("¸ü¸ÄÉèÖÃÊ§°Ü");
+					alert("æ›´æ”¹è®¾ç½®å¤±è´¥");
 					location.reload();
 				}
 			}
 		},
 		help: function () {
 			var name = 'help';
-			var title = 'ßÙÁ¨ßÙÁ¨£¨bilibili.com£©²¥·ÅÆ÷µ÷Õû';
+			var title = 'å“”å“©å“”å“©ï¼ˆbilibili.comï¼‰æ’­æ”¾å™¨è°ƒæ•´';
 			var bar = '<span class="btn" action="close">X</span>';
 			var content = commentToString(function () { /*
-			<h2 style="font-weight: bold;font-size: 16px;">Ğ¡ÌáÊ¾£º</h2>
+			<h2 style="font-weight: bold;font-size: 16px;">å°æç¤ºï¼š</h2>
 			<ol style="padding: 0 0 0 20px;margin:10px 0;">
-			   <li style="list-style: disc;"><span style="font-weight: bold;">½¨Òé¿ªÆô¡°HTML5 ²¥·ÅÆ÷¡±¡£</span></li>
-			   <li style="list-style: disc;">²¥·ÅÆ÷µ÷ÕûÉèÖÃ´°¿ÚÔÚ²¥·ÅÆ÷ÓÒ²à¡£</li>
-			   <li style="list-style: disc;">²¥·ÅÆ÷µ÷ÕûÉèÖÃ´°¿ÚÖĞ£¬Êó±êÒÆ¶¯µ½<span style="font-size: 12px; color: #00a1d6; cursor: pointer;margin:0 10px;"title="²é¿´°ïÖú">[?]</span>ÉÏ£¬²é¿´´Ë¹¦ÄÜµÄÊ¹ÓÃ°ïÖú¡£</li>
-			   <li style="list-style: disc;">²¥·ÅÆ÷µ÷ÕûÉèÖÃ´°¿ÚÖĞ£¬»ÒÉ«Ïî±íÊ¾µ±Ç°¹¦ÄÜ²»¿ÉÓÃ£¬ĞèÒª¿ªÆô¡°HTML5²¥·ÅÆ÷¡±²ÅÄÜÊ¹ÓÃ¡£</li>
+			   <li style="list-style: disc;"><span style="font-weight: bold;">å»ºè®®å¼€å¯â€œHTML5 æ’­æ”¾å™¨â€ã€‚</span></li>
+			   <li style="list-style: disc;">æ’­æ”¾å™¨è°ƒæ•´è®¾ç½®çª—å£åœ¨æ’­æ”¾å™¨å³ä¾§ã€‚</li>
+			   <li style="list-style: disc;">æ’­æ”¾å™¨è°ƒæ•´è®¾ç½®çª—å£ä¸­ï¼Œé¼ æ ‡ç§»åŠ¨åˆ°<span style="font-size: 12px; color: #00a1d6; cursor: pointer;margin:0 10px;"title="æŸ¥çœ‹å¸®åŠ©">[?]</span>ä¸Šï¼ŒæŸ¥çœ‹æ­¤åŠŸèƒ½çš„ä½¿ç”¨å¸®åŠ©ã€‚</li>
+			   <li style="list-style: disc;">æ’­æ”¾å™¨è°ƒæ•´è®¾ç½®çª—å£ä¸­ï¼Œç°è‰²é¡¹è¡¨ç¤ºå½“å‰åŠŸèƒ½ä¸å¯ç”¨ï¼Œéœ€è¦å¼€å¯â€œHTML5æ’­æ”¾å™¨â€æ‰èƒ½ä½¿ç”¨ã€‚</li>
 			</ol>
-			<h2 style="font-weight: bold;font-size: 16px;">¿ªÆô¡°HTML5²¥·ÅÆ÷¡±²½Öè£º</h2>
+			<h2 style="font-weight: bold;font-size: 16px;">å¼€å¯â€œHTML5æ’­æ”¾å™¨â€æ­¥éª¤ï¼š</h2>
 			<ol style="padding: 0 0 0 20px;margin:10px 0;">
-			   <li style="list-style: decimal;">´ò¿ª<a href="http://www.bilibili.com/html/help.html#p" rel="nofollow">http://www.bilibili.com/html/help.html#p</a></li>
-			   <li style="list-style: decimal;">Ñ¡Ôñ¡ú¡¾ÊÔÓÃµãÎÒ¡¿¡û¿ªÆôHTML5²¥·ÅÆ÷ÊÔÓÃ</li>
+			   <li style="list-style: decimal;">æ‰“å¼€<a href="http://www.bilibili.com/html/help.html#p" rel="nofollow">http://www.bilibili.com/html/help.html#p</a></li>
+			   <li style="list-style: decimal;">é€‰æ‹©â†’ã€è¯•ç”¨ç‚¹æˆ‘ã€‘â†å¼€å¯HTML5æ’­æ”¾å™¨è¯•ç”¨</li>
 			</ol>
-			<div class="btns" style="text-align: center;"><div class="btn" action="close">¹Ø±Õ</div></div>
+			<div class="btns" style="text-align: center;"><div class="btn" action="close">å…³é—­</div></div>
 			*/ });
 			dialog.create(name, title, bar, content);
 		},
 		tipsAutoFullScreen: function () {
 			var name = 'tipsAutoFullScreen';
-			var title = '°ë×Ô¶¯È«ÆÁ¹¦ÄÜÌáÊ¾';
+			var title = 'åŠè‡ªåŠ¨å…¨å±åŠŸèƒ½æç¤º';
 			var bar = '';
 			var content = commentToString(function () { /*
-			<p>1. ÒòÎªä¯ÀÀÆ÷ÓĞÏŞÖÆÎŞ·¨Ê¹ÓÃ½Å±¾Ä£Äâ×Ô¶¯È«ÆÁ£¬ĞèÒªÊÖ¶¯°´ÏÂ F11 ¼üÈ«ÆÁ¡£</p>
-			<p>2. ÍË³öÈ«ÆÁĞèÒªÊÖ¶¯°´ F11 ¼ü£¬ÔÙ´Î°´ Esc ¼üÍË³öÍøÒ³È«ÆÁ¡£</p>
-			<p>3. ½¨Òé´îÅä¡°×Ô¶¯²¥·ÅÏÂÒ»¸öÊÓÆµ¡±¹¦ÄÜÊ¹ÓÃ¡£</p>
+			<p>1. å› ä¸ºæµè§ˆå™¨æœ‰é™åˆ¶æ— æ³•ä½¿ç”¨è„šæœ¬æ¨¡æ‹Ÿè‡ªåŠ¨å…¨å±ï¼Œéœ€è¦æ‰‹åŠ¨æŒ‰ä¸‹ F11 é”®å…¨å±ã€‚</p>
+			<p>2. é€€å‡ºå…¨å±éœ€è¦æ‰‹åŠ¨æŒ‰ F11 é”®ï¼Œå†æ¬¡æŒ‰ Esc é”®é€€å‡ºç½‘é¡µå…¨å±ã€‚</p>
+			<p>3. å»ºè®®æ­é…â€œè‡ªåŠ¨æ’­æ”¾ä¸‹ä¸€ä¸ªè§†é¢‘â€åŠŸèƒ½ä½¿ç”¨ã€‚</p>
 			<div class="btns" style="text-align: center;">
-			   <div class="btn" action="notTips">²»ÔÙÌáÊ¾</div>
+			   <div class="btn" action="notTips">ä¸å†æç¤º</div>
 			</div>
 			*/ });
 			dialog.create(name, title, bar, content);
@@ -2468,15 +2468,15 @@
 			node.id = 'adjustPlayerMainCss';
 			node.appendChild(document.createTextNode(css));
 			document.body.appendChild(node);
-			//´´½¨ÉèÖÃ´°¿ÚÈİÆ÷
+			//åˆ›å»ºè®¾ç½®çª—å£å®¹å™¨
 			var adjustPlayer = document.createElement('div');
 			adjustPlayer.id = 'adjust-player';
 			document.body.appendChild(adjustPlayer);
-			//ÕÚÕÖ²ã
+			//é®ç½©å±‚
 			var adjustPlayerMask = document.createElement('div');
 			adjustPlayerMask.className = 'adjust-player-mask';
 			document.querySelector('#adjust-player').appendChild(adjustPlayerMask);
-			//ĞŞ¸´ĞÂ·¬¾çÒ³Ãæ£¬ÉèÖÃ½çÃæ²»ÏÔÊ¾input¿Ø¼ş
+			//ä¿®å¤æ–°ç•ªå‰§é¡µé¢ï¼Œè®¾ç½®ç•Œé¢ä¸æ˜¾ç¤ºinputæ§ä»¶
 			if (matchURL.isNewBangumi()) {
 				if (document.querySelector('#adjustPlayerFixNewBangumi') === null ) {
 					var css = [
@@ -2493,20 +2493,20 @@
 				}
 			}
 		} catch (e) {
-			console.log('addStyle£º'+e);
+			console.log('addStyleï¼š'+e);
 		}
 	}
 	function createConfigBtn() {
 		var isExist = document.querySelector('#adjust-player');
 		if (isExist === null) {
-			//Ìí¼ÓÉèÖÃ´°¿ÚÑùÊ½²¢´´½¨ÈİÆ÷
+			//æ·»åŠ è®¾ç½®çª—å£æ ·å¼å¹¶åˆ›å»ºå®¹å™¨
 			addStyle();
-			//´´½¨ÉèÖÃ°´Å¥
+			//åˆ›å»ºè®¾ç½®æŒ‰é’®
 			var configButton = document.createElement('div');
 			configButton.id = 'adjust-player-config-btn';
 			configButton.className = 'bgray-btn show';
 			configButton.setAttribute("style","display: block;");
-			configButton.innerHTML = '²¥·ÅÆ÷µ÷Õû';
+			configButton.innerHTML = 'æ’­æ”¾å™¨è°ƒæ•´';
 			configButton.onclick = function () {
 				configWindow.init();
 			};
@@ -2593,7 +2593,7 @@
 	}
 	function serialize(e){if(e&&"FORM"===e.nodeName){var t,s,n,l={},a=[];var list={};for(t=e.elements.length-1;t>=0;t-=1){if(""!==e.elements[t].name){var listName=e.elements[t].getAttribute("list");switch(e.elements[t].nodeName){case"INPUT":switch(e.elements[t].type){case"hidden":case"text":case"password":case"number":if(listName!==null){if(typeof e.elements[t].name!=="undefined"&&e.elements[t].value!==""){list[e.elements[t].name]=e.elements[t].value}break}l[e.elements[t].name]=e.elements[t].value;break;case"checkbox":case"radio":if(listName!==null){if(typeof e.elements[t].name!=="undefined"&&e.elements[t].value!==""){e.elements[t].checked&&(n="on"===e.elements[t].value?n=!0:field.value,list[e.elements[t].name]=n);l[listName]=list}break}e.elements[t].checked&&(n="on"===e.elements[t].value?n=!0:field.value,l[e.elements[t].name]=n)}break;case"TEXTAREA":if(listName!==null){if(typeof e.elements[t].name!=="undefined"&&e.elements[t].value!==""){list[e.elements[t].name]=e.elements[t].value}break}l[e.elements[t].name]=e.elements[t].value;break;case"SELECT":switch(e.elements[t].type){case"select-one":if(listName!==null){if(typeof e.elements[t].name!=="undefined"&&e.elements[t].value!==""){list[e.elements[t].name]=e.elements[t].value}break}l[e.elements[t].name]=e.elements[t].value;break;case"select-multiple":if(listName!==null){if(typeof e.elements[t].name!=="undefined"&&e.elements[t].value!==""){for(s=e.elements[t].options.length-1;s>=0;s-=1){e.elements[t].options[s].selected&&a.push(e.elements[t].options[s].value)}list[e.elements[t].name]=a.join()}break}for(s=e.elements[t].options.length-1;s>=0;s-=1){e.elements[t].options[s].selected&&a.push(e.elements[t].options[s].value)}l[e.elements[t].name]=a.join()}}}}return JSON.parse(JSON.stringify(l))}};
 	function deserialize(e,t){if(e&&"FORM"===e.nodeName){var s,n,l,a,c,m=[];var isList;for(l in t){for(s=e.elements.length-1;s>=0;s-=1){if(e.elements[s].name===l||e.elements[s].getAttribute("list")===l){if(""===e.elements[s].name){continue}if(l===e.elements[s].getAttribute("list")){var list=t[l][e.elements[s].name];if(typeof list!=="undefined"){isList=t[l][e.elements[s].name]}else{isList=""}}else{isList=t[l]}switch(e.elements[s].nodeName){case"INPUT":switch(e.elements[s].type){case"hidden":case"text":case"password":case"number":e.elements[s].setAttribute("value",isList);break;case"checkbox":case"radio":!0===isList&&e.elements[s].setAttribute("checked","true")}break;case"TEXTAREA":e.elements[s].setAttribute("value",isList);break;case"SELECT":switch(e.elements[s].type){case"select-one":for(n=e.elements[s].options.length-1;n>=0;n-=1){c=e.elements[s].options[n],c.value===isList.toString()&&c.setAttribute("selected","true")}break;case"select-multiple":for(m=t[l].split(","),a=m.length-1;a>=0;a-=1){for(n=e.elements[s].options.length-1;n>=0;n-=1){c=e.elements[s].options[n],c.value===isList[m[a]].toString()&&c.setAttribute("selected","true")}}}}}}}}};
-	function getkeyCode(k){var keyCodes={3:"break",8:"backspace / delete",9:"tab",12:"clear",13:"enter",16:"shift",17:"ctrl",18:"alt",19:"pause/break",20:"caps lock",27:"escape",28:"conversion",29:"non-conversion",32:"spacebar",33:"page up",34:"page down",35:"end",36:"home ",37:"left arrow ",38:"up arrow ",39:"right arrow",40:"down arrow ",41:"select",42:"print",43:"execute",44:"Print Screen",45:"insert ",46:"delete",48:"0",49:"1",50:"2",51:"3",52:"4",53:"5",54:"6",55:"7",56:"8",57:"9",58:":",59:"semicolon (firefox), equals",60:"<",61:"equals (firefox)",63:"?",64:"@ (firefox)",65:"a",66:"b",67:"c",68:"d",69:"e",70:"f",71:"g",72:"h",73:"i",74:"j",75:"k",76:"l",77:"m",78:"n",79:"o",80:"p",81:"q",82:"r",83:"s",84:"t",85:"u",86:"v",87:"w",88:"x",89:"y",90:"z",91:"Windows Key / Left ? / Chromebook Search key",92:"right window key ",93:"Windows Menu / Right ?",96:"numpad 0 ",97:"numpad 1 ",98:"numpad 2 ",99:"numpad 3 ",100:"numpad 4 ",101:"numpad 5 ",102:"numpad 6 ",103:"numpad 7 ",104:"numpad 8 ",105:"numpad 9 ",106:"multiply ",107:"add",108:"numpad period (firefox)",109:"subtract ",110:"decimal point",111:"divide ",112:"f1 ",113:"f2 ",114:"f3 ",115:"f4 ",116:"f5 ",117:"f6 ",118:"f7 ",119:"f8 ",120:"f9 ",121:"f10",122:"f11",123:"f12",124:"f13",125:"f14",126:"f15",127:"f16",128:"f17",129:"f18",130:"f19",131:"f20",132:"f21",133:"f22",134:"f23",135:"f24",144:"num lock ",145:"scroll lock",160:"^",161:"!",163:"#",164:"$",165:"¨´",166:"page backward",167:"page forward",169:"closing paren (AZERTY)",170:"*",171:"~ + * key",173:"minus (firefox), mute/unmute",174:"decrease volume level",175:"increase volume level",176:"next",177:"previous",178:"stop",179:"play/pause",180:"e-mail",181:"mute/unmute (firefox)",182:"decrease volume level (firefox)",183:"increase volume level (firefox)",186:"semi-colon / ?",187:"equal sign ",188:"comma",189:"dash ",190:"period ",191:"forward slash / ?",192:"grave accent / ? / ?",193:"?, / or ¡ã",194:"numpad period (chrome)",219:"open bracket ",220:"back slash ",221:"close bracket / ?",222:"single quote / ?",223:"`",224:"left or right ? key (firefox)",225:"altgr",226:"< /git >",230:"GNOME Compose Key",231:"?",233:"XF86Forward",234:"XF86Back",240:"alphanumeric",242:"hiragana/katakana",243:"half-width/full-width",244:"kanji",255:"toggle touchpad"};return keyCodes[k]}; // keycodes https://github.com/wesbos/keycodes/blob/gh-pages/scripts.js
+	function getkeyCode(k){var keyCodes={3:"break",8:"backspace / delete",9:"tab",12:"clear",13:"enter",16:"shift",17:"ctrl",18:"alt",19:"pause/break",20:"caps lock",27:"escape",28:"conversion",29:"non-conversion",32:"spacebar",33:"page up",34:"page down",35:"end",36:"home ",37:"left arrow ",38:"up arrow ",39:"right arrow",40:"down arrow ",41:"select",42:"print",43:"execute",44:"Print Screen",45:"insert ",46:"delete",48:"0",49:"1",50:"2",51:"3",52:"4",53:"5",54:"6",55:"7",56:"8",57:"9",58:":",59:"semicolon (firefox), equals",60:"<",61:"equals (firefox)",63:"?",64:"@ (firefox)",65:"a",66:"b",67:"c",68:"d",69:"e",70:"f",71:"g",72:"h",73:"i",74:"j",75:"k",76:"l",77:"m",78:"n",79:"o",80:"p",81:"q",82:"r",83:"s",84:"t",85:"u",86:"v",87:"w",88:"x",89:"y",90:"z",91:"Windows Key / Left ? / Chromebook Search key",92:"right window key ",93:"Windows Menu / Right ?",96:"numpad 0 ",97:"numpad 1 ",98:"numpad 2 ",99:"numpad 3 ",100:"numpad 4 ",101:"numpad 5 ",102:"numpad 6 ",103:"numpad 7 ",104:"numpad 8 ",105:"numpad 9 ",106:"multiply ",107:"add",108:"numpad period (firefox)",109:"subtract ",110:"decimal point",111:"divide ",112:"f1 ",113:"f2 ",114:"f3 ",115:"f4 ",116:"f5 ",117:"f6 ",118:"f7 ",119:"f8 ",120:"f9 ",121:"f10",122:"f11",123:"f12",124:"f13",125:"f14",126:"f15",127:"f16",128:"f17",129:"f18",130:"f19",131:"f20",132:"f21",133:"f22",134:"f23",135:"f24",144:"num lock ",145:"scroll lock",160:"^",161:"!",163:"#",164:"$",165:"Ã¹",166:"page backward",167:"page forward",169:"closing paren (AZERTY)",170:"*",171:"~ + * key",173:"minus (firefox), mute/unmute",174:"decrease volume level",175:"increase volume level",176:"next",177:"previous",178:"stop",179:"play/pause",180:"e-mail",181:"mute/unmute (firefox)",182:"decrease volume level (firefox)",183:"increase volume level (firefox)",186:"semi-colon / ?",187:"equal sign ",188:"comma",189:"dash ",190:"period ",191:"forward slash / ?",192:"grave accent / ? / ?",193:"?, / or Â°",194:"numpad period (chrome)",219:"open bracket ",220:"back slash ",221:"close bracket / ?",222:"single quote / ?",223:"`",224:"left or right ? key (firefox)",225:"altgr",226:"< /git >",230:"GNOME Compose Key",231:"?",233:"XF86Forward",234:"XF86Back",240:"alphanumeric",242:"hiragana/katakana",243:"half-width/full-width",244:"kanji",255:"toggle touchpad"};return keyCodes[k]}; // keycodes https://github.com/wesbos/keycodes/blob/gh-pages/scripts.js
 	function init(){
 		if (typeof GM_getValue === 'function') {
 			var firstrun = config.getValue('player_firstrun',true);

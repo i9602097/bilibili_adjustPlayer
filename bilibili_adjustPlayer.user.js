@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.4
+// @version     1.5
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -545,22 +545,23 @@
 									'#bofqi.mini-player, #bofqi.newfloat .move, #bofqi.float .move { width: '+ width +'px !important; }',
 									'#bofqi.mini-player:before, #bofqi.float:before, #bofqi.newfloat:before, .player-wrapper .mini-player:before {box-shadow: none !important;}',
 									'#bofqi.mini-player > .player, #bofqi.newfloat, #bofqi.newfloat:before, #bofqi.newfloat .move + .player, .player-wrapper .mini-player > #bofqi .player { width: '+ width +'px !important; height: '+ height +'px !important; }',
-									'#bofqi.newfloat .player .ui-icon{background-color:white};'
+									'#bofqi.newfloat .player .ui-icon{background-color:white;}'
 								];
 								var node = document.createElement('style');
 								node.type = 'text/css';
 								node.id = 'adjustMiniPlayerSize';
 								node.appendChild(document.createTextNode(css.join('')));
-								var existed_node = document.getElementById("adjustMiniPlayerSize")
+								var existed_node = document.getElementById("adjustMiniPlayerSize");
 								if(existed_node){existed_node.remove();}
 								document.documentElement.appendChild(node);
 								$(this).attr("style","");
-								console.log('rezied');
+								//console.log('rezied');
 							}
 						});
 					}
 					 */});
-
+					window.eval(resizable);
+					 
 					//滚到评论区等迷你播放器出现再执行resizable
 					var last_known_scroll_position = 0;
 					var ticking = false;

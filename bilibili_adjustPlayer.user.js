@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.2
+// @version     1.3
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -560,7 +560,37 @@
 						});
 					}
 					 */});
-					window.eval(resizable);
+
+					//滚到评论区等迷你播放器出现再执行resizable
+					var last_known_scroll_position = 0;
+					var ticking = false;
+					var mainInner;
+					if (matchURL.isVideoAV()) {
+						mainInner = document.querySelector('.player-wrapper + .main-inner');
+					} else if (matchURL.isNewBangumi()) {
+						mainInner = document.querySelector('.main-container .bangumi-info-wrapper');
+					} else if (matchURL.isOldBangumi()) {
+						mainInner = document.querySelector('.b-page-body + .main-inner');
+					} else if (matchURL.isWatchlater()) {
+						mainInner = document.querySelector('.view-later-module .video-ex-info');
+					}
+					if (typeof mainInner !== 'undefined' && mainInner !== null ) {
+						mainInner = mainInner.offsetTop;
+						var scrollEvent = function (e) {
+							last_known_scroll_position = window.scrollY;
+							if (!ticking) {
+								window.requestAnimationFrame(function() {
+									if (last_known_scroll_position >= mainInner) {
+										window.eval(resizable);
+										window.removeEventListener('scroll', scrollEvent, false);
+									}
+									ticking = false;
+								});
+							}
+							ticking = true;
+						};
+						window.addEventListener('scroll', scrollEvent, false);
+					}
 				}
 			}
 		},
@@ -2111,11 +2141,11 @@
               <p>可调整区域高度默认增加 68px 。（播放器控件高度）</p>
             </div>
             <div class="tips" style="right: 16px;bottom: 60px;">
-              <p style="color: red; font-size: 80px;">↘?</p>
+              <p style="color: red; font-size: 80px;">↘</p>
             </div>
             <div class="content">
                <p class="bold">使用帮助</p>
-               <p>1.拖动右下角“外框”调整播放器大小（<span style="color: red;">↘?</span> 处）。</p>
+               <p>1.拖动右下角“外框”调整播放器大小（<span style="color: red;">↘</span> 处）。</p>
                <p>2.调整到合适的大小，点击保存（当前灰色区域的大小，保存后就是播放器的新大小）。</p>
                <div class="btns">
                   <div class="btn b-btn" action="720P" style="width: 248px;">快速保存为720P</div>

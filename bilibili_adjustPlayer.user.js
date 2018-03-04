@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.1
+// @version     1.2
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue

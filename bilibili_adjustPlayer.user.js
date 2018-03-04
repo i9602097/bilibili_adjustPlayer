@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.0
+// @version     1.1
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -519,13 +519,49 @@
 					'#bofqi.mini-player:before, #bofqi.float, #bofqi.float:before, #bofqi.float .move + .player, .player-wrapper .mini-player { width: '+ width +'px !important; height: '+ height +'px !important; }',
 					'#bofqi.mini-player, #bofqi.newfloat .move, #bofqi.float .move { width: '+ width +'px !important; }',
 					'#bofqi.mini-player:before, #bofqi.float:before, #bofqi.newfloat:before, .player-wrapper .mini-player:before {box-shadow: none !important;}',
-					'#bofqi.mini-player > .player, #bofqi.newfloat, #bofqi.newfloat:before, #bofqi.newfloat .move + .player, .player-wrapper .mini-player > #bofqi .player { width: '+ width +'px !important; height: '+ height +'px !important; }'
+					'#bofqi.mini-player > .player, #bofqi.newfloat, #bofqi.newfloat:before, #bofqi.newfloat .move + .player, .player-wrapper .mini-player > #bofqi .player { width: '+ width +'px !important; height: '+ height +'px !important; }',
+					'#bofqi.newfloat .player .ui-icon{background-color:#999;}'
 				];
 				var node = document.createElement('style');
 				node.type = 'text/css';
 				node.id = 'adjustMiniPlayerSize';
 				node.appendChild(document.createTextNode(css.join('')));
 				document.documentElement.appendChild(node);
+
+
+				//针对mini 播放器 添加了resizable功能, 可以更自由的调整大小 https://greasyfork.org/zh-CN/forum/discussion/34902/x
+				if (matchURL.isOldBangumi() || matchURL.isNewBangumi() ) {
+					return;
+				} else {
+					var resizable = commentToString(function () { /*
+					var miniPlayerDiv = document.querySelector('#bofqi.newfloat .player') || document.querySelector('#bofqi.newfloat .move + .player') || document.querySelector('#bofqi.mini-player > .player') || document.querySelector('.player-wrapper .mini-player > #bofqi .player');
+					if (miniPlayerDiv !== null ) {
+						$("#bofqi.newfloat .player").resizable({
+							resize:  function( event, ui ) {
+								var width = ui.size.width;
+								var height = ui.size.height;
+								var css = [
+									'#bofqi.mini-player:before, #bofqi.float, #bofqi.float:before, #bofqi.float .move + .player, .player-wrapper .mini-player { width: '+ width +'px !important; height: '+ height +'px !important; }',
+									'#bofqi.mini-player, #bofqi.newfloat .move, #bofqi.float .move { width: '+ width +'px !important; }',
+									'#bofqi.mini-player:before, #bofqi.float:before, #bofqi.newfloat:before, .player-wrapper .mini-player:before {box-shadow: none !important;}',
+									'#bofqi.mini-player > .player, #bofqi.newfloat, #bofqi.newfloat:before, #bofqi.newfloat .move + .player, .player-wrapper .mini-player > #bofqi .player { width: '+ width +'px !important; height: '+ height +'px !important; }',
+									'#bofqi.newfloat .player .ui-icon{background-color:white};'
+								];
+								var node = document.createElement('style');
+								node.type = 'text/css';
+								node.id = 'adjustMiniPlayerSize';
+								node.appendChild(document.createTextNode(css.join('')));
+								var existed_node = document.getElementById("adjustMiniPlayerSize")
+								if(existed_node){existed_node.remove();}
+								document.documentElement.appendChild(node);
+								$(this).attr("style","");
+								console.log('rezied');
+							}
+						});
+					}
+					 */});
+					window.eval(resizable);
+				}
 			}
 		},
 		autoHideControlBar: function (set,focusDanmakuInput,video) {
@@ -1856,7 +1892,7 @@
             			<label>
             				<input name="resizeMiniPlayer" type="checkbox" action="childElementDisabledEvent" disabledChildElement="input,resizeMiniPlayerSize" >迷你播放器宽度
             				<input name="resizeMiniPlayerSize" type="number" min="0" value="320" placeholder="320" style="width: 45px;" disabled="">像素
-            				<span title="使用帮助：&#10;1：调整评论处迷你播放器大小，输入合适的宽度后自动计算新大小&#10;   （ 新大小比例为 16：9）" class="tipsButton">[?]</span>
+            				<span title="使用帮助：&#10;1：调整评论处迷你播放器大小，输入合适的宽度后自动计算新大小&#10;   （ 新大小比例为 16：9）&#10;2： 拖动迷你播放器右下角调节按钮，可以调整大小（番剧页不支持）" class="tipsButton">[?]</span>
             			</label>
             		</div>
             	</fieldset>
@@ -1867,7 +1903,7 @@
 			<span class="storageType">
           		<a href="javascript:void(0);" action="storageType" title="脚本设置无法保存的，请点这里！">存储类型</a>
            	</span>
-			<span class="feedback">
+           	<span class="feedback">
           		<a href="https://greasyfork.org/zh-CN/scripts/21284-%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9-bilibili-com-%E6%92%AD%E6%94%BE%E5%99%A8%E8%B0%83%E6%95%B4/feedback">反馈</a>
            	</span>
         </div>

@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.5
+// @version     1.6
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -528,40 +528,10 @@
 				node.appendChild(document.createTextNode(css.join('')));
 				document.documentElement.appendChild(node);
 
-
 				//针对mini 播放器 添加了resizable功能, 可以更自由的调整大小 https://greasyfork.org/zh-CN/forum/discussion/34902/x
 				if (matchURL.isOldBangumi() || matchURL.isNewBangumi() ) {
 					return;
 				} else {
-					var resizable = commentToString(function () { /*
-					var miniPlayerDiv = document.querySelector('#bofqi.newfloat .player') || document.querySelector('#bofqi.newfloat .move + .player') || document.querySelector('#bofqi.mini-player > .player') || document.querySelector('.player-wrapper .mini-player > #bofqi .player');
-					if (miniPlayerDiv !== null ) {
-						$(miniPlayerDiv).resizable({
-							resize:  function( event, ui ) {
-								var width = ui.size.width;
-								var height = ui.size.height;
-								var css = [
-									'#bofqi.mini-player:before, #bofqi.float, #bofqi.float:before, #bofqi.float .move + .player, .player-wrapper .mini-player { width: '+ width +'px !important; height: '+ height +'px !important; }',
-									'#bofqi.mini-player, #bofqi.newfloat .move, #bofqi.float .move { width: '+ width +'px !important; }',
-									'#bofqi.mini-player:before, #bofqi.float:before, #bofqi.newfloat:before, .player-wrapper .mini-player:before {box-shadow: none !important;}',
-									'#bofqi.mini-player > .player, #bofqi.newfloat, #bofqi.newfloat:before, #bofqi.newfloat .move + .player, .player-wrapper .mini-player > #bofqi .player { width: '+ width +'px !important; height: '+ height +'px !important; }',
-									'#bofqi.newfloat .player .ui-icon{background-color:white;}'
-								];
-								var node = document.createElement('style');
-								node.type = 'text/css';
-								node.id = 'adjustMiniPlayerSize';
-								node.appendChild(document.createTextNode(css.join('')));
-								var existed_node = document.getElementById("adjustMiniPlayerSize");
-								if(existed_node){existed_node.remove();}
-								document.documentElement.appendChild(node);
-								$(this).attr("style","");
-								//console.log('rezied');
-							}
-						});
-					}
-					 */});
-					window.eval(resizable);
-					 
 					//滚到评论区等迷你播放器出现再执行resizable
 					var last_known_scroll_position = 0;
 					var ticking = false;
@@ -582,8 +552,36 @@
 							if (!ticking) {
 								window.requestAnimationFrame(function() {
 									if (last_known_scroll_position >= mainInner) {
+										var resizable = commentToString(function () {/*
+											var miniPlayerDiv = document.querySelector('#bofqi.newfloat .player') || document.querySelector('#bofqi.newfloat .move + .player') || document.querySelector('#bofqi.mini-player > .player') || document.querySelector('.player-wrapper .mini-player > #bofqi .player');
+											if (miniPlayerDiv !== null ) {
+												$(miniPlayerDiv).resizable({
+													resize:  function( event, ui ) {
+														var width = ui.size.width;
+														var height = ui.size.height;
+														var css = [
+															'#bofqi.mini-player:before, #bofqi.float, #bofqi.float:before, #bofqi.float .move + .player, .player-wrapper .mini-player { width: '+ width +'px !important; height: '+ height +'px !important; }',
+															'#bofqi.mini-player, #bofqi.newfloat .move, #bofqi.float .move { width: '+ width +'px !important; }',
+															'#bofqi.mini-player:before, #bofqi.float:before, #bofqi.newfloat:before, .player-wrapper .mini-player:before {box-shadow: none !important;}',
+															'#bofqi.mini-player > .player, #bofqi.newfloat, #bofqi.newfloat:before, #bofqi.newfloat .move + .player, .player-wrapper .mini-player > #bofqi .player { width: '+ width +'px !important; height: '+ height +'px !important; }',
+															'#bofqi.newfloat .player .ui-icon{background-color:white;}'
+														];
+														var node = document.createElement('style');
+														node.type = 'text/css';
+														node.id = 'adjustMiniPlayerSize';
+														node.appendChild(document.createTextNode(css.join('')));
+														var existed_node = document.getElementById("adjustMiniPlayerSize");
+														if(existed_node){existed_node.remove();}
+														document.documentElement.appendChild(node);
+														$(this).attr("style","");
+														//console.log('rezied');
+													}
+												});
+											}
+										*/});
 										window.eval(resizable);
-										window.removeEventListener('scroll', scrollEvent, false);
+									} else {
+										window.eval("$('.player').resizable('destroy');");
 									}
 									ticking = false;
 								});

@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.6
+// @version     1.7
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -579,9 +579,15 @@
 												});
 											}
 										*/});
-										window.eval(resizable);
+										if (typeof window.resizeMiniPlayerFlag === 'undefined' || window.resizeMiniPlayerFlag === true){
+											window.eval(resizable);
+											window.resizeMiniPlayerFlag = false;
+										}
 									} else {
-										window.eval("$('.player').resizable('destroy');");
+										if (typeof window.resizeMiniPlayerFlag === 'undefined' || window.resizeMiniPlayerFlag === false){
+											window.eval("$('.player').resizable('destroy');");
+											window.resizeMiniPlayerFlag = true;
+										}
 									}
 									ticking = false;
 								});
@@ -1669,6 +1675,29 @@
 			}
 		},
 		eventBinding: function (element, name) {
+			element.addEventListener('mouseover', function (e) {
+				var adjustPlayerTooltip =document.querySelector('#adjust-player-tooltip');
+				var tooltip = e.target.getAttribute('tooltip');
+				if (e.target && tooltip !== null) {
+					var left = e.clientX;
+					var top = e.clientY;
+					if(adjustPlayerTooltip === null){
+						var tooltipElement = document.createElement('div');
+						tooltipElement.id = "adjust-player-tooltip";
+						tooltipElement.style = 'left: '+ left +'px;top: '+ top +'px;margin:10px 0 0 -80px;color: #222;font-size:12px;line-height: 16px;text-align: left;display: block;position: fixed;background: #fff;border-radius: 4px;box-shadow: 0px 0px 1px 0px;width: 200px;overflow-wrap: break-word;padding: 4px;z-index: 999999;';
+						tooltipElement.innerHTML = tooltip.replace(/\n/g,"<br/>");
+						document.querySelector('#adjust-player').appendChild(tooltipElement);
+					}else{
+						adjustPlayerTooltip.style = 'left: '+ left +'px;top: '+ top +'px;margin:10px 0 0 -80px;color: #222;font-size:12px;line-height: 16px;text-align: left;display: block;position: fixed;background: #fff;border-radius: 4px;box-shadow: 0px 0px 1px 0px;width: 200px;overflow-wrap: break-word;padding: 4px;z-index: 999999;';
+						adjustPlayerTooltip.innerHTML = tooltip.replace(/\n/g,"<br/>");
+					}
+				} else {
+					if(adjustPlayerTooltip !== null){
+						adjustPlayerTooltip.style = '';
+						adjustPlayerTooltip.innerHTML = '';
+					}
+				}
+			});
 			element.addEventListener('click', function (e) {
 				var action = e.target.getAttribute('action');
 				if (e.target && action !== null) {
@@ -1756,7 +1785,7 @@
             			<legend><label>快捷键</label></legend>
             			<div class="block">
             				<label class="h5">
-            					<input name="shortcutsSwitch" type="checkbox" list="shortcuts" action="childElementDisabledEvent" disabledChildElement="div,shortcutsItem" >启用快捷键功能<span title="使用帮助：&#10;1：快捷键的总开关，开启后“快捷键功能”才会生效" class="tipsButton">[?]</span>
+            					<input name="shortcutsSwitch" type="checkbox" list="shortcuts" action="childElementDisabledEvent" disabledChildElement="div,shortcutsItem" >启用快捷键功能<span tooltip="使用帮助：&#10;1：快捷键的总开关，开启后“快捷键功能”才会生效" class="tipsButton">[?]</span>
             				</label>
             				<div class="shortcutsItem">
             					<label class="h5">
@@ -1795,13 +1824,13 @@
             						<input type="hidden" name="loopVideoOnOffKeyCode" list="shortcuts" KeyCode="true">
             					</label>
 								<label class="h5">
-            						<input name="focusPlayer" type="checkbox" list="shortcuts">定位到播放器<span title="使用帮助：&#10;1：具体位置根据“功能调整” - “自动定位到XXX顶端” 设置的值来定位&#10（没设置“功能调整” - “自动定位到XXX顶端”功能的话，默认定位到播放器顶端）&#10;2：按下后会在“播放器位置”，和“之前浏览的位置”进行切换" class="tipsButton">[?]</span>
+            						<input name="focusPlayer" type="checkbox" list="shortcuts">定位到播放器<span tooltip="使用帮助：&#10;1：具体位置根据“功能调整” - “自动定位到XXX顶端” 设置的值来定位&#10（没设置“功能调整” - “自动定位到XXX顶端”功能的话，默认定位到播放器顶端）&#10;2：按下后会在“播放器位置”，和“之前浏览的位置”进行切换" class="tipsButton">[?]</span>
 									<span class="tipsButton" action="shortcuts" typeName="focusPlayer">[设置]</span>
             						<input type="text" name="focusPlayerKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="focusPlayerKeyCode" list="shortcuts" KeyCode="true">
             					</label>
 								<label class="h5">
-            						<input name="focusDanmakuInput" type="checkbox" list="shortcuts">定位到弹幕框<span title="使用帮助：&#10;1：焦点在弹幕框时键盘按 Tab 键隐藏弹幕框&#10;2：开启了“自动隐藏播放器控制栏”并设置了“定位到弹幕框的快捷键”之后，请用快捷键来显示弹幕框" class="tipsButton">[?]</span>
+            						<input name="focusDanmakuInput" type="checkbox" list="shortcuts">定位到弹幕框<span tooltip="使用帮助：&#10;1：焦点在弹幕框时键盘按 Tab 键隐藏弹幕框&#10;2：开启了“自动隐藏播放器控制栏”并设置了“定位到弹幕框的快捷键”之后，请用快捷键来显示弹幕框" class="tipsButton">[?]</span>
 									<span class="tipsButton" action="shortcuts" typeName="focusDanmakuInput">[设置]</span>
             						<input type="text" name="focusDanmakuInputKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="focusDanmakuInputKeyCode" list="shortcuts" KeyCode="true">
@@ -1837,16 +1866,16 @@
             					<select name="danmukuType">
             						<option value="all" selected="selected">所有</option>
             						<option value="bangumi">番剧</option>
-            					</select>弹幕<span title="使用帮助：&#10;1：选择默认隐藏“番剧”弹幕时，只隐藏 bangumi.bilibili.com 域名，www.bilibili.com/bangumi/play/ep 下视频的弹幕" class="tipsButton">[?]</span>
+            					</select>弹幕<span tooltip="使用帮助：&#10;1：选择默认隐藏“番剧”弹幕时，只隐藏 bangumi.bilibili.com 域名，www.bilibili.com/bangumi/play/ep 下视频的弹幕" class="tipsButton">[?]</span>
             				</label>
 							<label class="h5">
 								<input name="danmukuPreventShade" type="checkbox">默认
 								<select name="danmukuPreventShadeType">
             						<option value="on" selected="selected">开启</option>
             						<option value="off">关闭</option>
-            					</select>防挡弹幕<span title="使用帮助：&#10;1：“番剧”页面和普通页面的“防挡弹幕”默认设置竟然不一样？开启后设置让它一致 " class="tipsButton">[?]</span>
+            					</select>防挡弹幕<span tooltip="使用帮助：&#10;1：“番剧”页面和普通页面的“防挡弹幕”默认设置竟然不一样？开启后设置让它一致 " class="tipsButton">[?]</span>
 							</label>
-            				<label class="h5"><input name="autoLightOn" type="checkbox">自动播放器关灯<span title="使用帮助：&#10;1：在视频区域内点击右键进行开，关灯操作" class="tipsButton">[?]</span></label>
+            				<label class="h5"><input name="autoLightOn" type="checkbox">自动播放器关灯<span tooltip="使用帮助：&#10;1：在视频区域内点击右键进行开，关灯操作" class="tipsButton">[?]</span></label>
             		</div>
             	</fieldset>
             </div>
@@ -1860,20 +1889,20 @@
             					<option value="off" selected="selected">关闭</option>
             					<option value="on">开启</option>
             				</select>自动宽屏
-							<span title="使用帮助：&#10;1：开启“自动宽屏”功能后，退出全屏后是否开启宽屏" class="tipsButton">[?]</span>
+							<span tooltip="使用帮助：&#10;1：开启“自动宽屏”功能后，退出全屏后是否开启宽屏" class="tipsButton">[?]</span>
 						</label>
-            			<label class="h5"><input name="autoWebFullScreen" type="checkbox">自动网页全屏<span title="使用帮助：&#10;1：按Esc键退出网页全屏&#10;3：开启此功能后，调整大小，自动宽屏，定位功能不会启用" class="tipsButton">[?]</span></label>
-            			<label class="h5"><input name="doubleClickFullScreen" type="checkbox" action="childElementDisabledEvent" disabledChildElement="input,doubleClickFullScreenDelayed" >双击全屏<span title="使用帮助：&#10;1：双击视频区域全屏" class="tipsButton">[?]</span></label>
-						<label class="h5" style="margin-left: 24px;">播放/暂停延时<input name="doubleClickFullScreenDelayed" type="number" min="0" max="500" placeholder="200" value="200" style="width: 45px;">毫秒<span title="使用帮助：&#10;1：开启“双击全屏”功能后点击视频区域“播放/暂停”会增加延时，使全屏功能更流畅&#10;2：由于增加了延时，导致点击视频区域“播放/暂停”功能不是及时的，这时可以用键盘空格键暂停&#10;3：毫秒数设置为0，关闭延时" class="tipsButton">[?]</span></label>
-            			<label class="h5"><input name="autoFullScreen" type="checkbox">半自动全屏<span title="使用帮助：&#10;1：因为浏览器有限制无法使用脚本模拟自动全屏，需要手动按下 F11 键全屏。&#10;3：退出全屏需要手动按 F11 键，再次按 Esc 键退出网页全屏。&#10;4：建议搭配“自动播放下一个视频”功能使用。&#10;" class="tipsButton">[?]</span></label>
+            			<label class="h5"><input name="autoWebFullScreen" type="checkbox">自动网页全屏<span tooltip="使用帮助：&#10;1：按Esc键退出网页全屏&#10;3：开启此功能后，调整大小，自动宽屏，定位功能不会启用" class="tipsButton">[?]</span></label>
+            			<label class="h5"><input name="doubleClickFullScreen" type="checkbox" action="childElementDisabledEvent" disabledChildElement="input,doubleClickFullScreenDelayed" >双击全屏<span tooltip="使用帮助：&#10;1：双击视频区域全屏" class="tipsButton">[?]</span></label>
+						<label class="h5" style="margin-left: 24px;">播放/暂停延时<input name="doubleClickFullScreenDelayed" type="number" min="0" max="500" placeholder="200" value="200" style="width: 45px;">毫秒<span tooltip="使用帮助：&#10;1：开启“双击全屏”功能后点击视频区域“播放/暂停”会增加延时，使全屏功能更流畅&#10;2：由于增加了延时，导致点击视频区域“播放/暂停”功能不是及时的，这时可以用键盘空格键暂停&#10;3：毫秒数设置为0，关闭延时" class="tipsButton">[?]</span></label>
+            			<label class="h5"><input name="autoFullScreen" type="checkbox">半自动全屏<span tooltip="使用帮助：&#10;1：因为浏览器有限制无法使用脚本模拟自动全屏，需要手动按下 F11 键全屏。&#10;3：退出全屏需要手动按 F11 键，再次按 Esc 键退出网页全屏。&#10;4：建议搭配“自动播放下一个视频”功能使用。&#10;" class="tipsButton">[?]</span></label>
 					</div>
             	</fieldset>
             	<fieldset class="playbackGroup">
             		<legend><label>播放视频</label></legend>
             		<div class="block">
             			<label class="h5"><input name="autoPlay" type="checkbox">自动播放视频</label>
-            			<label class="h5"><input name="autoNextPlist" type="checkbox">自动播放下一个视频<span title="使用帮助：&#10;1：此选项启用后将无视“B站”HTML5播放器自带的“自动换P功能”&#10;2：自动跳过“承包榜”、“充电名单”" class="tipsButton">[?]</span></label>
-            			<label class="h5"><input name="autoLoopVideo" type="checkbox">自动循环播放当前视频<span title="使用帮助：&#10;1：开启此功能后“自动播放下一个视频”不会启用 &#10;" class="tipsButton">[?]</span></label>
+            			<label class="h5"><input name="autoNextPlist" type="checkbox">自动播放下一个视频<span tooltip="使用帮助：&#10;1：此选项启用后将无视“B站”HTML5播放器自带的“自动换P功能”&#10;2：自动跳过“承包榜”、“充电名单”" class="tipsButton">[?]</span></label>
+            			<label class="h5"><input name="autoLoopVideo" type="checkbox">自动循环播放当前视频<span tooltip="使用帮助：&#10;1：开启此功能后“自动播放下一个视频”不会启用 &#10;" class="tipsButton">[?]</span></label>
 						<label class="h5"><input name="skipSetTime" type="checkbox" action="childElementDisabledEvent" disabledChildElement="inputs,skipSetTimeValueMinutes;skipSetTimeValueSeconds" >自动从指定时间开始播放</label>
             			<label style="margin-left: 24px;">
             				<input name="skipSetTimeValueMinutes" type="number" min="0" max="60" placeholder="0" value="0" style="width: 45px;" disabled="">分钟
@@ -1900,7 +1929,7 @@
             						<option value="player" selected="selected">播放器</option>
             						<option value="video">视频</option>
             					</select>
-            					顶端<span title="使用帮助：&#10;1：如果不满意位置，可以设置偏移位置，往上或往下移（播放器顶端位置（或视频顶端位置）是参照）。" class="tipsButton">[?]</span>
+            					顶端<span tooltip="使用帮助：&#10;1：如果不满意位置，可以设置偏移位置，往上或往下移（播放器顶端位置（或视频顶端位置）是参照）。" class="tipsButton">[?]</span>
             				</label>
             				<label style="margin-left: 24px;">定位偏移
             					<select name="autoFocusOffsetType">
@@ -1911,17 +1940,17 @@
             					<input name="autoFocusOffsetValue" type="number" min="0" value="0" placeholder="0" style="width: 45px;" disabled="">像素
             				</span>
             			</label>
-            			<label class="h5"><input name="autoHideControlBar" type="checkbox">自动隐藏播放器控制栏<span title="使用帮助：&#10;1：需要开启“宽屏模式”或“网页全屏模式”才会生效&#10;3：鼠标移动到播放器顶部显示弹幕栏，移动到底部显示控制栏&#10;4：如果发现画面出现“黑边”请开启“手动指定播放器大小”功能&#10; 并使用 [调整大小] 功能调整大小&#10;5：此功能修改自：https://userstyles.org/styles/131642/bilibili-html5" class="tipsButton">[?]</span></label>
+            			<label class="h5"><input name="autoHideControlBar" type="checkbox">自动隐藏播放器控制栏<span tooltip="使用帮助：&#10;1：需要开启“宽屏模式”或“网页全屏模式”才会生效&#10;3：鼠标移动到播放器顶部显示弹幕栏，移动到底部显示控制栏&#10;4：如果发现画面出现“黑边”请开启“手动指定播放器大小”功能&#10; 并使用 [调整大小] 功能调整大小&#10;5：此功能修改自：https://userstyles.org/styles/131642/bilibili-html5" class="tipsButton">[?]</span></label>
             			<label>
             				<input name="resizePlayer" type="checkbox">手动指定播放器大小
-            				<span class="tipsButton" action="adjustPlayerSize" title="使用帮助：&#10;1：点击[调整大小]进行调整">[调整大小]</span>
+            				<span class="tipsButton" action="adjustPlayerSize" tooltip="使用帮助：&#10;1：点击[调整大小]进行调整">[调整大小]</span>
             				<input type="hidden" name="adjustPlayerWidth">
             				<input type="hidden" name="adjustPlayerHeight">
             			</label>
             			<label>
             				<input name="resizeMiniPlayer" type="checkbox" action="childElementDisabledEvent" disabledChildElement="input,resizeMiniPlayerSize" >迷你播放器宽度
             				<input name="resizeMiniPlayerSize" type="number" min="0" value="320" placeholder="320" style="width: 45px;" disabled="">像素
-            				<span title="使用帮助：&#10;1：调整评论处迷你播放器大小，输入合适的宽度后自动计算新大小&#10;   （ 新大小比例为 16：9）&#10;2： 拖动迷你播放器右下角调节按钮，可以调整大小（番剧页不支持）" class="tipsButton">[?]</span>
+            				<span tooltip="使用帮助：&#10;1：调整评论处迷你播放器大小，输入合适的宽度后自动计算新大小&#10;   （ 新大小比例为 16：9）&#10;2： 拖动迷你播放器右下角调节按钮，可以调整大小（番剧页不支持）" class="tipsButton">[?]</span>
             			</label>
             		</div>
             	</fieldset>
@@ -1930,7 +1959,7 @@
         <div class="info">
           	<span class="ver"></span>
 			<span class="storageType">
-          		<a href="javascript:void(0);" action="storageType" title="脚本设置无法保存的，请点这里！">存储类型</a>
+          		<a href="javascript:void(0);" action="storageType" tooltip="脚本设置无法保存的，请点这里！">存储类型</a>
            	</span>
            	<span class="feedback">
           		<a href="https://greasyfork.org/zh-CN/scripts/21284-%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9-bilibili-com-%E6%92%AD%E6%94%BE%E5%99%A8%E8%B0%83%E6%95%B4/feedback">反馈</a>
@@ -2428,7 +2457,7 @@
 			<ol style="padding: 0 0 0 20px;margin:10px 0;">
 			   <li style="list-style: disc;"><span style="font-weight: bold;">建议开启“HTML5 播放器”。</span></li>
 			   <li style="list-style: disc;">播放器调整设置窗口在播放器右侧。</li>
-			   <li style="list-style: disc;">播放器调整设置窗口中，鼠标移动到<span style="font-size: 12px; color: #00a1d6; cursor: pointer;margin:0 10px;"title="查看帮助">[?]</span>上，查看此功能的使用帮助。</li>
+			   <li style="list-style: disc;">播放器调整设置窗口中，鼠标移动到<span style="font-size: 12px; color: #00a1d6; cursor: pointer;margin:0 10px;"tooltip="查看帮助">[?]</span>上，查看此功能的使用帮助。</li>
 			   <li style="list-style: disc;">播放器调整设置窗口中，灰色项表示当前功能不可用，需要开启“HTML5播放器”才能使用。</li>
 			</ol>
 			<h2 style="font-weight: bold;font-size: 16px;">开启“HTML5播放器”步骤：</h2>

@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.7
+// @version     1.8
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -483,6 +483,9 @@
 						var mainInner;
 						if (matchURL.isVideoAV()) {
 							mainInner = document.querySelector('.player-wrapper + .main-inner');
+							if(mainInner === null){
+								mainInner = document.querySelector('.player-box + .bili-wrapper');
+							}
 						} else if (matchURL.isNewBangumi()) {
 							mainInner = document.querySelector('.main-container .bangumi-info-wrapper');
 						} else if (matchURL.isOldBangumi()) {
@@ -511,33 +514,102 @@
 				} catch (e) {console.log('resizePlayer：'+e);}
 			}
 		},
-		resizeMiniPlayer: function (set,width) {
+		resizeMiniPlayer: function (set,width,isResizable) {
 			if (typeof set !== 'undefined' && typeof width !== 'undefined') {
 				var ratio = 16 / 9;
 				var height = Number(width / ratio).toFixed();
 				var css = [
 					'#bofqi.mini-player:before, #bofqi.float, #bofqi.float:before, #bofqi.float .move + .player, .player-wrapper .mini-player { width: '+ width +'px !important; height: '+ height +'px !important; }',
 					'#bofqi.mini-player, #bofqi.newfloat .move, #bofqi.float .move { width: '+ width +'px !important; }',
-					'#bofqi.mini-player:before, #bofqi.float:before, #bofqi.newfloat:before, .player-wrapper .mini-player:before {box-shadow: none !important;}',
+					'#bofqi.mini-player:before, #bofqi.float:before, #bofqi.newfloat:before, .player-wrapper .mini-player:before { box-shadow: none !important; }',
 					'#bofqi.mini-player > .player, #bofqi.newfloat, #bofqi.newfloat:before, #bofqi.newfloat .move + .player, .player-wrapper .mini-player > #bofqi .player { width: '+ width +'px !important; height: '+ height +'px !important; }',
-					'#bofqi.newfloat .player .ui-icon{background-color:#999;}'
+					'.bangumi-player.mini-player .player-content { height: '+ height +'px; }',
+					'#adjust-player-miniplayer-resizable { width: '+ width +'px ; height: '+ height +'px; position: absolute; top: 30px; z-index: 0; overflow: hidden; resize: both; }',
+					'.newfloat #adjust-player-miniplayer-resizable, .mini-player #adjust-player-miniplayer-resizable { z-index: 10000;}',
+					'#bofqi.mini-player {height:auto;margin:auto;}'
 				];
 				var node = document.createElement('style');
 				node.type = 'text/css';
 				node.id = 'adjustMiniPlayerSize';
 				node.appendChild(document.createTextNode(css.join('')));
+				var existed_node = document.getElementById("adjustMiniPlayerSize");
+				if(existed_node){existed_node.remove();}
 				document.documentElement.appendChild(node);
 
 				//针对mini 播放器 添加了resizable功能, 可以更自由的调整大小 https://greasyfork.org/zh-CN/forum/discussion/34902/x
-				if (matchURL.isOldBangumi() || matchURL.isNewBangumi() ) {
-					return;
-				} else {
+				if (typeof isResizable !== 'undefined' && isResizable === 'on') {
+					var resizable = function(){
+						var miniPlayer = document.querySelector('#bofqi.newfloat .player') || document.querySelector('#bofqi.newfloat .move + .player') || document.querySelector('#bofqi.mini-player > .player') || document.querySelector('.player-wrapper .mini-player > #bofqi .player');
+						if (miniPlayer !== null ) {
+							var resizableElement = document.createElement('div');
+							resizableElement.id = "adjust-player-miniplayer-resizable";
+							resizableElement.innerHTML = '<div style="width: 10px; height: 10px; position: absolute; bottom: 0px; right: 0; background: #fff; pointer-events: none;">↘</div>';
+
+							var miniPlayerDiv = document.querySelector('.newfloat') || document.querySelector('.mini-player');
+							if (miniPlayerDiv !== null ) {
+								miniPlayerDiv.appendChild(resizableElement);
+
+								var requestAnimationFrame = window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+								var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
+								var requestId;
+
+								function loop(time) {
+									requestId = undefined;
+									//resizableEvent start
+									var resizableElementWidth = resizableElement.clientWidth;
+									var resizableElementHeight = resizableElement.clientHeight;
+									//console.log(resizableElementWidth + "\n" + resizableElementHeight);
+									var css = [
+										'#bofqi.mini-player:before, #bofqi.float, #bofqi.float:before, #bofqi.float .move + .player, .player-wrapper .mini-player { width: '+ resizableElementWidth +'px !important; height: '+ resizableElementHeight +'px !important; }',
+										'#bofqi.mini-player, #bofqi.newfloat .move, #bofqi.float .move { width: '+ resizableElementWidth +'px !important; }',
+										'#bofqi.mini-player:before, #bofqi.float:before, #bofqi.newfloat:before, .player-wrapper .mini-player:before { box-shadow: none !important; }',
+										'#bofqi.mini-player > .player, #bofqi.newfloat, #bofqi.newfloat:before, #bofqi.newfloat .move + .player, .player-wrapper .mini-player > #bofqi .player { width: '+ resizableElementWidth +'px !important; height: '+ resizableElementHeight +'px !important; }',
+										'.bangumi-player.mini-player .player-content { height: '+ resizableElementHeight +'px; }',
+										'#adjust-player-miniplayer-resizable { position: absolute; top: 30px; z-index: 1; overflow: hidden; resize: both; }',
+										'.newfloat #adjust-player-miniplayer-resizable, .mini-player #adjust-player-miniplayer-resizable { z-index: 10000;}',
+										'#bofqi.mini-player {height:auto;margin:auto;}'
+									];
+									var node = document.createElement('style');
+									node.type = 'text/css';
+									node.id = 'adjustMiniPlayerSize';
+									node.appendChild(document.createTextNode(css.join('')));
+									var existed_node = document.getElementById("adjustMiniPlayerSize");
+									if(existed_node){existed_node.remove();}
+									document.documentElement.appendChild(node);
+									//resizableEvent end
+									start();
+								}
+								function start() {
+									if (!requestId) {
+										requestId = requestAnimationFrame(loop);
+									}
+								}
+								function stop() {
+									if (requestId) {
+										cancelAnimationFrame(requestId);
+										requestId = undefined;
+									}
+								}
+								resizableElement.addEventListener("mouseout",function(e){
+									stop();
+								} , false);
+								resizableElement.addEventListener("mousemove",function(e){
+									if(e.buttons === 1){
+										start();
+									}
+								} , false);
+							}
+						}
+					};
 					//滚到评论区等迷你播放器出现再执行resizable
 					var last_known_scroll_position = 0;
 					var ticking = false;
 					var mainInner;
 					if (matchURL.isVideoAV()) {
 						mainInner = document.querySelector('.player-wrapper + .main-inner');
+						if(mainInner === null){
+							mainInner = document.querySelector('.player-box + .bili-wrapper');
+						}
 					} else if (matchURL.isNewBangumi()) {
 						mainInner = document.querySelector('.main-container .bangumi-info-wrapper');
 					} else if (matchURL.isOldBangumi()) {
@@ -552,42 +624,10 @@
 							if (!ticking) {
 								window.requestAnimationFrame(function() {
 									if (last_known_scroll_position >= mainInner) {
-										var resizable = commentToString(function () {/*
-											var miniPlayerDiv = document.querySelector('#bofqi.newfloat .player') || document.querySelector('#bofqi.newfloat .move + .player') || document.querySelector('#bofqi.mini-player > .player') || document.querySelector('.player-wrapper .mini-player > #bofqi .player');
-											if (miniPlayerDiv !== null ) {
-												$(miniPlayerDiv).resizable({
-													resize:  function( event, ui ) {
-														var width = ui.size.width;
-														var height = ui.size.height;
-														var css = [
-															'#bofqi.mini-player:before, #bofqi.float, #bofqi.float:before, #bofqi.float .move + .player, .player-wrapper .mini-player { width: '+ width +'px !important; height: '+ height +'px !important; }',
-															'#bofqi.mini-player, #bofqi.newfloat .move, #bofqi.float .move { width: '+ width +'px !important; }',
-															'#bofqi.mini-player:before, #bofqi.float:before, #bofqi.newfloat:before, .player-wrapper .mini-player:before {box-shadow: none !important;}',
-															'#bofqi.mini-player > .player, #bofqi.newfloat, #bofqi.newfloat:before, #bofqi.newfloat .move + .player, .player-wrapper .mini-player > #bofqi .player { width: '+ width +'px !important; height: '+ height +'px !important; }',
-															'#bofqi.newfloat .player .ui-icon{background-color:white;}'
-														];
-														var node = document.createElement('style');
-														node.type = 'text/css';
-														node.id = 'adjustMiniPlayerSize';
-														node.appendChild(document.createTextNode(css.join('')));
-														var existed_node = document.getElementById("adjustMiniPlayerSize");
-														if(existed_node){existed_node.remove();}
-														document.documentElement.appendChild(node);
-														$(this).attr("style","");
-														//console.log('rezied');
-													}
-												});
-											}
-										*/});
-										if (typeof window.resizeMiniPlayerFlag === 'undefined' || window.resizeMiniPlayerFlag === true){
-											window.eval(resizable);
-											window.resizeMiniPlayerFlag = false;
-										}
-									} else {
-										if (typeof window.resizeMiniPlayerFlag === 'undefined' || window.resizeMiniPlayerFlag === false){
-											window.eval("$('.player').resizable('destroy');");
-											window.resizeMiniPlayerFlag = true;
-										}
+										setTimeout(function() {
+											resizable();
+										}, 200);
+										window.removeEventListener('scroll', scrollEvent, false);
 									}
 									ticking = false;
 								});
@@ -1266,7 +1306,7 @@
 									if (setting.resizePlayer === true && typeof setting.resizeMiniPlayer === 'undefined') {
 										adjustPlayer.resizeMiniPlayer(true,320);
 									} else {
-										adjustPlayer.resizeMiniPlayer(setting.resizeMiniPlayer,setting.resizeMiniPlayerSize);
+										adjustPlayer.resizeMiniPlayer(setting.resizeMiniPlayer,setting.resizeMiniPlayerSize,setting.resizeMiniPlayerSizeResizable);
 									}
 
 									//开启“循环播放”后，不加载“自动播放下一个视频”
@@ -1401,6 +1441,12 @@
 									adjustPlayer.autoFocus(setting.autoFocus,setting.autoFocusOffsetType,setting.autoFocusOffsetValue,setting.autoFocusPosition);
 									adjustPlayer.autoWide(setting.autoWide,setting.autoWideFullscreen);
 									adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerHeight);
+								}
+								//初始化“迷你播放器尺寸”的默认值
+								if (setting.resizePlayer === true && typeof setting.resizeMiniPlayer === 'undefined') {
+									adjustPlayer.resizeMiniPlayer(true,320);
+								} else {
+									adjustPlayer.resizeMiniPlayer(setting.resizeMiniPlayer,setting.resizeMiniPlayerSize,setting.resizeMiniPlayerSizeResizable);
 								}
 								//开启“循环播放”后，不加载“自动播放下一个视频”
 								if (setting.autoNextPlist === true && setting.autoLoopVideo === true) {
@@ -1950,8 +1996,16 @@
             			<label>
             				<input name="resizeMiniPlayer" type="checkbox" action="childElementDisabledEvent" disabledChildElement="input,resizeMiniPlayerSize" >迷你播放器宽度
             				<input name="resizeMiniPlayerSize" type="number" min="0" value="320" placeholder="320" style="width: 45px;" disabled="">像素
-            				<span tooltip="使用帮助：&#10;1：调整评论处迷你播放器大小，输入合适的宽度后自动计算新大小&#10;   （ 新大小比例为 16：9）&#10;2： 拖动迷你播放器右下角调节按钮，可以调整大小（番剧页不支持）" class="tipsButton">[?]</span>
-            			</label>
+            				<span tooltip="使用帮助：&#10;1：调整评论处迷你播放器大小，输入合适的宽度后自动计算新大小&#10;   （ 新大小比例为 16：9）&#10;" class="tipsButton">[?]</span>
+						</label>
+						<label class="h5" style="margin-left: 24px;">
+							迷你播放器
+							<select name="resizeMiniPlayerSizeResizable">
+            					<option value="off" selected="selected">关闭</option>
+            					<option value="on">开启</option>
+            				</select>可调整大小
+							<span tooltip="使用帮助：&#10;1：开启“修改迷你播放器宽度”后，拖动迷你播放器右下角调节按钮，可以调整大小。&#10;2：此功能是“实验功能”，部分页面可能不起作用" class="tipsButton">[?]</span>
+						</label>
             		</div>
             	</fieldset>
             </div>

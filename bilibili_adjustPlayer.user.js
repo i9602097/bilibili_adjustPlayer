@@ -590,12 +590,17 @@
 										requestId = undefined;
 									}
 								}
-								resizableElement.addEventListener("mouseout",function(e){
+								resizableElement.addEventListener("mouseup",function(e){
 									stop();
 								} , false);
-								resizableElement.addEventListener("mousemove",function(e){
+								resizableElement.addEventListener("mousedown",function(e){
 									if(e.buttons === 1){
-										start();
+										if((resizableElement.clientWidth - 10) < e.offsetX && (resizableElement.clientHeight - 10) < e.offsetY){
+											start();
+										} else {
+											var video = isBangumi('.bilibili-player-video');
+											doClick(video);
+										}
 									}
 								} , false);
 							}

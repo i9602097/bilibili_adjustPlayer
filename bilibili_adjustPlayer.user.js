@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.8
+// @version     1.9
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -732,6 +732,39 @@
 		},
 		shortcuts : function (set) {
 			var shortcut = {
+				videoFramerate : function (type) {
+					var video = isBangumi('.bilibili-player-video video');
+					var framerate = 24;
+					if (video !== null) {
+						var contextMenu = isBangumi('.bilibili-player-area > .bilibili-player-video-wrap');
+						contextMenuClick(contextMenu);
+						var controlBtn = isBangumi('.bilibili-player-context-menu-container.black ul');
+						if (controlBtn !== null) {
+							var contextMenuItem = controlBtn.querySelectorAll('li > a'), i;
+							for (i = 0; i < contextMenuItem.length; ++i) {
+								if (contextMenuItem[i].innerHTML === "视频统计信息") {
+									doClick(contextMenuItem[i]);
+									doClick(isBangumi('a.bilibili-player-video-info-close'));
+									var fps = isBangumi('.bilibili-player-video-info-panel > div[data-name="fps"] .info-data');
+									framerate = fps.innerHTML;
+									break;
+								}
+							}
+						}
+						//var currentFrame = Math.floor(video.currentTime * framerate);
+						if (!video.paused) {
+							var video = isBangumi('.bilibili-player-video');
+							doClick(video);
+						}
+						if (type === "prev") {
+							video.currentTime -= 1 / framerate;
+							shortcut.shortcutsTips("视频帧率", "快退一帧");
+						} else if (type === "next") {
+							video.currentTime += 1 / framerate;
+							shortcut.shortcutsTips("视频帧率", "快进一帧");
+						}
+					}
+				},
 				showHideDanmuku : function () {
 					var controlBtn = isBangumi('.bilibili-player-video-control .bilibili-player-video-btn-danmaku ');
 					var settingPanel = isBangumi('.bilibili-player-danmaku-setting-lite-panel');
@@ -1085,6 +1118,12 @@
 
 					var executeEvent = function() {
 						switch (type) {
+							case "prevVideoFramerate":
+								shortcut.videoFramerate("prev");
+								break;
+							case "nextVideoFramerate":
+								shortcut.videoFramerate("next");
+								break;
 							case "showHideDanmuku":
 								shortcut.showHideDanmuku();
 								break;
@@ -1173,6 +1212,12 @@
 							function bindEvent(event) {
 								if (event.target.nodeName === "INPUT") {
 									return;
+								}
+								if (set.prevVideoFramerate === true) {
+									shortcut.shortcutsEvent("prevVideoFramerate",set.prevVideoFramerateKeyCode,event);
+								}
+								if (set.nextVideoFramerate === true) {
+									shortcut.shortcutsEvent("nextVideoFramerate",set.nextVideoFramerateKeyCode,event);
 								}
 								if (set.showHideDanmuku === true) {
 									shortcut.shortcutsEvent("showHideDanmuku",set.showHideDanmukuKeyCode,event);
@@ -1919,6 +1964,16 @@
             						<input name="nextPlist" type="checkbox" list="shortcuts">下一个视频 <span class="tipsButton" action="shortcuts" typeName="nextPlist">[设置]</span>
             						<input type="text" name="nextPlistKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="nextPlistKeyCode" list="shortcuts" KeyCode="true">
+            					</label>
+								<label class="h5">
+            						<input name="prevVideoFramerate" type="checkbox" list="shortcuts">快退一帧  <span class="tipsButton" action="shortcuts" typeName="prevVideoFramerate">[设置]</span>
+            						<input type="text" name="prevVideoFramerateKeyName" readOnly="true" list="shortcuts">
+            						<input type="hidden" name="prevVideoFramerateKeyCode" list="shortcuts" KeyCode="true">
+            					</label>
+            					<label class="h5">
+            						<input name="nextVideoFramerate" type="checkbox" list="shortcuts">快进一帧 <span class="tipsButton" action="shortcuts" typeName="nextVideoFramerate">[设置]</span>
+            						<input type="text" name="nextVideoFramerateKeyName" readOnly="true" list="shortcuts">
+            						<input type="hidden" name="nextVideoFramerateKeyCode" list="shortcuts" KeyCode="true">
             					</label>
             				</div>
             			</div>

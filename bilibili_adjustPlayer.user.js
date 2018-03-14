@@ -1183,7 +1183,7 @@
 								if (set.addVideoSpeed === true) {
 									shortcut.shortcutsEvent("subVideoSpeed",set.subVideoSpeedKeyCode,event);
 								}
-								if (set.addVideoSpeed === true) {
+								if (set.resetVideoSpeed === true) {
 									shortcut.shortcutsEvent("resetVideoSpeed",set.resetVideoSpeedKeyCode,event);
 								}
 								if (set.playerWide === true) {

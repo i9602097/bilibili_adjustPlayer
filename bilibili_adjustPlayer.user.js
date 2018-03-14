@@ -772,6 +772,9 @@
 								video.playbackRate = speed[index];
 							}
 							shortcut.shortcutsTips("播放速度", speed[index] + "倍速");
+						} else if (type === "reset") {
+							video.playbackRate = 1;
+							shortcut.shortcutsTips("播放速度", "1 倍速");
 						}
 					}
 				},
@@ -1091,6 +1094,9 @@
 							case "subVideoSpeed":
 								shortcut.videoSpeed("sub");
 								break;
+							case "resetVideoSpeed":
+								shortcut.videoSpeed("reset");
+								break;
 							case "playerWide":
 								shortcut.playerWide();
 								break;
@@ -1176,6 +1182,9 @@
 								}
 								if (set.addVideoSpeed === true) {
 									shortcut.shortcutsEvent("subVideoSpeed",set.subVideoSpeedKeyCode,event);
+								}
+								if (set.addVideoSpeed === true) {
+									shortcut.shortcutsEvent("resetVideoSpeed",set.resetVideoSpeedKeyCode,event);
 								}
 								if (set.playerWide === true) {
 									shortcut.shortcutsEvent("playerWide",set.playerWideKeyCode,event);
@@ -1895,6 +1904,11 @@
             						<input name="subVideoSpeed" type="checkbox" list="shortcuts">减少播放速度 <span class="tipsButton" action="shortcuts" typeName="subVideoSpeed">[设置]</span>
             						<input type="text" name="subVideoSpeedKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="subVideoSpeedKeyCode" list="shortcuts" KeyCode="true">
+            					</label>
+								<label class="h5">
+            						<input name="resetVideoSpeed" type="checkbox" list="shortcuts">重置播放速度 <span class="tipsButton" action="shortcuts" typeName="resetVideoSpeed">[设置]</span>
+            						<input type="text" name="resetVideoSpeedKeyName" readOnly="true" list="shortcuts">
+            						<input type="hidden" name="resetVideoSpeedKeyCode" list="shortcuts" KeyCode="true">
             					</label>
 								<label class="h5">
             						<input name="prevPlist" type="checkbox" list="shortcuts">上一个视频  <span class="tipsButton" action="shortcuts" typeName="prevPlist">[设置]</span>

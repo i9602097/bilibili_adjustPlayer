@@ -1180,7 +1180,7 @@
 								if (set.addVideoSpeed === true) {
 									shortcut.shortcutsEvent("addVideoSpeed",set.addVideoSpeedKeyCode,event);
 								}
-								if (set.addVideoSpeed === true) {
+								if (set.subVideoSpeed === true) {
 									shortcut.shortcutsEvent("subVideoSpeed",set.subVideoSpeedKeyCode,event);
 								}
 								if (set.resetVideoSpeed === true) {

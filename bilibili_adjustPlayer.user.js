@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.9
+// @version     1.10
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -407,15 +407,19 @@
 				catch(e) {console.log('autoLightOn：'+e);}
 			}
 		},
-		resizePlayer: function (set,width,height) {
+		resizePlayer: function (set,width,height,ratio) {
 			if (typeof set !== 'undefined' && typeof width !== 'undefined' && typeof height !== 'undefined') {
 				try{
+					if (typeof ratio === 'undefined') {
+						ratio = '16 / 9';
+					}
 					var css = [
 						'.bgray-btn-wrap { margin-left: calc('+ width +' / 2) !important; } ',
 						'.player-wrapper .player-content, .video-box-module .bili-wrapper , .moviescontent, .widescreen .movie_play, #bofqi { width: '+ width +' !important; } ',
-						'#bofqi .player, .moviescontent { width: '+ width +' !important; height: calc('+ height +' + 68px) !important; } ',
+						'#bofqi .player, .moviescontent { width: '+ width +' !important; height: calc(48px + '+ width +' / calc('+ ratio +') - 300px / calc('+ ratio +') + 68px) !important; } ',
+						'#bofqi.wide .player, .wide.moviescontent { width: '+ width +' !important; height: calc('+ width +' / calc('+ ratio +') + 68px) !important; } ',
 						'.player-wrapper .bangumi-player, #__bofqi.bili-wrapper { width: '+ width +' !important; background: none !important; height: auto !important;} ',
-						'#bofqi.wide .autohide-controlbar, .wide.autohide-controlbar-movies { width: '+ width +' !important; height: calc('+ height +' + 0px) !important; } '
+						'#bofqi.wide .autohide-controlbar, .wide.autohide-controlbar-movies { width: '+ width +' !important; height: calc('+ width +' / calc('+ ratio +') + 0px) !important; } '
 					];
 					var node = document.createElement('style');
 					node.type = 'text/css';
@@ -1309,7 +1313,7 @@
 								isFirstrun();
 								adjustPlayer.autoWide(setting.autoWide,setting.autoWideFullscreen);
 								adjustPlayer.autoFocus(setting.autoFocus,setting.autoFocusOffsetType,setting.autoFocusOffsetValue,setting.autoFocusPosition);
-								adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerHeight);
+								adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerHeight,setting.adjustPlayerRatio);
 								if (setting.resizePlayer === true && typeof setting.resizeMiniPlayer === 'undefined') {
 									adjustPlayer.resizeMiniPlayer(true,320);
 								} else {
@@ -1358,7 +1362,7 @@
 										//开启“网页全屏”，“半自动全屏”后，不加载的功能
 										adjustPlayer.autoFocus(setting.autoFocus,setting.autoFocusOffsetType,setting.autoFocusOffsetValue,setting.autoFocusPosition);
 										adjustPlayer.autoWide(setting.autoWide,setting.autoWideFullscreen);
-										adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerHeight);
+										adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerHeight,setting.adjustPlayerRatio);
 									}
 
 									//初始化“迷你播放器尺寸”的默认值
@@ -1459,7 +1463,7 @@
 						setTimeout(function () {
 							adjustPlayer.autoWide(setting.autoWide,setting.autoWideFullscreen);
 							adjustPlayer.autoFocus(setting.autoFocus,setting.autoFocusOffsetType,setting.autoFocusOffsetValue,setting.autoFocusPosition);
-							adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerHeight);
+							adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerHeight,setting.adjustPlayerRatio);
 							reloadPList.init();
 						}, 500);
 						console.log('adjustPlayer:\nflashPlayer reload success');
@@ -1499,7 +1503,7 @@
 									//开启“网页全屏”，“半自动全屏”后，不加载的功能
 									adjustPlayer.autoFocus(setting.autoFocus,setting.autoFocusOffsetType,setting.autoFocusOffsetValue,setting.autoFocusPosition);
 									adjustPlayer.autoWide(setting.autoWide,setting.autoWideFullscreen);
-									adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerHeight);
+									adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerHeight,setting.adjustPlayerRatio);
 								}
 								//初始化“迷你播放器尺寸”的默认值
 								if (setting.resizePlayer === true && typeof setting.resizeMiniPlayer === 'undefined') {
@@ -2066,6 +2070,7 @@
             				<span class="tipsButton" action="adjustPlayerSize" tooltip="使用帮助：&#10;1：点击[调整大小]进行调整">[调整大小]</span>
             				<input type="hidden" name="adjustPlayerWidth">
             				<input type="hidden" name="adjustPlayerHeight">
+							<input type="hidden" name="adjustPlayerRatio">
             			</label>
             			<label>
             				<input name="resizeMiniPlayer" type="checkbox" action="childElementDisabledEvent" disabledChildElement="input,resizeMiniPlayerSize" >迷你播放器宽度
@@ -2177,6 +2182,7 @@
 				if (formData.resizePlayer !== true ) {
 					delete formData.adjustPlayerHeight;
 					delete formData.adjustPlayerWidth;
+					delete formData.adjustPlayerRatio;
 				}
 				//resizeMiniPlayer
 				if (formData.resizeMiniPlayer === true ) {
@@ -2283,31 +2289,58 @@
 			if (adjustPlayerSizeCSS !== null) {
 				document.documentElement.removeChild(document.querySelector('#adjustPlayerSize'));
 			}
+			var adjustPlayerMiniplayerResizable = document.querySelector('#adjust-player-miniplayer-resizable');
+			if (adjustPlayerMiniplayerResizable !== null) {
+				adjustPlayerMiniplayerResizable.remove();
+			}
+			var arcToolbarReport = document.querySelector('#arc_toolbar_report');
+			if (arcToolbarReport !== null) {
+				arcToolbarReport.remove();
+			}
+
 			document.querySelector('#adjust-player').setAttribute("style","visibility: hidden;");
 
 			//tips
 			var tips = document.createElement('div');
 			tips.innerHTML =  commentToString(function () { /*
             <div class="info">
-               <p>当前宽度：<span class="width">853</span> px</p>
-               <p>当前高度：<span class="height">480</span> px</p>
+              <p>当前宽度：<span class="width">853</span> px</p>
+              <p>当前高度：<span class="height">480</span> px</p>
+			  <p>当前比例：<span class="ratio">16/9</span></p>
             </div>
-            <div class="tips">
-              <p>可调整区域有比例限制，为16:9。（为了播放器区域不变形）</p>
-              <p>可调整区域高度默认增加 68px 。（播放器控件高度）</p>
+            <div class="tips-text">
+              <p>当前灰色区域的大小，保存后就是播放器的新大小。</p>
             </div>
-            <div class="tips" style="right: 16px;bottom: 60px;">
+            <div class="drag-arrow">
               <p style="color: red; font-size: 80px;">↘</p>
             </div>
             <div class="content">
-               <p class="bold">使用帮助</p>
-               <p>1.拖动右下角“外框”调整播放器大小（<span style="color: red;">↘</span> 处）。</p>
-               <p>2.调整到合适的大小，点击保存（当前灰色区域的大小，保存后就是播放器的新大小）。</p>
-               <div class="btns">
-                  <div class="btn b-btn" action="720P" style="width: 248px;">快速保存为720P</div>
-                  <div class="btn b-btn" action="save">保存</div>
-                  <div class="btn b-btn-cancel" action="cancel">取消</div>
-               </div>
+              <p class="bold">使用帮助</p>
+              <p>1.拖动右下角“外框”调整播放器大小（<span style="color: red;">↘</span> 处）。</p>
+              <p>2.调整到合适的大小，点击保存。</p>
+              <div class="box custom-ratio">
+                  <div style="text-align: left;">限制调整比例：</div>
+                    <select name="customRatio" style="width:100%;margin-top: 10px;">
+                        <option value="4/3">4 / 3</option>
+                        <option value="15/9">15 / 9</option>
+						<option value="16/9" selected="selected">16 / 9</option>
+						<option value="16/10">16 / 10</option>
+                        <option value="18/9">18 / 9</option>
+                        <option value="21/9">21 / 9</option>
+                        <option value="32/9">32 / 9</option>
+                     </select>
+              </div>
+              <div class="box custom-width">
+                  <div style="text-align: left;">快速保存宽度为：</div>
+                  <div class="btn b-btn" action="quickSave" customWidth="853">853px</div>
+                  <div class="btn b-btn" action="quickSave" customWidth="1280">1280px</div>
+                  <div class="btn b-btn" action="quickSave" customWidth="1580">1580px</div>
+                  <div class="btn b-btn" action="quickSave" customWidth="1920">1920px</div>
+                  <div class="btn b-btn" action="quickSave" customWidth="2220">2220px</div>
+              </div>
+              <div class="btn b-btn" action="save" style="width:49%;float:left;" >保存</div>
+              <div class="btn b-btn-cancel" action="cancel" style="width:49%;float:right;" >取消</div>
+			  <div style="clear: both;"></div>
             </div>
             */});
 			tips.id = "adjust-player-tips";
@@ -2315,14 +2348,17 @@
 			tips.onclick = function (e) {
 				var adjustPlayerWidth = document.querySelector('#adjust-player form input[name="adjustPlayerWidth"]');
 				var adjustPlayerHeight = document.querySelector('#adjust-player form input[name="adjustPlayerHeight"]');
+				var adjustPlayerRatio = document.querySelector('#adjust-player form input[name="adjustPlayerRatio"]');
 				var resizePlayer = document.querySelector('#adjust-player form input[name="resizePlayer"]');
 
 				var action = e.target.getAttribute('action');
 				if (e.target && action !== null) {
+					var customRatio = document.querySelector('#adjust-player-tips select[name="customRatio"]');
 					if (action === "save") {
 						try {
 							adjustPlayerWidth.value = this.style.width;
 							adjustPlayerHeight.value = this.style.height;
+							adjustPlayerRatio.value = customRatio.options[customRatio.selectedIndex].value;
 							resizePlayer.checked = true;
 							configWindow.save();
 						} catch (ex) {
@@ -2332,11 +2368,28 @@
 						}
 					} else if (action === "cancel") {
 						location.reload();
-					} else if (action === "720P") {
-						adjustPlayerWidth.value = "1280px";
-						adjustPlayerHeight.value = "720px";
+					} else if (action === "quickSave") {
+						var customWidth = e.target.getAttribute('customWidth');
+						var height = Number(customWidth / window.adjustPlayerTipsRatio).toFixed();
+						adjustPlayerWidth.value = customWidth + "px";
+						adjustPlayerHeight.value = height  + "px";
+						adjustPlayerRatio.value =  customRatio.options[customRatio.selectedIndex].value;
 						resizePlayer.checked = true;
 						configWindow.save();
+					}
+				}
+			};
+			tips.onchange = function (e) {
+				var name = e.target.getAttribute('name');
+				if (e.target && name !== null) {
+					if (name === "customRatio") {
+						var customRatio = e.target.value;
+						var ratio = customRatio.split("/");
+						ratio = ratio[0] / ratio[1];
+						window.adjustPlayerTipsRatio = ratio;
+
+						var adjustPlayerTipsRatio = document.querySelector('#adjust-player-tips .info .ratio');
+						adjustPlayerTipsRatio.innerHTML = customRatio;
 					}
 				}
 			};
@@ -2351,24 +2404,25 @@
 				newPlayerWrapper.setAttribute("style","visibility: hidden;");
 				document.querySelector('#__bofqi').setAttribute("style","width: auto !important; background: none !important; height: auto !important; position: relative !important;");
 			}
-			playerContent.style = "position: relative;overflow: hidden;resize: both;box-shadow: #00a1d6 0 0 5px; width:853px; height: 480px; min-height: 480px;";
+			playerContent.style = "position: relative; width:853px; height: 480px; min-height: 480px; background: rgba(204, 204, 204, 0.4); ";
 			playerContent.insertBefore(tips, playerContent.firstChild);
 
 			//resize event
-			var ratio = 16 / 9;
+			window.adjustPlayerTipsRatio = 16 / 9;
 			var adjustPlayerTips = document.querySelector('#adjust-player-tips');
 			var adjustPlayerTipsW = document.querySelector('#adjust-player-tips .info .width');
 			var adjustPlayerTipsH = document.querySelector('#adjust-player-tips .info .height');
+			var adjustPlayerTipsDragArrow = document.querySelector('#adjust-player-tips .drag-arrow');
 
 			var resizeEvent = function callback() {
 				window.setTimeout(callback, 20);
-				var width = playerContent.clientWidth;
-				var height = playerContent.clientHeight;
-				var newHeight = Number(width / ratio).toFixed();
-
-				adjustPlayerTips.setAttribute("style","width: "+ width + "px; height:"+ newHeight +"px");
+				var width = adjustPlayerTips.clientWidth;
+				var height = adjustPlayerTips.clientHeight;
+				var newHeight = Number(width / window.adjustPlayerTipsRatio ).toFixed();
+				playerContent.setAttribute("style","position: relative; background: rgba(204, 204, 204, 0.4); width: "+ width + "px; height:"+ newHeight +"px");
 				adjustPlayerTipsW.innerHTML = width;
 				adjustPlayerTipsH.innerHTML = newHeight;
+				adjustPlayerTipsDragArrow.setAttribute("style", "top:calc("+ height +"px - 60px)");
 			};
 
 			window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
@@ -2664,9 +2718,9 @@
           #adjust-player form .wrapper { overflow-x: hidden; white-space: nowrap }
           #adjust-player .modalWindow { z-index: 100000 }
           #adjust-player .shortcutsItem.disabled > label { color: #ccc !important }
-          #adjust-player-tips { width: 100%; height: 100%; background: rgba(204, 204, 204, 0.4); line-height: 16px; color: #333 }
+          #adjust-player-tips { width: 100%; height: 100%; min-height: 480px; line-height: 16px; color: #333; overflow: hidden; resize: both; }
           #adjust-player-tips p { text-align: left }
-          #adjust-player-tips .content { margin: 0 auto; margin-top: 30px; width: 250px; font-size: 16px; line-height: 24px; padding: 40px; background: #fff; border: 1px solid #eee; border-radius: 4px }
+          #adjust-player-tips .content { margin: 0 auto; width: 410px; font-size: 16px; line-height: 24px; padding: 30px; background: #fff; border: 1px solid #eee; border-radius: 4px; }
           #adjust-player-tips .content .bold { font-weight: bold; font-size: 18px; text-align: center; color: #333; padding-bottom: 20px }
           #adjust-player-tips .content .btn { display: inline-block; margin-top: 10px; padding: 4px 0; width: 120px; color: #fff; cursor: pointer; text-align: center; border-radius: 4px; background-color: #00a1d6; vertical-align: middle; border: 1px solid #00a1d6; transition: .1s; transition-property: background-color, border, color; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none }
           #adjust-player-tips .content .btn:hover { background-color: #00b5e5; border-color: #00b5e5 }
@@ -2675,7 +2729,10 @@
           #adjust-player-tips .content .btns { margin-top: 10px }
           #adjust-player-tips .info { position: relative; top: 10px; margin-left: 10px; font-weight: bold }
           #adjust-player-tips .info span { color: #333; font-size: 12px; color: #fb7299 }
-          #adjust-player-tips .tips { position: absolute; bottom: 10px; margin-left: 10px; color: #99a2aa }
+          #adjust-player-tips .tips-text { position: absolute; bottom: 10px; margin-left: 10px; color: #99a2aa }
+		  #adjust-player-tips .drag-arrow { position: absolute; right: 0; }
+		  #adjust-player-tips .box  { margin:10px 0; padding:10px; color: #222; border-radius: 4px; border: 1px solid #ccd0d7; }
+		  #adjust-player-tips .custom-width .btn { display: inline-block; width: auto; padding:0 10px; }
           .bgray-btn { height: auto !important; margin: 10px 0px 0px 10px !important }
           .video-box-module .bili-wrapper .bgray-btn-wrap, .player-wrapper .bangumi-player .bgray-btn-wrap { top: -10px !important }
           .video-toolbar-module { width: 1160px !important; margin: 0 auto; margin-top: 20px }

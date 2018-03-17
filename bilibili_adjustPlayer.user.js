@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.10
+// @version     1.11
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -407,8 +407,8 @@
 				catch(e) {console.log('autoLightOn：'+e);}
 			}
 		},
-		resizePlayer: function (set,width,height,ratio) {
-			if (typeof set !== 'undefined' && typeof width !== 'undefined' && typeof height !== 'undefined') {
+		resizePlayer: function (set,width,ratio) {
+			if (typeof set !== 'undefined' && typeof width !== 'undefined') {
 				try{
 					if (typeof ratio === 'undefined') {
 						ratio = '16 / 9';
@@ -1313,7 +1313,7 @@
 								isFirstrun();
 								adjustPlayer.autoWide(setting.autoWide,setting.autoWideFullscreen);
 								adjustPlayer.autoFocus(setting.autoFocus,setting.autoFocusOffsetType,setting.autoFocusOffsetValue,setting.autoFocusPosition);
-								adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerHeight,setting.adjustPlayerRatio);
+								adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerRatio);
 								if (setting.resizePlayer === true && typeof setting.resizeMiniPlayer === 'undefined') {
 									adjustPlayer.resizeMiniPlayer(true,320);
 								} else {
@@ -1362,7 +1362,7 @@
 										//开启“网页全屏”，“半自动全屏”后，不加载的功能
 										adjustPlayer.autoFocus(setting.autoFocus,setting.autoFocusOffsetType,setting.autoFocusOffsetValue,setting.autoFocusPosition);
 										adjustPlayer.autoWide(setting.autoWide,setting.autoWideFullscreen);
-										adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerHeight,setting.adjustPlayerRatio);
+										adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerRatio);
 									}
 
 									//初始化“迷你播放器尺寸”的默认值
@@ -1463,7 +1463,7 @@
 						setTimeout(function () {
 							adjustPlayer.autoWide(setting.autoWide,setting.autoWideFullscreen);
 							adjustPlayer.autoFocus(setting.autoFocus,setting.autoFocusOffsetType,setting.autoFocusOffsetValue,setting.autoFocusPosition);
-							adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerHeight,setting.adjustPlayerRatio);
+							adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerRatio);
 							reloadPList.init();
 						}, 500);
 						console.log('adjustPlayer:\nflashPlayer reload success');
@@ -1503,7 +1503,7 @@
 									//开启“网页全屏”，“半自动全屏”后，不加载的功能
 									adjustPlayer.autoFocus(setting.autoFocus,setting.autoFocusOffsetType,setting.autoFocusOffsetValue,setting.autoFocusPosition);
 									adjustPlayer.autoWide(setting.autoWide,setting.autoWideFullscreen);
-									adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerHeight,setting.adjustPlayerRatio);
+									adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerRatio);
 								}
 								//初始化“迷你播放器尺寸”的默认值
 								if (setting.resizePlayer === true && typeof setting.resizeMiniPlayer === 'undefined') {
@@ -2069,7 +2069,6 @@
             				<input name="resizePlayer" type="checkbox">手动指定播放器大小
             				<span class="tipsButton" action="adjustPlayerSize" tooltip="使用帮助：&#10;1：点击[调整大小]进行调整">[调整大小]</span>
             				<input type="hidden" name="adjustPlayerWidth">
-            				<input type="hidden" name="adjustPlayerHeight">
 							<input type="hidden" name="adjustPlayerRatio">
             			</label>
             			<label>
@@ -2180,7 +2179,6 @@
 				}
 				//resizePlayer
 				if (formData.resizePlayer !== true ) {
-					delete formData.adjustPlayerHeight;
 					delete formData.adjustPlayerWidth;
 					delete formData.adjustPlayerRatio;
 				}
@@ -2309,7 +2307,7 @@
 			  <p>当前比例：<span class="ratio">16/9</span></p>
             </div>
             <div class="tips-text">
-              <p>当前灰色区域的大小，保存后就是播放器的新大小。</p>
+			  <p>调整后的大小在“普通模式”下会根据“播放器顶栏”、“弹幕栏”、“播放器控件”的大小自动计算出合适的尺寸。</p>
             </div>
             <div class="drag-arrow">
               <p style="color: red; font-size: 80px;">↘</p>
@@ -2317,7 +2315,8 @@
             <div class="content">
               <p class="bold">使用帮助</p>
               <p>1.拖动右下角“外框”调整播放器大小（<span style="color: red;">↘</span> 处）。</p>
-              <p>2.调整到合适的大小，点击保存。</p>
+			  <p>2.当前灰色区域的大小，保存后就是播放器的新大小。</p>
+              <p>3.调整到合适的大小，点击保存。</p>
               <div class="box custom-ratio">
                   <div style="text-align: left;">限制调整比例：</div>
                     <select name="customRatio" style="width:100%;margin-top: 10px;">
@@ -2333,6 +2332,7 @@
               <div class="box custom-width">
                   <div style="text-align: left;">快速保存宽度为：</div>
                   <div class="btn b-btn" action="quickSave" customWidth="853">853px</div>
+				  <div class="btn b-btn" action="quickSave" customWidth="1153">1153px</div>
                   <div class="btn b-btn" action="quickSave" customWidth="1280">1280px</div>
                   <div class="btn b-btn" action="quickSave" customWidth="1580">1580px</div>
                   <div class="btn b-btn" action="quickSave" customWidth="1920">1920px</div>
@@ -2347,7 +2347,6 @@
 			tips.style = "width: 853px; height:480px";
 			tips.onclick = function (e) {
 				var adjustPlayerWidth = document.querySelector('#adjust-player form input[name="adjustPlayerWidth"]');
-				var adjustPlayerHeight = document.querySelector('#adjust-player form input[name="adjustPlayerHeight"]');
 				var adjustPlayerRatio = document.querySelector('#adjust-player form input[name="adjustPlayerRatio"]');
 				var resizePlayer = document.querySelector('#adjust-player form input[name="resizePlayer"]');
 
@@ -2357,7 +2356,6 @@
 					if (action === "save") {
 						try {
 							adjustPlayerWidth.value = this.style.width;
-							adjustPlayerHeight.value = this.style.height;
 							adjustPlayerRatio.value = customRatio.options[customRatio.selectedIndex].value;
 							resizePlayer.checked = true;
 							configWindow.save();
@@ -2372,7 +2370,6 @@
 						var customWidth = e.target.getAttribute('customWidth');
 						var height = Number(customWidth / window.adjustPlayerTipsRatio).toFixed();
 						adjustPlayerWidth.value = customWidth + "px";
-						adjustPlayerHeight.value = height  + "px";
 						adjustPlayerRatio.value =  customRatio.options[customRatio.selectedIndex].value;
 						resizePlayer.checked = true;
 						configWindow.save();
@@ -2404,7 +2401,7 @@
 				newPlayerWrapper.setAttribute("style","visibility: hidden;");
 				document.querySelector('#__bofqi').setAttribute("style","width: auto !important; background: none !important; height: auto !important; position: relative !important;");
 			}
-			playerContent.style = "position: relative; width:853px; height: 480px; min-height: 480px; background: rgba(204, 204, 204, 0.4); ";
+			playerContent.style = "position: relative; width:100%; min-height: 480px; ";
 			playerContent.insertBefore(tips, playerContent.firstChild);
 
 			//resize event
@@ -2419,10 +2416,10 @@
 				var width = adjustPlayerTips.clientWidth;
 				var height = adjustPlayerTips.clientHeight;
 				var newHeight = Number(width / window.adjustPlayerTipsRatio ).toFixed();
-				playerContent.setAttribute("style","position: relative; background: rgba(204, 204, 204, 0.4); width: "+ width + "px; height:"+ newHeight +"px");
+				adjustPlayerTips.setAttribute("style","position: relative; z-index:10000; margin:0 auto; width: "+ width + "px; height:"+ newHeight +"px");
 				adjustPlayerTipsW.innerHTML = width;
 				adjustPlayerTipsH.innerHTML = newHeight;
-				adjustPlayerTipsDragArrow.setAttribute("style", "top:calc("+ height +"px - 60px)");
+				adjustPlayerTipsDragArrow.setAttribute("style", "top:calc("+ height +"px - 80px);right:20px;");
 			};
 
 			window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
@@ -2718,9 +2715,9 @@
           #adjust-player form .wrapper { overflow-x: hidden; white-space: nowrap }
           #adjust-player .modalWindow { z-index: 100000 }
           #adjust-player .shortcutsItem.disabled > label { color: #ccc !important }
-          #adjust-player-tips { width: 100%; height: 100%; min-height: 480px; line-height: 16px; color: #333; overflow: hidden; resize: both; }
+          #adjust-player-tips { width: 100%; height: 100%; min-height: 480px; line-height: 16px; color: #333; overflow: auto; resize: horizontal; background: linear-gradient(135deg,#E6E7E8 0,#E6E7E8 99%,#fff 95%); }
           #adjust-player-tips p { text-align: left }
-          #adjust-player-tips .content { margin: 0 auto; width: 410px; font-size: 16px; line-height: 24px; padding: 30px; background: #fff; border: 1px solid #eee; border-radius: 4px; }
+          #adjust-player-tips .content { position: relative; margin: 0 auto; margin-top:-20px; width: 485px; font-size: 16px; line-height: 24px; padding: 30px; background: #fff; border: 1px solid #eee; border-radius: 4px; }
           #adjust-player-tips .content .bold { font-weight: bold; font-size: 18px; text-align: center; color: #333; padding-bottom: 20px }
           #adjust-player-tips .content .btn { display: inline-block; margin-top: 10px; padding: 4px 0; width: 120px; color: #fff; cursor: pointer; text-align: center; border-radius: 4px; background-color: #00a1d6; vertical-align: middle; border: 1px solid #00a1d6; transition: .1s; transition-property: background-color, border, color; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none }
           #adjust-player-tips .content .btn:hover { background-color: #00b5e5; border-color: #00b5e5 }

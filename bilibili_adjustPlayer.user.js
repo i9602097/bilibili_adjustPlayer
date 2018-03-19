@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.11
+// @version     1.14
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -2307,11 +2307,20 @@
 			  <p>当前比例：<span class="ratio">16/9</span></p>
             </div>
             <div class="tips-text">
+			  <p>调整后的大小有宽度限制，最小宽度为740像素。</p>
+			  <p>调整后的大小有高度限制，最小高度为416像素。</p>
 			  <p>调整后的大小在“普通模式”下会根据“播放器顶栏”、“弹幕栏”、“播放器控件”的大小自动计算出合适的尺寸。</p>
             </div>
             <div class="drag-arrow">
               <p style="color: red; font-size: 80px;">↘</p>
             </div>
+            */});
+			tips.id = "adjust-player-tips";
+			tips.style = "width: 853px; height:480px";
+
+			//save
+			var tipsSave = document.createElement('div');
+			tipsSave.innerHTML =  commentToString(function () { /*
             <div class="content">
               <p class="bold">使用帮助</p>
               <p>1.拖动右下角“外框”调整播放器大小（<span style="color: red;">↘</span> 处）。</p>
@@ -2343,22 +2352,37 @@
 			  <div style="clear: both;"></div>
             </div>
             */});
-			tips.id = "adjust-player-tips";
-			tips.style = "width: 853px; height:480px";
-			tips.onclick = function (e) {
+			tipsSave.id = "adjust-player-tips-save";
+			tipsSave.onclick = function (e) {
 				var adjustPlayerWidth = document.querySelector('#adjust-player form input[name="adjustPlayerWidth"]');
 				var adjustPlayerRatio = document.querySelector('#adjust-player form input[name="adjustPlayerRatio"]');
 				var resizePlayer = document.querySelector('#adjust-player form input[name="resizePlayer"]');
 
 				var action = e.target.getAttribute('action');
 				if (e.target && action !== null) {
-					var customRatio = document.querySelector('#adjust-player-tips select[name="customRatio"]');
+					var customRatio = document.querySelector('#adjust-player-tips-save select[name="customRatio"]');
 					if (action === "save") {
 						try {
-							adjustPlayerWidth.value = this.style.width;
-							adjustPlayerRatio.value = customRatio.options[customRatio.selectedIndex].value;
-							resizePlayer.checked = true;
-							configWindow.save();
+							var minWidth = 740;
+							var minHeight = 416;
+							var adjustPlayerTips = document.querySelector('#adjust-player-tips');
+							var width = parseInt(adjustPlayerTips.clientWidth);
+							var height = parseInt(adjustPlayerTips.clientHeight);
+
+							if(height < minHeight){
+								unsafeWindow.alert('保存设置失败\n播放器高度调整后过小，最小416像素，请重新调整！');
+								return;
+							} else {
+								if(width <= minWidth){
+									width = "740px";
+								} else {
+									width = adjustPlayerTips.clientWidth + "px";
+								}
+								adjustPlayerWidth.value = width;
+								adjustPlayerRatio.value = customRatio.options[customRatio.selectedIndex].value;
+								resizePlayer.checked = true;
+								configWindow.save();
+							}
 						} catch (ex) {
 							unsafeWindow.alert('保存设置失败');
 							location.reload();
@@ -2376,7 +2400,7 @@
 					}
 				}
 			};
-			tips.onchange = function (e) {
+			tipsSave.onchange = function (e) {
 				var name = e.target.getAttribute('name');
 				if (e.target && name !== null) {
 					if (name === "customRatio") {
@@ -2403,6 +2427,11 @@
 			}
 			playerContent.style = "position: relative; width:100%; min-height: 480px; ";
 			playerContent.insertBefore(tips, playerContent.firstChild);
+			playerContent.insertBefore(tipsSave, playerContent.firstChild);
+
+			var adjustPlayerTipsSave = document.querySelector('#adjust-player-tips-save');
+			var adjustPlayerTipsSaveContent = document.querySelector('#adjust-player-tips-save .content');
+			adjustPlayerTipsSave.setAttribute("style", "position: absolute; z-index: 100000; left: calc(100% / 2 - calc("+ adjustPlayerTipsSaveContent.clientWidth +"px / 2));");
 
 			//resize event
 			window.adjustPlayerTipsRatio = 16 / 9;
@@ -2416,7 +2445,7 @@
 				var width = adjustPlayerTips.clientWidth;
 				var height = adjustPlayerTips.clientHeight;
 				var newHeight = Number(width / window.adjustPlayerTipsRatio ).toFixed();
-				adjustPlayerTips.setAttribute("style","position: relative; z-index:10000; margin:0 auto; width: "+ width + "px; height:"+ newHeight +"px");
+				adjustPlayerTips.setAttribute("style","position: relative; z-index:10000; margin:0 auto; width: "+ width + "px; height:"+ newHeight +"px; min-width:740px;");
 				adjustPlayerTipsW.innerHTML = width;
 				adjustPlayerTipsH.innerHTML = newHeight;
 				adjustPlayerTipsDragArrow.setAttribute("style", "top:calc("+ height +"px - 80px);right:20px;");
@@ -2715,21 +2744,21 @@
           #adjust-player form .wrapper { overflow-x: hidden; white-space: nowrap }
           #adjust-player .modalWindow { z-index: 100000 }
           #adjust-player .shortcutsItem.disabled > label { color: #ccc !important }
-          #adjust-player-tips { width: 100%; height: 100%; min-height: 480px; line-height: 16px; color: #333; overflow: auto; resize: horizontal; background: linear-gradient(135deg,#E6E7E8 0,#E6E7E8 99%,#fff 95%); }
-          #adjust-player-tips p { text-align: left }
-          #adjust-player-tips .content { position: relative; margin: 0 auto; margin-top:-20px; width: 485px; font-size: 16px; line-height: 24px; padding: 30px; background: #fff; border: 1px solid #eee; border-radius: 4px; }
-          #adjust-player-tips .content .bold { font-weight: bold; font-size: 18px; text-align: center; color: #333; padding-bottom: 20px }
-          #adjust-player-tips .content .btn { display: inline-block; margin-top: 10px; padding: 4px 0; width: 120px; color: #fff; cursor: pointer; text-align: center; border-radius: 4px; background-color: #00a1d6; vertical-align: middle; border: 1px solid #00a1d6; transition: .1s; transition-property: background-color, border, color; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none }
-          #adjust-player-tips .content .btn:hover { background-color: #00b5e5; border-color: #00b5e5 }
-          #adjust-player-tips .content .btn.b-btn-cancel { text-align: center; cursor: pointer; color: #222; border: 1px solid #ccd0d7; background-color: #fff; border-radius: 4px; transition: .1s; transition-property: background-color, border, color }
-          #adjust-player-tips .content .btn.b-btn-cancel:hover { color: #00a1d6; border-color: #00a1d6 }
-          #adjust-player-tips .content .btns { margin-top: 10px }
-          #adjust-player-tips .info { position: relative; top: 10px; margin-left: 10px; font-weight: bold }
+          #adjust-player-tips { width: 100%; height: 100%; line-height: 16px; color: #333; overflow: auto; resize: horizontal; background: linear-gradient(135deg,#E6E7E8 0,#E6E7E8 99%,#fff 95%); }
+          #adjust-player-tips p,#adjust-player-tips-save p { text-align: left }
+          #adjust-player-tips-save .content { position: absolute; top:20px; width: 485px; font-size: 16px; line-height: 24px; padding: 20px; background: #fff; border: 1px solid #eee; border-radius: 4px;z-index:1; }
+          #adjust-player-tips-save .content .bold { font-weight: bold; font-size: 18px; text-align: center; color: #333; padding-bottom: 18px }
+          #adjust-player-tips-save .content .btn { display: inline-block; margin-top: 10px; padding: 4px 0; width: 120px; color: #fff; cursor: pointer; text-align: center; border-radius: 4px; background-color: #00a1d6; vertical-align: middle; border: 1px solid #00a1d6; transition: .1s; transition-property: background-color, border, color; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none }
+          #adjust-player-tips-save .content .btn:hover { background-color: #00b5e5; border-color: #00b5e5 }
+          #adjust-player-tips-save .content .btn.b-btn-cancel { text-align: center; cursor: pointer; color: #222; border: 1px solid #ccd0d7; background-color: #fff; border-radius: 4px; transition: .1s; transition-property: background-color, border, color }
+          #adjust-player-tips-save .content .btn.b-btn-cancel:hover { color: #00a1d6; border-color: #00a1d6 }
+          #adjust-player-tips-save .content .btns { margin-top: 10px }
+		  #adjust-player-tips-save .box  { margin:10px 0; padding:10px; color: #222; border-radius: 4px; border: 1px solid #ccd0d7; }
+		  #adjust-player-tips-save .custom-width .btn { display: inline-block; width: auto; padding:0 10px; }
+          #adjust-player-tips .info { position: relative; top: 10px; margin-left: 10px; font-weight: bold;z-index:10; }
           #adjust-player-tips .info span { color: #333; font-size: 12px; color: #fb7299 }
-          #adjust-player-tips .tips-text { position: absolute; bottom: 10px; margin-left: 10px; color: #99a2aa }
+          #adjust-player-tips .tips-text { position: absolute; bottom: 10px; margin-left: 10px; color: #99a2aa; }
 		  #adjust-player-tips .drag-arrow { position: absolute; right: 0; }
-		  #adjust-player-tips .box  { margin:10px 0; padding:10px; color: #222; border-radius: 4px; border: 1px solid #ccd0d7; }
-		  #adjust-player-tips .custom-width .btn { display: inline-block; width: auto; padding:0 10px; }
           .bgray-btn { height: auto !important; margin: 10px 0px 0px 10px !important }
           .video-box-module .bili-wrapper .bgray-btn-wrap, .player-wrapper .bangumi-player .bgray-btn-wrap { top: -10px !important }
           .video-toolbar-module { width: 1160px !important; margin: 0 auto; margin-top: 20px }

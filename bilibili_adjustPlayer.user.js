@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.14
+// @version     1.15
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -789,30 +789,40 @@
 				},
 				videoSpeed : function (type) {
 					var video = isBangumi('.bilibili-player-video video');
-					var videoSpeed ;
-					var speed = [0.5,0.75,1,1.25,1.5,2.0];
-
 					if (video !== null) {
-						videoSpeed = video.playbackRate;
-
-						if (type === "add") {
-							var index = speed.indexOf(videoSpeed);
-							if (index < speed.length -1) {
-								index++;
-								video.playbackRate = speed[index];
-							}
-							shortcut.shortcutsTips("播放速度", speed[index] + "倍速");
-						} else if (type === "sub") {
-							var index = speed.indexOf(videoSpeed);
-							if (index > 0) {
-								index--;
-								video.playbackRate = speed[index];
-							}
-							shortcut.shortcutsTips("播放速度", speed[index] + "倍速");
-						} else if (type === "reset") {
+						var videoSpeed = video.playbackRate;
+						if (type === "reset" && videoSpeed != 1) {
 							video.playbackRate = 1;
-							shortcut.shortcutsTips("播放速度", "1 倍速");
+						} else {
+							var speed = [0.5,0.75,1,1.25,1.5,2,3,4,6,8,12,16];
+							var index = speed.indexOf(videoSpeed);
+							if (index < speed.length && index >= 0) {
+								if (type === "add" && index < (speed.length -1)) {
+									video.playbackRate = speed[index +1];
+								} else if (type === "sub" && index > 0) {
+									video.playbackRate = speed[index -1];
+								}
+							} else {
+								var addSpeed = Math.max(...speed);
+								for (var i = 0; i < speed.length; i++) {
+									if (addSpeed > speed[i] && videoSpeed < speed[i]) {
+										addSpeed = speed[i];
+									}
+								}
+								var subSpeed = Math.min(...speed);
+								for (var i = 0; i < speed.length; i++) {
+									if (subSpeed < speed[i] && videoSpeed > speed[i]) {
+										subSpeed = speed[i];
+									}
+								}
+								if (type === "add" && subSpeed != Math.max(...speed)) {
+									video.playbackRate = addSpeed;
+								} else if (type === "sub" && addSpeed != Math.min(...speed)) {
+									video.playbackRate = subSpeed;
+								}
+							}
 						}
+						shortcut.shortcutsTips("播放速度", video.playbackRate + "倍速");
 					}
 				},
 				playerWide : function () {
@@ -2753,12 +2763,12 @@
           #adjust-player-tips-save .content .btn.b-btn-cancel { text-align: center; cursor: pointer; color: #222; border: 1px solid #ccd0d7; background-color: #fff; border-radius: 4px; transition: .1s; transition-property: background-color, border, color }
           #adjust-player-tips-save .content .btn.b-btn-cancel:hover { color: #00a1d6; border-color: #00a1d6 }
           #adjust-player-tips-save .content .btns { margin-top: 10px }
-		  #adjust-player-tips-save .box  { margin:10px 0; padding:10px; color: #222; border-radius: 4px; border: 1px solid #ccd0d7; }
-		  #adjust-player-tips-save .custom-width .btn { display: inline-block; width: auto; padding:0 10px; }
+          #adjust-player-tips-save .box  { margin:10px 0; padding:10px; color: #222; border-radius: 4px; border: 1px solid #ccd0d7; }
+          #adjust-player-tips-save .custom-width .btn { display: inline-block; width: auto; padding:0 10px; }
           #adjust-player-tips .info { position: relative; top: 10px; margin-left: 10px; font-weight: bold;z-index:10; }
           #adjust-player-tips .info span { color: #333; font-size: 12px; color: #fb7299 }
           #adjust-player-tips .tips-text { position: absolute; bottom: 10px; margin-left: 10px; color: #99a2aa; }
-		  #adjust-player-tips .drag-arrow { position: absolute; right: 0; }
+          #adjust-player-tips .drag-arrow { position: absolute; right: 0; }
           .bgray-btn { height: auto !important; margin: 10px 0px 0px 10px !important }
           .video-box-module .bili-wrapper .bgray-btn-wrap, .player-wrapper .bangumi-player .bgray-btn-wrap { top: -10px !important }
           .video-toolbar-module { width: 1160px !important; margin: 0 auto; margin-top: 20px }

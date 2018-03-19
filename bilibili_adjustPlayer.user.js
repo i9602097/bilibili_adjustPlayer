@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.15
+// @version     1.15.1
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -791,38 +791,42 @@
 					var video = isBangumi('.bilibili-player-video video');
 					if (video !== null) {
 						var videoSpeed = video.playbackRate;
-						if (type === "reset" && videoSpeed != 1) {
-							video.playbackRate = 1;
-						} else {
-							var speed = [0.5,0.75,1,1.25,1.5,2,3,4,6,8,12,16];
-							var index = speed.indexOf(videoSpeed);
-							if (index < speed.length && index >= 0) {
-								if (type === "add" && index < (speed.length -1)) {
-									video.playbackRate = speed[index +1];
-								} else if (type === "sub" && index > 0) {
-									video.playbackRate = speed[index -1];
-								}
-							} else {
+						var speed = [0.5,0.75,1,1.25,1.5,2,3,4,6,8,12,16];
+						switch (type) {
+							case 'add':
 								var addSpeed = Math.max(...speed);
-								for (var i = 0; i < speed.length; i++) {
-									if (addSpeed > speed[i] && videoSpeed < speed[i]) {
-										addSpeed = speed[i];
+								if (videoSpeed < addSpeed) {
+									for (var i = 0; i < speed.length; i++) {
+										if (addSpeed > speed[i] && videoSpeed < speed[i]) {
+											addSpeed = speed[i];
+										}
 									}
-								}
-								var subSpeed = Math.min(...speed);
-								for (var i = 0; i < speed.length; i++) {
-									if (subSpeed < speed[i] && videoSpeed > speed[i]) {
-										subSpeed = speed[i];
-									}
-								}
-								if (type === "add" && subSpeed != Math.max(...speed)) {
 									video.playbackRate = addSpeed;
-								} else if (type === "sub" && addSpeed != Math.min(...speed)) {
+								}
+								shortcut.shortcutsTips("播放速度", video.playbackRate + "倍速");
+								break;
+							case 'sub':
+								var subSpeed = Math.min(...speed);
+								if (videoSpeed > subSpeed) {
+									for (var i = 0; i < speed.length; i++) {
+										if (subSpeed < speed[i] && videoSpeed > speed[i]) {
+											subSpeed = speed[i];
+										}
+									}
 									video.playbackRate = subSpeed;
 								}
-							}
+								shortcut.shortcutsTips("播放速度", video.playbackRate + "倍速");
+								break;
+							case 'reset':
+								if (videoSpeed != 1) {
+									video.playbackRate = 1;
+								}
+								shortcut.shortcutsTips("播放速度", video.playbackRate + "倍速");
+								break;
+							default:
+								console.log("請不要把奇怪的東西插進來");
+								break;
 						}
-						shortcut.shortcutsTips("播放速度", video.playbackRate + "倍速");
 					}
 				},
 				playerWide : function () {

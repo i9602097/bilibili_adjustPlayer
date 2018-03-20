@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.15.1
+// @version     1.16
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -527,7 +527,8 @@
 					'#bofqi.mini-player, #bofqi.newfloat .move, #bofqi.float .move { width: '+ width +'px !important; }',
 					'#bofqi.mini-player:before, #bofqi.float:before, #bofqi.newfloat:before, .player-wrapper .mini-player:before { box-shadow: none !important; }',
 					'#bofqi.mini-player > .player, #bofqi.newfloat, #bofqi.newfloat:before, #bofqi.newfloat .move + .player, .player-wrapper .mini-player > #bofqi .player { width: '+ width +'px !important; height: '+ height +'px !important; }',
-					'.bangumi-player.mini-player .player-content { height: '+ height +'px; }',
+					'.bangumi-player.mini-player > #bofqi { width: '+ width +'px !important; height: '+ height +'px !important; }',
+					'.bangumi-player.mini-player > .bgray-btn-wrap { display:none !important; }',
 					'#adjust-player-miniplayer-resizable { width: '+ width +'px ; height: '+ height +'px; position: absolute; top: 30px; z-index: 0; overflow: hidden; resize: both; }',
 					'.newfloat #adjust-player-miniplayer-resizable, .mini-player #adjust-player-miniplayer-resizable { z-index: 10000;}',
 					'#bofqi.mini-player {height:auto;margin:auto;}'
@@ -568,7 +569,8 @@
 										'#bofqi.mini-player, #bofqi.newfloat .move, #bofqi.float .move { width: '+ resizableElementWidth +'px !important; }',
 										'#bofqi.mini-player:before, #bofqi.float:before, #bofqi.newfloat:before, .player-wrapper .mini-player:before { box-shadow: none !important; }',
 										'#bofqi.mini-player > .player, #bofqi.newfloat, #bofqi.newfloat:before, #bofqi.newfloat .move + .player, .player-wrapper .mini-player > #bofqi .player { width: '+ resizableElementWidth +'px !important; height: '+ resizableElementHeight +'px !important; }',
-										'.bangumi-player.mini-player .player-content { height: '+ resizableElementHeight +'px; }',
+										'.bangumi-player.mini-player > #bofqi { width: '+ resizableElementWidth +'px !important; height: '+ resizableElementHeight +'px !important; }',
+										'.bangumi-player.mini-player > .bgray-btn-wrap { display:none !important; }',
 										'#adjust-player-miniplayer-resizable { position: absolute; top: 30px; z-index: 1; overflow: hidden; resize: both; }',
 										'.newfloat #adjust-player-miniplayer-resizable, .mini-player #adjust-player-miniplayer-resizable { z-index: 10000;}',
 										'#bofqi.mini-player {height:auto;margin:auto;}'

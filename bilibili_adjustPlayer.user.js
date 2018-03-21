@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.16
+// @version     1.17
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -701,13 +701,16 @@
 
 					//进行快进(退)操作时弹出进度条
 					video.addEventListener("seeking", function() {
-						var controlBar = isBangumi('#bilibiliPlayer[class*="mode-"] .bilibili-player-video-control');
+						var controlBar = isBangumi('.autohide-controlbar > #bilibiliPlayer[class*="mode-"] .bilibili-player-video-control');
 						if (controlBar !== null ) {
 							controlBar.style = "opacity: 1 !important;";
 							var timer = null;
 							clearTimeout(this.timer);
 							this.timer = window.setTimeout(function() {
-								controlBar.style = "opacity: 0;";
+								var controlBar = isBangumi('.autohide-controlbar > #bilibiliPlayer[class*="mode-"] .bilibili-player-video-control');
+								if (controlBar !== null ) {
+									controlBar.style = "opacity: 0;";
+								}
 							}, 3000);
 						}
 					}, true);

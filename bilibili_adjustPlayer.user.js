@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.17
+// @version     1.18
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -745,20 +745,25 @@
 					var video = isBangumi('.bilibili-player-video video');
 					var framerate = 24;
 					if (video !== null) {
-						var contextMenu = isBangumi('.bilibili-player-area > .bilibili-player-video-wrap');
-						contextMenuClick(contextMenu);
-						var controlBtn = isBangumi('.bilibili-player-context-menu-container.black ul');
-						if (controlBtn !== null) {
-							var contextMenuItem = controlBtn.querySelectorAll('li > a'), i;
-							for (i = 0; i < contextMenuItem.length; ++i) {
-								if (contextMenuItem[i].innerHTML === "视频统计信息") {
-									doClick(contextMenuItem[i]);
-									doClick(isBangumi('a.bilibili-player-video-info-close'));
-									var fps = isBangumi('.bilibili-player-video-info-panel > div[data-name="fps"] .info-data');
-									framerate = fps.innerHTML;
-									break;
+						if(typeof window.adjustPlayerVideoFps === 'undefined') {
+							var contextMenu = isBangumi('.bilibili-player-area > .bilibili-player-video-wrap');
+							contextMenuClick(contextMenu);
+							var controlBtn = isBangumi('.bilibili-player-context-menu-container.black ul');
+							if (controlBtn !== null) {
+								var contextMenuItem = controlBtn.querySelectorAll('li > a'), i;
+								for (i = 0; i < contextMenuItem.length; ++i) {
+									if (contextMenuItem[i].innerHTML === "视频统计信息") {
+										doClick(contextMenuItem[i]);
+										doClick(isBangumi('a.bilibili-player-video-info-close'));
+										var fps = isBangumi('.bilibili-player-video-info-panel > div[data-name="fps"] .info-data');
+										framerate = fps.innerHTML;
+										window.adjustPlayerVideoFps = framerate;
+										break;
+									}
 								}
 							}
+						} else {
+							framerate = window.adjustPlayerVideoFps;
 						}
 						//var currentFrame = Math.floor(video.currentTime * framerate);
 						if (!video.paused) {
@@ -1196,7 +1201,7 @@
 
 					var k = isCombinationKey(kCode);
 					if (k.CombinationKey) {
-						if (event.altKey || event.altKey || event.shiftKey) {
+						if (event.ctrlKey || event.altKey || event.shiftKey) {
 							if (k.keys[0] === "shift") {
 								if (event.shiftKey && event.keyCode === k.keys[1]) {
 									executeEvent(type);
@@ -1215,7 +1220,7 @@
 							}
 						}
 					} else {
-						if (event.altKey || event.altKey || event.shiftKey) {
+						if (event.ctrlKey || event.altKey || event.shiftKey) {
 							return;
 						} else {
 							if (event.keyCode === k.keys) {

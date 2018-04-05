@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.19
+// @version     1.20
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -946,22 +946,37 @@
 								}
 							}
 						}
-
+						var isHeimuExist = function(){
+							var flag = false;
+							if (matchURL.isVideoAV() || matchURL.isWatchlater()) {
+								var heimu = document.querySelector('#heimu');
+								if (heimu !== null) {
+									var heimuStyle = heimu.getAttribute("style");
+									if(heimuStyle.search("display: block;") !== -1){
+										flag = true;
+									}
+								}
+							} else {
+								var heimu = document.querySelector('#heimu');
+								if (heimu !== null) {
+									var heimuStyle = heimu.getAttribute("style");
+									if(heimuStyle !== null){
+										if(heimuStyle.search("display: block;") !== -1){
+											flag = true;
+										}
+									}
+								}
+							}
+							return flag;
+						};
 						if (type === "prev") {
 							if (typeof plist !== 'undefined' && typeof prevPlist !== 'undefined' && prevPlist !== null) {
 								var readyState = isBangumi('.bilibili-player-video-panel').getAttribute('style');
 								if (readyState !== null ) {
 									if (readyState.search("display: none;") !== -1) {
-										var heimu = document.querySelector('#heimu');
-										if (heimu !== null) {
-											var heimuStyle = heimu.getAttribute("style");
-											if(heimuStyle.search("display: block;") !== -1){
-												shortcut.shortcutsTips("分集切换","关灯状态下无法使用");
-												return;
-											} else {
-												shortcut.shortcutsTips("分集切换","切换分集失败");
-												return;
-											}
+										if(isHeimuExist()){
+											shortcut.shortcutsTips("分集切换","关灯状态下无法使用");
+											return;
 										}
 										doClick(prevPlist);
 									} else {
@@ -976,21 +991,14 @@
 								var readyState = isBangumi('.bilibili-player-video-panel').getAttribute('style');
 								if (readyState !== null ) {
 									if (readyState.search("display: none;") !== -1) {
-										var nextPlistInnerText = nextPlist.innerText;
-										if(nextPlistInnerText.search("展开") !== -1 || nextPlistInnerText.search("收起") !== -1){
-											shortcut.shortcutsTips("分集切换","没有下一集了");
+										if(isHeimuExist()){
+											shortcut.shortcutsTips("分集切换","关灯状态下无法使用");
 											return;
 										}
-										var heimu = document.querySelector('#heimu');
-										if (heimu !== null) {
-											var heimuStyle = heimu.getAttribute("style");
-											if(heimuStyle.search("display: block;") !== -1){
-												shortcut.shortcutsTips("分集切换","关灯状态下无法使用");
-												return;
-											} else {
-												shortcut.shortcutsTips("分集切换","切换分集失败");
-												return;
-											}
+										var nextPlistInnerText = nextPlist.innerText;
+										if(nextPlistInnerText.search("展开") !== -1 || nextPlistInnerText.search("收起") !== -1 || nextPlistInnerText.search("全部 >") !== -1){
+											shortcut.shortcutsTips("分集切换","没有下一集了");
+											return;
 										}
 										doClick(nextPlist);
 									} else {

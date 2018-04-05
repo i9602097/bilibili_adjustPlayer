@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.18.1
+// @version     1.19
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -452,6 +452,18 @@
 							var evt = document.createEvent('Event');
 							evt.initEvent('resize', true, true);
 							isBangumi('.bilibili-player-video video').dispatchEvent(evt);
+
+							//修复播放器尺寸调整过小，分级切换按钮被挡住
+							if (matchURL.isVideoAV()) {
+								var vPartToggle = document.querySelector('#v_multipage a.item.v-part-toggle');
+								if(vPartToggle !== null){
+									var bgrayBtnWrap = document.querySelector('.bgray-btn-wrap');
+									var multiPageWidth = document.querySelector('#v_multipage').offsetWidth;
+									if(parseInt(multiPageWidth) >= parseInt(width)){
+										bgrayBtnWrap.setAttribute("style","margin-left:calc("+ multiPageWidth +"px / 2) !important;");
+									}
+								}
+							}
 						};
 						if (isBangumi('#adjustPlayerSize')) {
 							fixResize();
@@ -896,19 +908,19 @@
 					if (video !== null) {
 						var plist,nextPlist,prevPlist,curPage;
 						if (matchURL.isVideoAV()) {
-							plist = document.querySelector('#plist');
-							curPage = document.querySelector('#plist .curPage ');
+							plist = document.querySelector('#v_multipage');
+							curPage = document.querySelector('#v_multipage a.item.on');
 							if (curPage !== null ) {
-								nextPlist = curPage.nextSibling;
-								prevPlist = curPage.previousSibling;
+								nextPlist = curPage.nextElementSibling;
+								prevPlist = curPage.previousElementSibling;
 							}
 
 						} else if (matchURL.isOldBangumi()) {
 							plist = document.querySelector('ul.slider-list');
 							curPage = document.querySelector('.video-slider-list-wrapper ul.slider-list .cur');
 							if (curPage !== null ) {
-								nextPlist = curPage.nextSibling;
-								prevPlist = curPage.previousSibling;
+								nextPlist = curPage.nextElementSibling;
+								prevPlist = curPage.previousElementSibling;
 							}
 
 						} else if (matchURL.isWatchlater()) {
@@ -937,22 +949,53 @@
 
 						if (type === "prev") {
 							if (typeof plist !== 'undefined' && typeof prevPlist !== 'undefined' && prevPlist !== null) {
-								var heimu = document.querySelector('#heimu').getAttribute("style");
-								if (heimu !== null && heimu.search("display: block;") !== -1) {
-									shortcut.shortcutsTips("分集切换","关灯状态下无法使用");
-								} else {
-									doClick(prevPlist);
+								var readyState = isBangumi('.bilibili-player-video-panel').getAttribute('style');
+								if (readyState !== null ) {
+									if (readyState.search("display: none;") !== -1) {
+										var heimu = document.querySelector('#heimu');
+										if (heimu !== null) {
+											var heimuStyle = heimu.getAttribute("style");
+											if(heimuStyle.search("display: block;") !== -1){
+												shortcut.shortcutsTips("分集切换","关灯状态下无法使用");
+												return;
+											} else {
+												shortcut.shortcutsTips("分集切换","切换分集失败");
+												return;
+											}
+										}
+										doClick(prevPlist);
+									} else {
+										return;
+									}
 								}
 							} else {
 								shortcut.shortcutsTips("分集切换","没有上一集了");
 							}
 						} else if (type === "next") {
 							if (typeof plist !== 'undefined' && typeof nextPlist !== 'undefined' && nextPlist !== null) {
-								var heimu = document.querySelector('#heimu').getAttribute("style");
-								if (heimu !== null && heimu.search("display: block;") !== -1) {
-									shortcut.shortcutsTips("分集切换","关灯状态下无法使用");
-								} else {
-									doClick(nextPlist);
+								var readyState = isBangumi('.bilibili-player-video-panel').getAttribute('style');
+								if (readyState !== null ) {
+									if (readyState.search("display: none;") !== -1) {
+										var nextPlistInnerText = nextPlist.innerText;
+										if(nextPlistInnerText.search("展开") !== -1 || nextPlistInnerText.search("收起") !== -1){
+											shortcut.shortcutsTips("分集切换","没有下一集了");
+											return;
+										}
+										var heimu = document.querySelector('#heimu');
+										if (heimu !== null) {
+											var heimuStyle = heimu.getAttribute("style");
+											if(heimuStyle.search("display: block;") !== -1){
+												shortcut.shortcutsTips("分集切换","关灯状态下无法使用");
+												return;
+											} else {
+												shortcut.shortcutsTips("分集切换","切换分集失败");
+												return;
+											}
+										}
+										doClick(nextPlist);
+									} else {
+										return;
+									}
 								}
 							} else {
 								shortcut.shortcutsTips("分集切换","没有下一集了");
@@ -1126,7 +1169,10 @@
 						}
 
 						this.timeoutID = window.setTimeout(function() {
-							isBangumi('#bilibiliPlayer > .bilibili-player-area > .bilibili-player-video-wrap > #adjust-player-shortcuts-tips').style = "display: block;width:auto;opacity: 0;";
+							var adjustPlayerShortcutsTips = isBangumi('#bilibiliPlayer > .bilibili-player-area > .bilibili-player-video-wrap > #adjust-player-shortcuts-tips');
+							if(adjustPlayerShortcutsTips !== null) {
+								adjustPlayerShortcutsTips.style = "display: block;width:auto;opacity: 0;";
+							}
 						}, 1000);
 					} catch (e) {console.log('shortcutsTips：'+e);}
 				},
@@ -1588,7 +1634,7 @@
 		getPListId: function(href) {
 			var id;
 			if(typeof href !== 'undefined'){
-				id = href.match(/ep\d*/g) || href.match(/p=\d*/g) || href.match(/#page=\d*/g) || href.match(/ss\d*#\d*/g);
+				id = href.match(/ep\d*/g) || href.match(/p=\d*/g) || href.match(/#page=\d*/g) || href.match(/ss\d*#\d*/g) || href.match(/watchlater\/#\/av\d*\/p\d*/g);
 				if (id !== null) {
 					id = id[0].replace(/\D/g,'');
 				} else {

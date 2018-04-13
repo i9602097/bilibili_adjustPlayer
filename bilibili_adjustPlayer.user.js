@@ -1296,6 +1296,9 @@
 								if (event.target.nodeName === "INPUT") {
 									return;
 								}
+								if (event.target.nodeName === "TEXTAREA") {
+									return;
+								}
 								if (set.prevVideoFramerate === true) {
 									shortcut.shortcutsEvent("prevVideoFramerate",set.prevVideoFramerateKeyCode,event);
 								}
@@ -1352,6 +1355,9 @@
 							if (iframe !== null) {
 								iframe.contentWindow.document.addEventListener("keydown",function(event) {
 									if (event.target.nodeName === "INPUT") {
+										return;
+									}
+									if (event.target.nodeName === "TEXTAREA") {
 										return;
 									}
 									var focused = document.activeElement;

@@ -3,7 +3,7 @@
 // @namespace   micky7q7
 // @author      mickey7q7
 // @license     MIT License
-// @supportURL  https://github.com/mickey7q7/bilibili_adjustPlayer/issues
+// @homepageURL https://github.com/mickey7q7/bilibili_adjustPlayer
 // @include     http*://www.bilibili.com/video/av*
 // @include     http*://www.bilibili.com/watchlater/*
 // @include     http*://www.bilibili.com/bangumi/play/ep*

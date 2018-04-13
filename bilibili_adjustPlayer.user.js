@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.20
+// @version     1.21
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -754,6 +754,18 @@
 		},
 		shortcuts : function (set) {
 			var shortcut = {
+				playPause : function () {
+					var video = isBangumi('.bilibili-player-video video');
+					if (video !== null) {
+						if (!video.paused) {
+							doClick(video);
+							shortcut.shortcutsTips("播放/暂停", "暂停");
+						} else {
+							doClick(video);
+							shortcut.shortcutsTips("播放/暂停", "播放");
+						}
+					}
+				},
 				videoFramerate : function (type) {
 					var video = isBangumi('.bilibili-player-video video');
 					var framerate = 24;
@@ -1201,6 +1213,9 @@
 
 					var executeEvent = function() {
 						switch (type) {
+							case "playPause":
+								shortcut.playPause();
+								break;
 							case "prevVideoFramerate":
 								shortcut.videoFramerate("prev");
 								break;
@@ -1977,6 +1992,11 @@
             				</label>
             				<div class="shortcutsItem">
             					<label class="h5">
+            						<input name="playPause" type="checkbox" list="shortcuts">播放/暂停视频 <span class="tipsButton" action="shortcuts" typeName="playPause">[设置]</span>
+            						<input type="text" name="playPauseKeyName" readOnly="true" list="shortcuts">
+            						<input type="hidden" name="playPauseKeyCode" list="shortcuts" KeyCode="true">
+            					</label>
+            					<label class="h5">
             						<input name="showHideDanmuku" type="checkbox" list="shortcuts">显示/隐藏弹幕 <span class="tipsButton" action="shortcuts" typeName="showHideDanmuku">[设置]</span>
             						<input type="text" name="showHideDanmukuKeyName" readOnly="true" list="shortcuts">
             						<input type="hidden" name="showHideDanmukuKeyCode" list="shortcuts" KeyCode="true">
@@ -2543,9 +2563,9 @@
 			var title = '快捷键设置';
 			var bar = '<span class="btn" action="cancel">X</span>';
 			var content = commentToString(function () { /*
-			<p style="margin-bottom: 4px;font-size: 16px;">请在输入框内按下需要的按键设置快捷键：<span id="tips" style="text-align: left; color: #ff81aa; margin-top: 33px; right: 22px; position: absolute;"></span></p>
+			<p style="margin-bottom: 4px;font-size: 16px;">请在输入框内按下需要的按键设置快捷键：<span id="tips" style="text-align: left; color: #ff81aa; margin-top: 33px; right: 32px; position: absolute;"></span></p>
 			<p>
-			  <input type="text" name="keyName" placeholder="支持单个组合键ctrl，alt，shift" style="width: 556px;font-size: 16px;text-align: center;padding:4px 0;border: 1px solid #ccd0d7;border-radius: 4px;" >
+			  <input type="text" name="keyName" placeholder="支持单个组合键ctrl，alt，shift" style="width: 574px;font-size: 16px;text-align: center;padding:4px 0;border: 1px solid #ccd0d7;border-radius: 4px;" >
 			  <input type="hidden" name="keyCode" >
 			  <input type="hidden" name="typeName" >
 			</p>

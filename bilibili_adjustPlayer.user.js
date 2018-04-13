@@ -419,7 +419,7 @@
 						'#bofqi .player, .moviescontent { width: '+ width +' !important; height: calc(48px + '+ width +' / calc('+ ratio +') - 300px / calc('+ ratio +') + 68px) !important; } ',
 						'#bofqi.wide .player, .wide.moviescontent { width: '+ width +' !important; height: calc('+ width +' / calc('+ ratio +') + 68px) !important; } ',
 						'.player-wrapper .bangumi-player, #__bofqi.bili-wrapper { width: '+ width +' !important; background: none !important; height: auto !important;} ',
-						'#bangumi_player.player-wrapper, #__bofqi.bili-wrapper { min-height: unset !important;} ',
+						'#bangumi_player.player-wrapper, #__bofqi.bili-wrapper { min-height: calc('+ width +' / calc('+ ratio +')) !important;} ',
 						'#bofqi.wide .autohide-controlbar, .wide.autohide-controlbar-movies { width: '+ width +' !important; height: calc('+ width +' / calc('+ ratio +') + 0px) !important; } '
 					];
 					var node = document.createElement('style');

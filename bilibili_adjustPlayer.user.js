@@ -1287,85 +1287,79 @@
 				},
 				init : function (set) {
 					if (typeof set !== 'undefined') {
-						//console.log(set);
 						try{
 							if (set.shortcutsSwitch !== true) {
 								return;
 							}
+
+							var shortcutsEventObj = {};
+							for (var prop in set) {
+								var KeyCode = prop.indexOf('KeyCode');
+								if(KeyCode !== -1 ){
+									shortcutsEventObj[set[prop]] = prop.replace(/KeyCode/gi, '');
+								}
+							}
+
 							function bindEvent(event) {
+								//console.log(shortcutsEventObj);
 								if (event.target.nodeName === "INPUT") {
 									return;
 								}
 								if (event.target.nodeName === "TEXTAREA") {
 									return;
 								}
-								if (set.prevVideoFramerate === true) {
-									shortcut.shortcutsEvent("prevVideoFramerate",set.prevVideoFramerateKeyCode,event);
+
+								if (event.shiftKey) {
+									var shiftEventName = shortcutsEventObj['shift+' + event.keyCode];
+									if(typeof shiftEventName !== 'undefined'){
+										shiftEventName = shiftEventName.replace(/shift\+/gi, '');
+										if (set[shiftEventName] === true) {
+											shortcut.shortcutsEvent(shiftEventName,set[shiftEventName + 'KeyCode'],event);
+											return;
+										}
+									}
 								}
-								if (set.nextVideoFramerate === true) {
-									shortcut.shortcutsEvent("nextVideoFramerate",set.nextVideoFramerateKeyCode,event);
+								if (event.ctrlKey) {
+									var ctrlEventName = shortcutsEventObj['ctrl+' + event.keyCode];
+									if(typeof ctrlEventName !== 'undefined'){
+										ctrlEventName = ctrlEventName.replace(/ctrl\+/gi, '');
+										if (set[ctrlEventName] === true) {
+											shortcut.shortcutsEvent(ctrlEventName,set[ctrlEventName + 'KeyCode'],event);
+											return;
+										}
+									}
 								}
-								if (set.showHideDanmuku === true) {
-									shortcut.shortcutsEvent("showHideDanmuku",set.showHideDanmukuKeyCode,event);
+								if (event.altKey) {
+									var altEventName = shortcutsEventObj['alt+' + event.keyCode];
+									if(typeof altEventName !== 'undefined'){
+										altEventName = altEventName.replace(/alt\+/gi, '');
+										if (set[altEventName] === true) {
+											shortcut.shortcutsEvent(altEventName,set[altEventName + 'KeyCode'],event);
+											return;
+										}
+									}
 								}
-								if (set.addVideoSpeed === true) {
-									shortcut.shortcutsEvent("addVideoSpeed",set.addVideoSpeedKeyCode,event);
-								}
-								if (set.subVideoSpeed === true) {
-									shortcut.shortcutsEvent("subVideoSpeed",set.subVideoSpeedKeyCode,event);
-								}
-								if (set.resetVideoSpeed === true) {
-									shortcut.shortcutsEvent("resetVideoSpeed",set.resetVideoSpeedKeyCode,event);
-								}
-								if (set.playerWide === true) {
-									shortcut.shortcutsEvent("playerWide",set.playerWideKeyCode,event);
-								}
-								if (set.fullscreen === true) {
-									shortcut.shortcutsEvent("fullscreen",set.fullscreenKeyCode,event);
-								}
-								if (set.webfullscreen === true) {
-									shortcut.shortcutsEvent("webfullscreen",set.webfullscreenKeyCode,event);
-								}
-								if (set.prevPlist === true) {
-									shortcut.shortcutsEvent("prevPlist",set.prevPlistKeyCode,event);
-								}
-								if (set.nextPlist === true) {
-									shortcut.shortcutsEvent("nextPlist",set.nextPlistKeyCode,event);
-								}
-								if (set.videoMute === true) {
-									shortcut.shortcutsEvent("videoMute",set.videoMuteKeyCode,event);
-								}
-								if (set.lightOnOff === true) {
-									shortcut.shortcutsEvent("lightOnOff",set.lightOnOffKeyCode,event);
-								}
-								if (set.loopVideoOnOff === true) {
-									shortcut.shortcutsEvent("loopVideoOnOff",set.loopVideoOnOffKeyCode,event);
-								}
-								if (set.focusPlayer === true) {
-									shortcut.shortcutsEvent("focusPlayer",set.focusPlayerKeyCode,event);
-								}
-								if (set.focusDanmakuInput === true) {
-									shortcut.shortcutsEvent("focusDanmakuInput",set.focusDanmakuInputKeyCode,event);
+
+								var eventName = shortcutsEventObj[event.keyCode];
+								if(typeof eventName !== 'undefined'){
+									if (set[eventName] === true) {
+										shortcut.shortcutsEvent(eventName,set[eventName + 'KeyCode'],event);
+										return;
+									}
 								}
 							}
-							document.addEventListener("keydown",bindEvent , false);
 
-							//fix bangumi
 							var iframe = document.querySelector('iframe.bilibiliHtml5Player');
 							if (iframe !== null) {
 								iframe.contentWindow.document.addEventListener("keydown",function(event) {
-									if (event.target.nodeName === "INPUT") {
-										return;
-									}
-									if (event.target.nodeName === "TEXTAREA") {
-										return;
-									}
 									var focused = document.activeElement;
 									if (focused.nodeName === "IFRAME") {
 										window.top.focus();
 										bindEvent(event);
 									}
 								} , false);
+							} else {
+								document.addEventListener("keydown",bindEvent, false);
 							}
 						} catch (e) {console.log('shortcuts：'+e);}
 					}

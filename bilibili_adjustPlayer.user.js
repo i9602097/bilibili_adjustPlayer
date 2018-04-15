@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.22
+// @version     1.23
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -1356,6 +1356,11 @@
 									return;
 								}
 
+								var focused = document.activeElement;
+								if (focused.nodeName === "IFRAME") {
+									window.top.focus();
+								}
+
 								if (event.shiftKey) {
 									var shiftEventName = shortcutsEventObj['shift+' + event.keyCode];
 									if(typeof shiftEventName !== 'undefined'){
@@ -1398,16 +1403,9 @@
 
 							var iframe = document.querySelector('iframe.bilibiliHtml5Player');
 							if (iframe !== null) {
-								iframe.contentWindow.document.addEventListener("keydown",function(event) {
-									var focused = document.activeElement;
-									if (focused.nodeName === "IFRAME") {
-										window.top.focus();
-										bindEvent(event);
-									}
-								} , false);
-							} else {
-								document.addEventListener("keydown",bindEvent, false);
+								iframe.contentWindow.document.addEventListener("keydown",bindEvent, false);
 							}
+							document.addEventListener("keydown",bindEvent, false);
 						} catch (e) {console.log('shortcuts：'+e);}
 					}
 				}

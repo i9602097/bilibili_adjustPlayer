@@ -858,7 +858,7 @@
 					var video = isBangumi('.bilibili-player-video video');
 					if (video !== null) {
 						var videoSpeed = video.playbackRate;
-						var speed = [0.5,0.75,1,1.25,1.5,2,3,4,6,8,12,16];
+						var speed = [0.25,0.5,0.75,1,1.25,1.5,2,3,4,6,8,12,16];
 						switch (type) {
 							case 'add':
 								var addSpeed = Math.max(...speed);
@@ -2460,6 +2460,7 @@
               <div class="box custom-ratio">
                   <div style="text-align: left;">限制调整比例：</div>
                     <select name="customRatio" style="width:100%;margin-top: 10px;">
+                        <option value="3/2">3 / 2</option>
                         <option value="4/3">4 / 3</option>
                         <option value="15/9">15 / 9</option>
 						<option value="16/9" selected="selected">16 / 9</option>

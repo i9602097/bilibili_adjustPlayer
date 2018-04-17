@@ -464,38 +464,6 @@
 									}
 								}
 							}
-
-							//修复番剧页拉下页面后出现页面缩上去的bug
-							if (matchURL.isOldBangumi() || matchURL.isNewBangumi()) {
-								var bangumiPlayerWrapper = document.querySelector('#bangumi_player.player-wrapper');
-								var bofqi = document.querySelector('#bofqi');
-								if (bangumiPlayerWrapper !== null) {
-									var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
-									var fixMinHeight = function(bofqi){
-										if (!bofqi.classList.contains('wide')) {
-											bangumiPlayerWrapper.style.minHeight='calc(48px + '+ width +' / calc('+ ratio +') - 300px / calc('+ ratio +') + 68px)';
-										}
-										else if (!bofqi.querySelector('.player').classList.contains('autohide-controlbar')){
-											bangumiPlayerWrapper.style.minHeight='calc('+ width +' / calc('+ ratio +') + 68px)';
-										}
-										else {
-											bangumiPlayerWrapper.style.minHeight='calc('+ width +' / calc('+ ratio +') + 0px)';
-										}
-									};
-									new MutationObserver(function(records) {
-										records.map(function (record) {
-											fixMinHeight(record.target);
-										});
-									}).observe(bofqi, {
-										attributes: true,
-										attributeFilter: ['class']
-									});
-									setTimeout(function() {
-										fixMinHeight(bofqi);
-									}, 200);
-								}
-							}
-
 						};
 						if (isBangumi('#adjustPlayerSize')) {
 							fixResize();
@@ -504,6 +472,46 @@
 							node.appendChild(document.createTextNode(css.join('')));
 							document.documentElement.appendChild(node);
 							fixResize();
+						}
+					}
+
+					//修复番剧页拉下页面后出现页面缩上去的bug
+					if (matchURL.isOldBangumi() || matchURL.isNewBangumi()) {
+						var bangumiPlayerWrapper = document.querySelector('#bangumi_player.player-wrapper');
+						var bofqi = document.querySelector('#bofqi');
+						if (bangumiPlayerWrapper !== null) {
+							var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+							var fixMinHeight = function(bofqi){
+								if (player === "flashPlayer") {
+									if (!bofqi.classList.contains('wide')) {
+										bangumiPlayerWrapper.style.minHeight='calc(48px + '+ width +' / calc('+ ratio +') - 300px / calc('+ ratio +') + 68px)';
+									}
+									else {
+										bangumiPlayerWrapper.style.minHeight='calc('+ width +' / calc('+ ratio +') + 0px)';
+									}
+								} else if (player === "html5Player") {
+									if (!bofqi.classList.contains('wide')) {
+										bangumiPlayerWrapper.style.minHeight='calc(48px + '+ width +' / calc('+ ratio +') - 300px / calc('+ ratio +') + 68px)';
+									}
+									else if (!bofqi.querySelector('.player').classList.contains('autohide-controlbar')){
+										bangumiPlayerWrapper.style.minHeight='calc('+ width +' / calc('+ ratio +') + 68px)';
+									}
+									else {
+										bangumiPlayerWrapper.style.minHeight='calc('+ width +' / calc('+ ratio +') + 0px)';
+									}
+								}
+							};
+							new MutationObserver(function(records) {
+								records.map(function (record) {
+									fixMinHeight(record.target);
+								});
+							}).observe(bofqi, {
+								attributes: true,
+								attributeFilter: ['class']
+							});
+							setTimeout(function() {
+								fixMinHeight(bofqi);
+							}, 200);
 						}
 					}
 

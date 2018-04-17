@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.23
+// @version     1.24
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -366,43 +366,7 @@
 		autoLightOn: function (set) {
 			if (typeof set !== 'undefined') {
 				try{
-					var heimu = document.querySelector('#heimu').getAttribute("style");
-					if (heimu !== null && heimu.search("display: block;") !== -1) {
-						return;
-					}
-
-					var isActiveContextMenu = isBangumi('.bilibili-player-context-menu-container.black');
-					if (isActiveContextMenu.getAttribute("class").search("active") !== -1) {
-						return;
-					}
-
-					if (isBangumi('#adjustMiniPlayerlightOnOff') === null ) {
-						var css ='.bilibili-player-context-menu-container.black.active {opacity: 0; !important;}';
-						var node = document.createElement('style');
-						node.type = 'text/css';
-						node.id = 'adjustPlayerlightOnOff';
-						node.appendChild(document.createTextNode(css));
-						isBangumi('.player').appendChild(node);
-					}
-
-					var contextMenu = isBangumi('.bilibili-player-area > .bilibili-player-video-wrap');
-					contextMenuClick(contextMenu);
-
-					clearTimeout(this.contextMenuTimer);
-					this.contextMenuTimer = window.setTimeout(function() {
-						var controlBtn = isBangumi('.bilibili-player-context-menu-container.black ul');
-						if (controlBtn !== null) {
-							var contextMenuItem = controlBtn.querySelectorAll('li > a'), i;
-							for (i = 0; i < contextMenuItem.length; ++i) {
-								if (contextMenuItem[i].innerHTML === "关灯") {
-									doClick(contextMenuItem[i]);
-									break;
-								}
-							}
-							var adjustPlayerlightOnOff = isBangumi('#adjustPlayerlightOnOff');
-							adjustPlayerlightOnOff.parentNode.removeChild(adjustPlayerlightOnOff);
-						}
-					}, 200);
+					window.eval('window.heimu();');
 				}
 				catch(e) {console.log('autoLightOn：'+e);}
 			}
@@ -1094,15 +1058,10 @@
 						isBangumi('.player').appendChild(node);
 					}
 
-					var contextMenu = isBangumi('.bilibili-player-area > .bilibili-player-video-wrap');
-					contextMenuClick(contextMenu);
-
-					clearTimeout(this.contextMenuTimer);
-					this.contextMenuTimer = window.setTimeout(function() {
-						var controlBtn = isBangumi('.bilibili-player-context-menu-container.black ul');
+					var clickLightOnOff = function(controlBtn) {
 						if (controlBtn !== null) {
-							var contextMenuItem = controlBtn.querySelectorAll('li > a'), i;
 							var lightOnOffItem = null;
+							var contextMenuItem = controlBtn.querySelectorAll('li > a'), i;
 							for (i = 0; i < contextMenuItem.length; ++i) {
 								if (contextMenuItem[i].innerHTML === "关灯" || contextMenuItem[i].innerHTML === "开灯") {
 									lightOnOffItem = contextMenuItem[i];
@@ -1110,6 +1069,7 @@
 									break;
 								}
 							}
+
 							var adjustPlayerlightOnOff = isBangumi('#adjustPlayerlightOnOff');
 							adjustPlayerlightOnOff.parentNode.removeChild(adjustPlayerlightOnOff);
 
@@ -1121,6 +1081,22 @@
 								}
 							};
 							shortcut.shortcutsTips("开/关灯",tipsValue());
+						}
+					};
+
+					var contextMenu = isBangumi('.bilibili-player-area > .bilibili-player-video-wrap');
+					var timerCount = 0;
+					var timer = window.setInterval(function callback() {
+						var controlBtn = isBangumi('.bilibili-player-context-menu-container.black ul');
+						if (controlBtn !== null && controlBtn.innerHTML === '') {
+							contextMenuClick(contextMenu);
+						} else {
+							clickLightOnOff(controlBtn);
+							clearInterval(timer);
+						}
+						timerCount++;
+						if (timerCount >= 10) {
+							clearInterval(timer);
 						}
 					}, 200);
 				},

@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.26
+// @version     1.27
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -551,6 +551,87 @@
 							}, 200);
 						}
 					}
+
+					//重写迷你播放器滚动事件
+					if (matchURL.isOldBangumi() || matchURL.isNewBangumi()) {
+						var miniplayer = function(type) {
+							var isMiniplayer = localStorage.getItem('b_miniplayer');
+							var miniSwitch = document.querySelectorAll('.bangumi-nav-right > .nav-mini-switch')[0];
+							if(type === "off") {
+								if(isMiniplayer === "1") {
+									miniSwitch.click();
+								}
+							} else if(type === "on"){
+								if(isMiniplayer === "0") {
+									miniSwitch.click();
+								}
+							}
+						};
+						miniplayer("off");
+
+						var miniSwitch = document.querySelectorAll('.bangumi-nav-right > .nav-mini-switch')[0];
+						var miniSwitchClone = miniSwitch.cloneNode(true);
+						miniSwitch.setAttribute('style', 'display:none');
+						miniSwitchClone.onclick = function (e) {
+							var adjustPlayerMiniplayer = localStorage.getItem('adjustPlayer_b_miniplayer');
+							//console.log(adjustPlayerMiniplayer);
+							if(adjustPlayerMiniplayer === null){
+								miniplayer("on");
+								localStorage.setItem('adjustPlayer_b_miniplayer','1');
+								miniSwitchClone.innerHTML = 'mini<br>OFF';
+								return;
+							} else if(adjustPlayerMiniplayer === '0'){
+								miniplayer("on");
+								localStorage.setItem('adjustPlayer_b_miniplayer','1');
+								miniSwitchClone.innerHTML = 'mini<br>OFF';
+								return;
+							} else if(adjustPlayerMiniplayer === '1'){
+								miniplayer("off");
+								localStorage.setItem('adjustPlayer_b_miniplayer','0');
+								miniSwitchClone.innerHTML = 'mini<br>ON';
+								return;
+							}
+						};
+						var bangumiNavRight =  document.querySelector('.bangumi-nav-right');
+						var miniplayerValue = localStorage.getItem('adjustPlayer_b_miniplayer');
+						//console.log(miniplayerValue);
+						if(miniplayerValue === null){
+							miniSwitchClone.innerHTML = 'mini<br>ON';
+						} else if(miniplayerValue === '0'){
+							miniSwitchClone.innerHTML = 'mini<br>ON';
+						} else if(miniplayerValue === '1'){
+							miniSwitchClone.innerHTML = 'mini<br>OFF';
+						}
+						bangumiNavRight.appendChild(miniSwitchClone);
+
+						window.addEventListener('scroll', function(e) {
+							var y = window.scrollY;
+							var hiddenY = document.querySelector('#bangumi_detail').offsetTop;
+							var adjustPlayerMiniplayer = localStorage.getItem('adjustPlayer_b_miniplayer');
+
+							if(y >= hiddenY){
+								if(adjustPlayerMiniplayer === "1"){
+									miniplayer("on");
+								}
+							} else {
+								if(adjustPlayerMiniplayer === "1"){
+									miniplayer("off");
+								}
+							}
+						});
+					} else {
+						var adjustPlayerMiniplayer = localStorage.getItem('adjustPlayer_b_miniplayer');
+						var miniSwitch = document.querySelector('.fixed-nav-m .mini');
+
+						if(adjustPlayerMiniplayer === '0'){
+							miniSwitch.click();
+							return;
+						} else if(adjustPlayerMiniplayer === '1'){
+							miniSwitch.click();
+							return;
+						}
+					}
+
 
 					//修复播放器尺寸设置过大时，被其他浮动元素遮挡
 					var gotop;

@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.26.1
+// @version     1.28
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -424,6 +424,17 @@
 							}
 						};
 
+						var heimuDblclickEvent = function(){
+							var heimu = document.querySelector('#heimu');
+							var isDblclickEvent = heimu.getAttribute("heimuDblclick");
+							if(isDblclickEvent === null){
+								heimu.addEventListener('dblclick', function () {
+									heimu.setAttribute("style","display: none;");
+								});
+								heimu.setAttribute("heimuDblclick","true");
+							}
+						};
+
 						var contextMenu = isBangumi('.bilibili-player-area > .bilibili-player-video-wrap');
 						var timerCount = 0;
 						var timer = window.setInterval(function callback() {
@@ -432,6 +443,7 @@
 								contextMenuClick(contextMenu);
 							} else {
 								clickLightOnOff(controlBtn);
+								heimuDblclickEvent();
 								clearInterval(timer);
 							}
 							timerCount++;
@@ -607,59 +619,71 @@
 					}
 				} catch (e) {console.log('resizePlayer：'+e);}
 			}
-			var fixMiniPlayer = function() {
-				if (localStorage.getItem('adjustPlayer_b_miniplayer') === null) localStorage.setItem('adjustPlayer_b_miniplayer', localStorage.getItem('b_miniplayer'));
-				if (localStorage.getItem('adjustPlayer_b_miniplayer') !== '1' && localStorage.getItem('adjustPlayer_b_miniplayer') !== '0') localStorage.setItem('adjustPlayer_b_miniplayer', '1');
-				var miniplayer = function(type, miniSwitch) {
-					var isMiniplayer = localStorage.getItem('b_miniplayer');
-					if (type === "off") {
-						if (isMiniplayer === "1") miniSwitch.click();
-					} else if (type === "on") {
-						if (isMiniplayer === "0") miniSwitch.click();
-					}
-				};
-				var NavRight = matchURL.isNewBangumi() ? document.querySelector('.bangumi-nav-right') : document.querySelector('.fixed-nav-m');
-				if (NavRight === null) return;
-				var miniSwitch = matchURL.isNewBangumi() ? NavRight.querySelectorAll('.bangumi-nav-right > .nav-mini-switch')[0] : NavRight.querySelectorAll('.fixed-nav-m .mini')[0];
-				var setMiniPlayer = function() {
-					var adjustPlayerMiniplayer = localStorage.getItem('adjustPlayer_b_miniplayer');
-					//console.log(adjustPlayerMiniplayer);
-					if (adjustPlayerMiniplayer === "1") {
-						if (!matchURL.isNewBangumi() || window.scrollY >= document.querySelector('#bangumi_detail').offsetTop) miniplayer("on", miniSwitch);
-						else miniplayer("off", miniSwitch);
-					} else if (adjustPlayerMiniplayer === "0") miniplayer("off", miniSwitch);
-				};
-				var miniSwitchClone = miniSwitch.cloneNode(true);
-				var setMiniSwitchClone = function() {
-					setMiniPlayer();
-					var miniplayerValue = localStorage.getItem('adjustPlayer_b_miniplayer');
-					//console.log(miniplayerValue);
-					if (miniplayerValue === '0') {
-						miniSwitchClone.innerHTML = miniSwitchClone.innerHTML.replace('ON', 'OFF');
-						miniSwitchClone.title = miniSwitchClone.title.replace('关闭', '打开');
-					} else if (miniplayerValue === '1') {
-						miniSwitchClone.innerHTML = miniSwitchClone.innerHTML.replace('OFF', 'ON');
-						miniSwitchClone.title = miniSwitchClone.title.replace('打开', '关闭');
-					}
-				};
-				miniSwitchClone.onclick = function(e) {
-					var adjustPlayerMiniplayer = localStorage.getItem('adjustPlayer_b_miniplayer');
-					//console.log(adjustPlayerMiniplayer);
-					if (adjustPlayerMiniplayer === '0') localStorage.setItem('adjustPlayer_b_miniplayer', '1');
-					else if (adjustPlayerMiniplayer === '1') localStorage.setItem('adjustPlayer_b_miniplayer', '0');
+			//重写迷你播放器滚动事件
+			try{
+				var fixMiniPlayer = function() {
+					if (localStorage.getItem('adjustPlayer_b_miniplayer') === null) localStorage.setItem('adjustPlayer_b_miniplayer', localStorage.getItem('b_miniplayer'));
+					if (localStorage.getItem('adjustPlayer_b_miniplayer') !== '1' && localStorage.getItem('adjustPlayer_b_miniplayer') !== '0') localStorage.setItem('adjustPlayer_b_miniplayer', '1');
+					var miniplayer = function(type, miniSwitch) {
+						var isMiniplayer = localStorage.getItem('b_miniplayer');
+						if (type === "off") {
+							if (isMiniplayer === "1") miniSwitch.click();
+						} else if (type === "on") {
+							if (isMiniplayer === "0") miniSwitch.click();
+						}
+					};
+					var NavRight = matchURL.isNewBangumi() ? document.querySelector('.bangumi-nav-right') : document.querySelector('.fixed-nav-m');
+					if (NavRight === null) return;
+					var miniSwitch = matchURL.isNewBangumi() ? NavRight.querySelectorAll('.bangumi-nav-right > .nav-mini-switch')[0] : NavRight.querySelectorAll('.fixed-nav-m .mini')[0];
+					var setMiniPlayer = function(scroll_pos) {
+						var adjustPlayerMiniplayer = localStorage.getItem('adjustPlayer_b_miniplayer');
+						//console.log(adjustPlayerMiniplayer);
+						if (adjustPlayerMiniplayer === "1") {
+							if (!matchURL.isNewBangumi() || scroll_pos >= document.querySelector('#bangumi_detail').offsetTop) miniplayer("on", miniSwitch);
+							else miniplayer("off", miniSwitch);
+						} else if (adjustPlayerMiniplayer === "0") miniplayer("off", miniSwitch);
+					};
+					var miniSwitchClone = miniSwitch.cloneNode(true);
+					var setMiniSwitchClone = function() {
+						setMiniPlayer(window.scrollY);
+						var miniplayerValue = localStorage.getItem('adjustPlayer_b_miniplayer');
+						//console.log(miniplayerValue);
+						if (miniplayerValue === '0') {
+							miniSwitchClone.innerHTML = miniSwitchClone.innerHTML.replace('ON', 'OFF');
+							miniSwitchClone.title = miniSwitchClone.title.replace('关闭', '打开');
+						} else if (miniplayerValue === '1') {
+							miniSwitchClone.innerHTML = miniSwitchClone.innerHTML.replace('OFF', 'ON');
+							miniSwitchClone.title = miniSwitchClone.title.replace('打开', '关闭');
+						}
+					};
+					miniSwitchClone.onclick = function(e) {
+						var adjustPlayerMiniplayer = localStorage.getItem('adjustPlayer_b_miniplayer');
+						//console.log(adjustPlayerMiniplayer);
+						if (adjustPlayerMiniplayer === '0') localStorage.setItem('adjustPlayer_b_miniplayer', '1');
+						else if (adjustPlayerMiniplayer === '1') localStorage.setItem('adjustPlayer_b_miniplayer', '0');
+						setMiniSwitchClone();
+						return;
+					};
 					setMiniSwitchClone();
-					return;
+					miniSwitch.setAttribute('style', 'display:none');
+					NavRight.insertBefore(miniSwitchClone, miniSwitch);
+					if (matchURL.isNewBangumi()) {
+						var last_known_scroll_position = 0;
+						var ticking = false;
+						window.addEventListener('scroll', function(e) {
+							last_known_scroll_position = window.scrollY;
+							if (!ticking) {
+								window.requestAnimationFrame(function() {
+									setMiniPlayer(last_known_scroll_position);
+									ticking = false;
+								});
+							}
+							ticking = true;
+						});
+					}
 				};
-				setMiniSwitchClone();
-				miniSwitch.setAttribute('style', 'display:none');
-				NavRight.insertBefore(miniSwitchClone, miniSwitch);
-				if (matchURL.isNewBangumi()) {
-					window.addEventListener('scroll', function(e) {
-						setMiniPlayer();
-					});
-				}
-			};
-			fixMiniPlayer();
+				fixMiniPlayer();
+			} catch (e) {console.log('resizePlayer fixMiniPlayer：'+e);}
 		},
 		resizeMiniPlayer: function (set,width,isResizable) {
 			if (typeof set !== 'undefined' && typeof width !== 'undefined') {
@@ -2238,7 +2262,7 @@
             						<option value="off">关闭</option>
             					</select>防挡弹幕<span tooltip="使用帮助：&#10;1：“番剧”页面和普通页面的“防挡弹幕”默认设置竟然不一样？开启后设置让它一致 " class="tipsButton">[?]</span>
 							</label>
-            				<label class="h5"><input name="autoLightOn" type="checkbox">自动播放器关灯<span tooltip="使用帮助：&#10;1：在视频区域内点击右键进行开，关灯操作" class="tipsButton">[?]</span></label>
+            				<label class="h5"><input name="autoLightOn" type="checkbox">自动播放器关灯<span tooltip="使用帮助：&#10;1：在视频区域内点击右键进行开，关灯操作&#10;2：双击黑暗区域开灯。" class="tipsButton">[?]</span></label>
             		</div>
             	</fieldset>
             </div>

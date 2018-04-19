@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.27
+// @version     1.28
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -424,6 +424,17 @@
 							}
 						};
 
+						var heimuDblclickEvent = function(){
+							var heimu = document.querySelector('#heimu');
+							var isDblclickEvent = heimu.getAttribute("heimuDblclick");
+							if(isDblclickEvent === null){
+								heimu.addEventListener('dblclick', function () {
+									heimu.setAttribute("style","display: none;");
+								});
+								heimu.setAttribute("heimuDblclick","true");
+							}
+						};
+
 						var contextMenu = isBangumi('.bilibili-player-area > .bilibili-player-video-wrap');
 						var timerCount = 0;
 						var timer = window.setInterval(function callback() {
@@ -432,6 +443,7 @@
 								contextMenuClick(contextMenu);
 							} else {
 								clickLightOnOff(controlBtn);
+								heimuDblclickEvent();
 								clearInterval(timer);
 							}
 							timerCount++;
@@ -2250,7 +2262,7 @@
             						<option value="off">关闭</option>
             					</select>防挡弹幕<span tooltip="使用帮助：&#10;1：“番剧”页面和普通页面的“防挡弹幕”默认设置竟然不一样？开启后设置让它一致 " class="tipsButton">[?]</span>
 							</label>
-            				<label class="h5"><input name="autoLightOn" type="checkbox">自动播放器关灯<span tooltip="使用帮助：&#10;1：在视频区域内点击右键进行开，关灯操作" class="tipsButton">[?]</span></label>
+            				<label class="h5"><input name="autoLightOn" type="checkbox">自动播放器关灯<span tooltip="使用帮助：&#10;1：在视频区域内点击右键进行开，关灯操作&#10;2：双击黑暗区域开灯。" class="tipsButton">[?]</span></label>
             		</div>
             	</fieldset>
             </div>

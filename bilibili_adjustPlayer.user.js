@@ -12,7 +12,7 @@
 // @include     http*://bangumi.bilibili.com/movie/*
 // @exclude     http*://bangumi.bilibili.com/movie/
 // @description 调整B站播放器设置，增加一些实用的功能。
-// @version     1.28
+// @version     1.28.1
 // @grant       GM.setValue
 // @grant       GM_setValue
 // @grant       GM.getValue
@@ -619,71 +619,6 @@
 					}
 				} catch (e) {console.log('resizePlayer：'+e);}
 			}
-			//重写迷你播放器滚动事件
-			try{
-				var fixMiniPlayer = function() {
-					if (localStorage.getItem('adjustPlayer_b_miniplayer') === null) localStorage.setItem('adjustPlayer_b_miniplayer', localStorage.getItem('b_miniplayer'));
-					if (localStorage.getItem('adjustPlayer_b_miniplayer') !== '1' && localStorage.getItem('adjustPlayer_b_miniplayer') !== '0') localStorage.setItem('adjustPlayer_b_miniplayer', '1');
-					var miniplayer = function(type, miniSwitch) {
-						var isMiniplayer = localStorage.getItem('b_miniplayer');
-						if (type === "off") {
-							if (isMiniplayer === "1") miniSwitch.click();
-						} else if (type === "on") {
-							if (isMiniplayer === "0") miniSwitch.click();
-						}
-					};
-					var NavRight = matchURL.isNewBangumi() ? document.querySelector('.bangumi-nav-right') : document.querySelector('.fixed-nav-m');
-					if (NavRight === null) return;
-					var miniSwitch = matchURL.isNewBangumi() ? NavRight.querySelectorAll('.bangumi-nav-right > .nav-mini-switch')[0] : NavRight.querySelectorAll('.fixed-nav-m .mini')[0];
-					var setMiniPlayer = function(scroll_pos) {
-						var adjustPlayerMiniplayer = localStorage.getItem('adjustPlayer_b_miniplayer');
-						//console.log(adjustPlayerMiniplayer);
-						if (adjustPlayerMiniplayer === "1") {
-							if (!matchURL.isNewBangumi() || scroll_pos >= document.querySelector('#bangumi_detail').offsetTop) miniplayer("on", miniSwitch);
-							else miniplayer("off", miniSwitch);
-						} else if (adjustPlayerMiniplayer === "0") miniplayer("off", miniSwitch);
-					};
-					var miniSwitchClone = miniSwitch.cloneNode(true);
-					var setMiniSwitchClone = function() {
-						setMiniPlayer(window.scrollY);
-						var miniplayerValue = localStorage.getItem('adjustPlayer_b_miniplayer');
-						//console.log(miniplayerValue);
-						if (miniplayerValue === '0') {
-							miniSwitchClone.innerHTML = miniSwitchClone.innerHTML.replace('ON', 'OFF');
-							miniSwitchClone.title = miniSwitchClone.title.replace('关闭', '打开');
-						} else if (miniplayerValue === '1') {
-							miniSwitchClone.innerHTML = miniSwitchClone.innerHTML.replace('OFF', 'ON');
-							miniSwitchClone.title = miniSwitchClone.title.replace('打开', '关闭');
-						}
-					};
-					miniSwitchClone.onclick = function(e) {
-						var adjustPlayerMiniplayer = localStorage.getItem('adjustPlayer_b_miniplayer');
-						//console.log(adjustPlayerMiniplayer);
-						if (adjustPlayerMiniplayer === '0') localStorage.setItem('adjustPlayer_b_miniplayer', '1');
-						else if (adjustPlayerMiniplayer === '1') localStorage.setItem('adjustPlayer_b_miniplayer', '0');
-						setMiniSwitchClone();
-						return;
-					};
-					setMiniSwitchClone();
-					miniSwitch.setAttribute('style', 'display:none');
-					NavRight.insertBefore(miniSwitchClone, miniSwitch);
-					if (matchURL.isNewBangumi()) {
-						var last_known_scroll_position = 0;
-						var ticking = false;
-						window.addEventListener('scroll', function(e) {
-							last_known_scroll_position = window.scrollY;
-							if (!ticking) {
-								window.requestAnimationFrame(function() {
-									setMiniPlayer(last_known_scroll_position);
-									ticking = false;
-								});
-							}
-							ticking = true;
-						});
-					}
-				};
-				fixMiniPlayer();
-			} catch (e) {console.log('resizePlayer fixMiniPlayer：'+e);}
 		},
 		resizeMiniPlayer: function (set,width,isResizable) {
 			if (typeof set !== 'undefined' && typeof width !== 'undefined') {
@@ -816,6 +751,70 @@
 					}
 				}
 			}
+		},
+		fixMiniPlayer: function() {
+			//重写迷你播放器滚动事件
+			try {
+				if (localStorage.getItem('adjustPlayer_b_miniplayer') === null) localStorage.setItem('adjustPlayer_b_miniplayer', localStorage.getItem('b_miniplayer'));
+				if (localStorage.getItem('adjustPlayer_b_miniplayer') !== '1' && localStorage.getItem('adjustPlayer_b_miniplayer') !== '0') localStorage.setItem('adjustPlayer_b_miniplayer', '1');
+				var miniplayer = function(type, miniSwitch) {
+					var isMiniplayer = localStorage.getItem('b_miniplayer');
+					if (type === "off") {
+						if (isMiniplayer === "1") miniSwitch.click();
+					} else if (type === "on") {
+						if (isMiniplayer === "0") miniSwitch.click();
+					}
+				};
+				var NavRight = matchURL.isNewBangumi() ? document.querySelector('.bangumi-nav-right') : document.querySelector('.fixed-nav-m');
+				if (NavRight === null) return;
+				var miniSwitch = matchURL.isNewBangumi() ? NavRight.querySelectorAll('.bangumi-nav-right > .nav-mini-switch')[0] : NavRight.querySelectorAll('.fixed-nav-m .mini')[0];
+				var setMiniPlayer = function(scroll_pos) {
+					var adjustPlayerMiniplayer = localStorage.getItem('adjustPlayer_b_miniplayer');
+					//console.log(adjustPlayerMiniplayer);
+					if (adjustPlayerMiniplayer === "1") {
+						if (!matchURL.isNewBangumi() || scroll_pos >= document.querySelector('#bangumi_detail').offsetTop) miniplayer("on", miniSwitch);
+						else miniplayer("off", miniSwitch);
+					} else if (adjustPlayerMiniplayer === "0") miniplayer("off", miniSwitch);
+				};
+				var miniSwitchClone = miniSwitch.cloneNode(true);
+				var setMiniSwitchClone = function() {
+					setMiniPlayer(window.scrollY);
+					var miniplayerValue = localStorage.getItem('adjustPlayer_b_miniplayer');
+					//console.log(miniplayerValue);
+					if (miniplayerValue === '0') {
+						miniSwitchClone.innerHTML = miniSwitchClone.innerHTML.replace('ON', 'OFF');
+						miniSwitchClone.title = miniSwitchClone.title.replace('关闭', '打开');
+					} else if (miniplayerValue === '1') {
+						miniSwitchClone.innerHTML = miniSwitchClone.innerHTML.replace('OFF', 'ON');
+						miniSwitchClone.title = miniSwitchClone.title.replace('打开', '关闭');
+					}
+				};
+				miniSwitchClone.onclick = function(e) {
+					var adjustPlayerMiniplayer = localStorage.getItem('adjustPlayer_b_miniplayer');
+					//console.log(adjustPlayerMiniplayer);
+					if (adjustPlayerMiniplayer === '0') localStorage.setItem('adjustPlayer_b_miniplayer', '1');
+					else if (adjustPlayerMiniplayer === '1') localStorage.setItem('adjustPlayer_b_miniplayer', '0');
+					setMiniSwitchClone();
+					return;
+				};
+				setMiniSwitchClone();
+				miniSwitch.setAttribute('style', 'display:none');
+				NavRight.insertBefore(miniSwitchClone, miniSwitch);
+				if (matchURL.isNewBangumi()) {
+					var last_known_scroll_position = 0;
+					var ticking = false;
+					window.addEventListener('scroll', function(e) {
+						last_known_scroll_position = window.scrollY;
+						if (!ticking) {
+							window.requestAnimationFrame(function() {
+								setMiniPlayer(last_known_scroll_position);
+								ticking = false;
+							});
+						}
+						ticking = true;
+					});
+				}
+			} catch (e) {console.log('fixMiniPlayer：' + e);}
 		},
 		autoHideControlBar: function (set,focusDanmakuInput,video) {
 			if (typeof set !== 'undefined') {
@@ -1572,6 +1571,7 @@
 								adjustPlayer.autoWide(setting.autoWide,setting.autoWideFullscreen);
 								adjustPlayer.autoFocus(setting.autoFocus,setting.autoFocusOffsetType,setting.autoFocusOffsetValue,setting.autoFocusPosition);
 								adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerRatio);
+								adjustPlayer.fixMiniPlayer();
 								if (setting.resizePlayer === true && typeof setting.resizeMiniPlayer === 'undefined') {
 									adjustPlayer.resizeMiniPlayer(true,320);
 								} else {
@@ -1621,6 +1621,7 @@
 										adjustPlayer.autoFocus(setting.autoFocus,setting.autoFocusOffsetType,setting.autoFocusOffsetValue,setting.autoFocusPosition);
 										adjustPlayer.autoWide(setting.autoWide,setting.autoWideFullscreen);
 										adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerRatio);
+										adjustPlayer.fixMiniPlayer();
 									}
 
 									//初始化“迷你播放器尺寸”的默认值
@@ -1722,6 +1723,7 @@
 							adjustPlayer.autoWide(setting.autoWide,setting.autoWideFullscreen);
 							adjustPlayer.autoFocus(setting.autoFocus,setting.autoFocusOffsetType,setting.autoFocusOffsetValue,setting.autoFocusPosition);
 							adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerRatio);
+							adjustPlayer.fixMiniPlayer();
 							reloadPList.init();
 						}, 500);
 						console.log('adjustPlayer:\nflashPlayer reload success');
@@ -1762,6 +1764,7 @@
 									adjustPlayer.autoFocus(setting.autoFocus,setting.autoFocusOffsetType,setting.autoFocusOffsetValue,setting.autoFocusPosition);
 									adjustPlayer.autoWide(setting.autoWide,setting.autoWideFullscreen);
 									adjustPlayer.resizePlayer(setting.resizePlayer,setting.adjustPlayerWidth,setting.adjustPlayerRatio);
+									adjustPlayer.fixMiniPlayer();
 								}
 								//初始化“迷你播放器尺寸”的默认值
 								if (setting.resizePlayer === true && typeof setting.resizeMiniPlayer === 'undefined') {
